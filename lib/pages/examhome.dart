@@ -11,140 +11,137 @@ class _ExamHomeState extends State<ExamHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF16235A),
-      body: SafeArea(
-          child: Stack(
-        children: <Widget>[
-          Positioned(
-              top: 10,
-              left: 0,
-              right: 0,
-              child: Row(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/login');
-                          },
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Color.fromARGB(255, 129, 127, 127),
-                          )),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 35,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Select The Exam',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 129, 127, 127),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 60,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.more_horiz,
-                        color: Color.fromARGB(255, 129, 127, 127),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ClipPath(
+              clipper: HomeClipper(),
+              child: Container(
+                color: Color(0xFF4042C9),
+                padding: EdgeInsets.all(0),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      left: 0,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/login');
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 80,
+                          ),
+                          Text(
+                            'Select Subject',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 100,
+                          ),
+                          PopupMenuItem(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.more_horiz,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                showMenu(
+                                  shape: Border.all(),
+                                  context: context,
+                                  position: RelativeRect.fromLTRB(82, 82, 0, 0),
+                                  items: [
+                                    PopupMenuItem(
+                                      child: Center(
+                                        child: Text('Results'),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: Center(
+                                        child: Text('Exams'),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: Center(
+                                        child: Text('Logout'),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        showMenu(
-                            shape: Border.all(),
-                            context: context,
-                            position: RelativeRect.fromLTRB(82, 82, 0, 0),
-                            items: [
-                              PopupMenuItem(
-                                  child: Center(
-                                child: Text('Results'),
-                              )),
-                              PopupMenuItem(
-                                  child: Center(
-                                child: Text('Exams'),
-                              )),
-                              PopupMenuItem(
-                                  child: Center(
-                                child: Text('Logout'),
-                              )),
-                            ]);
-                      },
                     ),
-                  )
-                ],
-              )),
-          Positioned(
-              top: 100,
-              left: 0,
-              right: 0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
+                    Positioned(
+                      top: 200,
+                      right: 0,
+                      left: 0,
                       child: Card(
-                        color: Color(0xFF3F4D8B),
-                        // Add elevation and set border radius for rounded corners
-                        //elevation: 50,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: SizedBox(
-                          width: 300,
-                          height: 150,
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Text(
-                                  'Introduction to Quadratic',
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Color.fromARGB(255, 129, 127, 127),
-                                      fontWeight: FontWeight.bold),
+                        elevation: 2,
+                        child: ClipPath(
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                right: BorderSide(
+                                  color: Colors.green,
+                                  width: 5,
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  '[1] English Subject Questions',
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      color:
-                                          Color.fromARGB(255, 129, 127, 127)),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      'TAKE EXAM',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Color.fromARGB(
-                                              255, 129, 127, 127)),
-                                    )),
-                              ],
+                              ),
+                            ),
+                          ),
+                          clipper: ShapeBorderClipper(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  )
-                ],
-              ))
-        ],
-      )),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
+  }
+}
+
+class HomeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height);
+    final firstCurve = Offset(0, size.height - 20);
+    final lastCurve = Offset(30, size.height - 20);
+    path.quadraticBezierTo(
+        firstCurve.dx, firstCurve.dy, lastCurve.dx, lastCurve.dy);
+    final secondfirstCurve = Offset(0, size.height - 20);
+    final secondlastCurve = Offset(size.width - 30, size.height - 20);
+    path.quadraticBezierTo(secondfirstCurve.dx, secondfirstCurve.dy,
+        secondlastCurve.dx, secondlastCurve.dy);
+    final thirdfirstCurve = Offset(size.width, size.height - 20);
+    final thirdlastCurve = Offset(size.width, size.height);
+    path.quadraticBezierTo(thirdfirstCurve.dx, thirdfirstCurve.dy,
+        thirdlastCurve.dx, thirdlastCurve.dy);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
   }
 }
