@@ -103,14 +103,15 @@ class _LoginPageState extends State<LoginPage> {
                         style:
                             TextStyle(color: Color.fromARGB(255, 92, 91, 91)),
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
+                         border: OutlineInputBorder(
+                            
                               borderSide: BorderSide(color: Color(0xFF3559E0))),
                           labelText: 'Email',
                           labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 92, 91, 91)),
+                              //fontWeight: FontWeight.bold,
+                              color: Colors.grey),
                           filled: true,
-                          fillColor: Colors.blueGrey[900],
+                          fillColor: Color.fromARGB(255, 116, 116, 116),
                           floatingLabelBehavior: FloatingLabelBehavior
                               .auto, // Set floating label behavior
 

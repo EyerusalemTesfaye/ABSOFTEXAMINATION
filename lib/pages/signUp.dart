@@ -169,6 +169,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Email',
+                        filled: true,
+                        fillColor: Color(0xFF),
                         labelStyle: TextStyle(
                             color: Color.fromARGB(255, 156, 146, 146)),
                         contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
