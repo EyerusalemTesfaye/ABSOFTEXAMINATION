@@ -109,9 +109,11 @@ class _ExamHomeState extends State<ExamHome> {
                             height: screenHeight * 0.2,
                             width: screenWidth * 0.94,
                             child: Column(
+//crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'ggggvvv',
+                                  'Introduction to Quadratic',
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
@@ -119,7 +121,7 @@ class _ExamHomeState extends State<ExamHome> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Text('Description'),
+                                Text('[1] English Subject Questions '),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -128,6 +130,7 @@ class _ExamHomeState extends State<ExamHome> {
                                     // Add your button click logic here
                                   },
                                   style: OutlinedButton.styleFrom(
+                                    backgroundColor: Color(0xFF3559E0),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
                                           8.0), // Adjust the border radius as needed
@@ -136,7 +139,76 @@ class _ExamHomeState extends State<ExamHome> {
                                         color: Colors
                                             .black), // Specify the border color
                                   ),
-                                  child: Text('Start'),
+                                  child: Text(
+                                    'Start',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Colors.green,
+                                  width: 5,
+                                ),
+                              ),
+                            ),
+                          ),
+                          clipper: ShapeBorderClipper(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: screenHeight *
+                          0.50, // Adjust the top position as needed
+                      right: 0,
+                      left: 0,
+                      child: Card(
+                        elevation: 2,
+                        child: ClipPath(
+                          child: Container(
+                            height: screenHeight * 0.2,
+                            width: screenWidth * 0.94,
+                            child: Column(
+//crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'System Administrator',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text('[3] English Subject Questions'),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    // Add your button click logic here
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Color(0xFF3559E0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          8.0), // Adjust the border radius as needed
+                                    ),
+                                    side: BorderSide(
+                                        color: Colors
+                                            .black), // Specify the border color
+                                  ),
+                                  child: Text(
+                                    'Take Exam',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 )
                               ],
                             ),
