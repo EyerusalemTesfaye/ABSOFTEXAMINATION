@@ -1,6 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:absoftexamination/pages/dinamicForm.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: SignUpPage(),
+      theme: ThemeData(
+        // Set the primary color for the input border
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green), // Set the border color
+            borderRadius: BorderRadius.circular(8.0), // Set the border radius
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Colors.blue), // Set the focused border color
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 

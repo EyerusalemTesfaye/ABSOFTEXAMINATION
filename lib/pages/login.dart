@@ -1,6 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:absoftexamination/pages/dinamicForm.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: LoginPage(),
+      theme: ThemeData(
+        // Set the primary color for the input border
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green), // Set the border color
+            borderRadius: BorderRadius.circular(8.0), // Set the border radius
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Colors.blue), // Set the focused border color
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -103,16 +130,14 @@ class _LoginPageState extends State<LoginPage> {
                         style:
                             TextStyle(color: Color.fromARGB(255, 92, 91, 91)),
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF3559E0))),
                           labelText: 'Email',
                           labelStyle: TextStyle(
                               //fontWeight: FontWeight.bold,
                               color: Colors.grey),
                           filled: true,
-                          fillColor: Color.fromARGB(255, 116, 116, 116),
-                          floatingLabelBehavior: FloatingLabelBehavior
-                              .auto, // Set floating label behavior
+                          fillColor: Color(0xFF3C4B68),
+
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
 
                           contentPadding: EdgeInsets.fromLTRB(
                               12, 20, 12, 8), // Adjust content padding
@@ -126,13 +151,15 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: TextFormField(
                         cursorColor: Colors.grey, // Change cursor color
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(
+                            color: const Color.fromARGB(255, 6, 46, 80)),
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFF3559E0))),
                             labelText: 'Password',
-                            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                            labelStyle: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 6, 29, 48)),
+                            filled: true,
+                            fillColor: Color(0xFF3C4B68),
                             contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 4),
                             floatingLabelBehavior: FloatingLabelBehavior
                                 .auto // Adjust content padding
