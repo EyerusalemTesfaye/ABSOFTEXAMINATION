@@ -15,12 +15,12 @@ class MyApp extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.green), // Set the border color
-            borderRadius: BorderRadius.circular(8.0), // Set the border radius
+            // borderRadius: BorderRadius.circular(8.0), // Set the border radius
           ),
           enabledBorder: OutlineInputBorder(
             borderSide:
                 BorderSide(color: Colors.blue), // Set the focused border color
-            borderRadius: BorderRadius.circular(8.0),
+            // borderRadius: BorderRadius.circular(8.0),
           ),
         ),
       ),
