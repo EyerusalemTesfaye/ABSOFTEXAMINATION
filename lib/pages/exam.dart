@@ -19,7 +19,7 @@ class _ExamState extends State<Exam> {
       onWillPop: onBackPress,
       child: Scaffold(
         appBar: AppBar(
-            backgroundColor: Color(0xFF3559E0),
+            backgroundColor: kItemSelectBottomNav,
             elevation: 0.0,
             leading: IconButton(
               onPressed: () {
@@ -31,7 +31,10 @@ class _ExamState extends State<Exam> {
                     () => Navigator.pop(context),
                     () => null);
               },
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+              ),
             ),
             centerTitle: true,
             title: Column(
@@ -124,7 +127,7 @@ class _ExamState extends State<Exam> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         child: Text(
-                          'iiiii',
+                          'What is ServiceNow system architecture?',
                           style: kHeadingTextStyleAppBar.copyWith(
                               color: Colors.white, fontSize: 22),
                         ),
@@ -165,7 +168,7 @@ class _ExamState extends State<Exam> {
                                   RadioListTile(
                                     groupValue: 'iuuuu',
                                     activeColor: Colors.red,
-                                    title: Text('kiunnnn'),
+                                    title: Text('Platform as a Service'),
                                     onChanged: (abc) {
                                       //value.selectRadio(e);
                                     },
