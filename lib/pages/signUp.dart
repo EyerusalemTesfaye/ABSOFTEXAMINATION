@@ -1,3 +1,5 @@
+import 'package:absoftexamination/utility/validators.dart';
+import 'package:absoftexamination/utility/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:absoftexamination/pages/dinamicForm.dart';
 
@@ -34,6 +36,8 @@ class SignUpPage extends StatefulWidget {
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
+
+TextEditingController _passwordController = new TextEditingController();
 
 class _SignUpPageState extends State<SignUpPage> {
   @override
@@ -98,65 +102,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     )
                   ],
                 )),
-
-            // Positioned(
-            //   left: 0,
-            //   right: 0,
-            //   bottom: 40,
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.stretch,
-            //     children: <Widget>[
-            //       CustomInputDecorations.buildTextField(
-            //         labelText: 'Full Name',
-            //       ),
-            //       SizedBox(height: 15),
-            //       CustomInputDecorations.buildTextField(
-            //         labelText: 'Email',
-            //       ),
-            //       SizedBox(height: 15),
-            //       Row(
-            //         children: [
-            //           Flexible(
-            //             child: CustomInputDecorations.buildTextField(
-            //               labelText: 'Age',
-            //             ),
-            //           ),
-            //           SizedBox(width: 5), // Adjust the width as needed
-            //           Flexible(
-            //             child: CustomInputDecorations.buildTextField(
-            //               labelText: 'Grade',
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       SizedBox(height: 15),
-            //       CustomInputDecorations.buildTextField(
-            //         labelText: 'Password',
-            //       ),
-            //       SizedBox(height: 15),
-            //       CustomInputDecorations.buildTextField(
-            //         labelText: 'Coniform Password',
-            //       ),
-            //       SizedBox(height: 20),
-            //       Padding(
-            //         padding: const EdgeInsets.symmetric(horizontal: 100),
-            //         child: ElevatedButton(
-            //           onPressed: () {},
-            //           style: ButtonStyle(
-            //               backgroundColor: MaterialStateProperty.all<Color>(
-            //                   Color(0xFF3559E0)),
-            //               foregroundColor: MaterialStateProperty.all<Color>(
-            //                   Colors.white) // Change to your desired color
-            //               ),
-            //           child: Text(
-            //             'Log In',
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
             Positioned(
               left: 0,
               right: 0,
@@ -166,23 +111,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextField(
-                      cursorColor: const Color.fromARGB(
-                          255, 156, 146, 146), // Change cursor color
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 156, 146, 146)),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        // enabledBorder: OutlineInputBorder(
-                        //     borderSide: BorderSide(
-                        //         color: Color.fromARGB(255, 156, 146, 146))),
-                        labelText: 'Full Name',
-                        labelStyle: TextStyle(
-                          color: Color.fromARGB(255, 156, 146, 146),
-                        ),
-                        //contentPadding: EdgeInsets.symmetric(vertical: 8)
-                        contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                      ),
+                    child: TextFormField(
+                      //controller: _emailController,
+                      cursorColor: Colors.grey,
+                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                      decoration: buildInputDecoration('Full Name'),
+                      //validator: validateEmail,
                     ),
                   ),
                   SizedBox(
@@ -190,18 +124,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextField(
-                      cursorColor: Colors.white, // Change cursor color
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email',
-                        filled: true,
-                        fillColor: Color(0xFF),
-                        labelStyle: TextStyle(
-                            color: Color.fromARGB(255, 156, 146, 146)),
-                        contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                      ),
+                    child: TextFormField(
+                      // controller: _emailController,
+                      cursorColor: Colors.grey,
+                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                      decoration: buildInputDecoration('Email'),
+                      validator: validateEmail,
                     ),
                   ),
                   SizedBox(
@@ -214,40 +142,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            cursorColor: Color.fromARGB(
-                                255, 156, 146, 146), // Change cursor color
+                            //controller: _emailController,
+                            cursorColor: Colors.grey,
                             style: TextStyle(
-                                color: Color.fromARGB(255, 156, 146, 146)),
-                            decoration: const InputDecoration(
-                              // enabledBorder: OutlineInputBorder(
-                              //     borderSide: BorderSide(
-                              //         color:
-                              //             Color.fromARGB(255, 156, 146, 146))
-                              //             ),
-                              border: OutlineInputBorder(),
-                              labelText: 'Age',
-                              labelStyle: TextStyle(
-                                  color: Color.fromARGB(255, 156, 146, 146)),
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(12, 20, 12, 8),
-                            ),
+                                color: Color.fromRGBO(237, 234, 234, 1)),
+                            decoration: buildInputDecoration('Age'),
+                            //validator: validateEmail,
                           ),
                         ),
-                        //SizedBox(width: 10), // Spacer between Age and Grade
+                        SizedBox(width: 5), // Spacer between Age and Grade
                         Expanded(
                           child: TextFormField(
-                            cursorColor: Color.fromARGB(
-                                255, 156, 146, 146), // Change cursor color
+                            //controller: _emailController,
+                            cursorColor: Colors.grey,
                             style: TextStyle(
-                                color: Color.fromARGB(255, 156, 146, 146)),
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Grade',
-                              labelStyle: TextStyle(
-                                  color: Color.fromARGB(255, 156, 146, 146)),
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(12, 20, 12, 8),
-                            ),
+                                color: Color.fromRGBO(237, 234, 234, 1)),
+                            decoration: buildInputDecoration('Grade'),
+                            //validator: validateEmail,
                           ),
                         ),
                       ],
@@ -259,17 +170,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextFormField(
-                      cursorColor: Color.fromARGB(
-                          255, 156, 146, 146), // Change cursor color
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 156, 146, 146)),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                            color: Color.fromARGB(255, 156, 146, 146)),
-                        contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                      ),
+                      obscureText: true,
+                      //controller: _passwordController,
+
+                      cursorColor: Colors.grey, // Change cursor color
+                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                      decoration: buildInputDecoration('Password'),
+                      validator: validatePassword,
                     ),
                   ),
                   SizedBox(
@@ -278,17 +185,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextFormField(
-                      cursorColor: Color.fromARGB(
-                          255, 156, 146, 146), // Change cursor color
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 156, 146, 146)),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: ' Confirm Password',
-                        labelStyle: TextStyle(
-                            color: Color.fromARGB(255, 156, 146, 146)),
-                        contentPadding: EdgeInsets.fromLTRB(12, 20, 12, 8),
-                      ),
+                      obscureText: true,
+                      //controller: _passwordController,
+
+                      cursorColor: Colors.grey, // Change cursor color
+                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                      decoration: buildInputDecoration('Confirm Password'),
+                      validator: (value) {
+                        if (value != _passwordController.text) {
+                          return 'Password doesnot match';
+                        }
+                      },
                     ),
                   ),
                   SizedBox(
