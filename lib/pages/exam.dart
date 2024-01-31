@@ -32,7 +32,7 @@ class _ExamState extends State<Exam> {
                     () => null);
               },
               icon: Icon(
-                Icons.arrow_back_ios,
+                Icons.arrow_back,
                 color: Colors.white,
               ),
             ),
@@ -90,31 +90,31 @@ class _ExamState extends State<Exam> {
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               physics: BouncingScrollPhysics(),
-                              child: InkWell(
-                                onTap: () {
-                                  // value.selectQuestion(e);
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 15, right: 10),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      // color: value.currentIndex == e ? Colors.grey[200] : Color(0xff7146ff),
-                                    ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(7),
-                                        child: Text(
-                                          'kkyyyyk',
-                                          style: TextStyle(
-                                              // color: value.currentIndex == e ? Colors.black : Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // child: InkWell(
+                              //   onTap: () {
+                              //     // value.selectQuestion(e);
+                              //   },
+                              //   child: Padding(
+                              //     padding: EdgeInsets.only(left: 15, right: 10),
+                              //     child: Container(
+                              //       decoration: BoxDecoration(
+                              //         shape: BoxShape.circle,
+                              //         // color: value.currentIndex == e ? Colors.grey[200] : Color(0xff7146ff),
+                              //       ),
+                              //       child: Center(
+                              //         child: Padding(
+                              //           padding: const EdgeInsets.all(7),
+                              //           child: Text(
+                              //             'kkyyyyk',
+                              //             style: TextStyle(
+                              //                 // color: value.currentIndex == e ? Colors.black : Colors.white,
+                              //                 fontWeight: FontWeight.bold),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ),
                           ],
                         ),
@@ -129,7 +129,7 @@ class _ExamState extends State<Exam> {
                         child: Text(
                           'What is ServiceNow system architecture?',
                           style: kHeadingTextStyleAppBar.copyWith(
-                              color: Colors.white, fontSize: 22),
+                              color: Colors.white, fontSize: 16),
                         ),
                       ),
                       SizedBox(
@@ -175,6 +175,32 @@ class _ExamState extends State<Exam> {
                                     value: 'oi',
                                     //value: e,
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  RadioListTile(
+                                    groupValue: 'iuuuu',
+                                    activeColor: Colors.red,
+                                    title: Text('Platform as a Service'),
+                                    onChanged: (abc) {
+                                      //value.selectRadio(e);
+                                    },
+                                    value: 'oi',
+                                    //value: e,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  RadioListTile(
+                                    groupValue: 'iuuuu',
+                                    activeColor: Colors.red,
+                                    title: Text('Platform as a Service'),
+                                    onChanged: (abc) {
+                                      //value.selectRadio(e);
+                                    },
+                                    value: 'oi',
+                                    //value: e,
+                                  ),
                                 ],
                               ),
                             ),
@@ -187,7 +213,7 @@ class _ExamState extends State<Exam> {
                       Padding(
                         child: Align(
                           child: SizedBox(
-                            width: 150,
+                            width: 200,
                             child: TextButton(
                               onPressed: () {},
                               child: Text(
