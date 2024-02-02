@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:absoftexamination/model/user.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:absoftexamination/util/shared_preferences_util.dart';
@@ -67,8 +68,13 @@ class _LoginPageState extends State<LoginPage> {
           context.read<UserDataProvider>().setUserData(responseMap['data']);
 
           print('Login successful');
-          UserPreferences.saveUser(responseMap['data']);
-          UserPreferences.saveToken(responseMap['data']['token']);
+          User? user = await UserPreferences.getUser() as User?;
+          if (user != null) {
+            // Handle the user object
+          } else {
+            // User data not found
+          }
+
           Navigator.pushNamed(context, '/examhome');
         } else {
           // Login failed, handle the error response

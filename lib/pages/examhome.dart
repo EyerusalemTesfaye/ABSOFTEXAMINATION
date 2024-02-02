@@ -71,16 +71,19 @@ class _ExamHomeState extends State<ExamHome> {
                                       child: Center(
                                         child: Text('Results'),
                                       ),
+                                      value: 0,
                                     ),
                                     PopupMenuItem(
                                       child: Center(
                                         child: Text('Exams'),
                                       ),
+                                      value: 1,
                                     ),
                                     PopupMenuItem(
                                       child: Center(
                                         child: Text('Logout'),
                                       ),
+                                      value: 2,
                                     ),
                                   ],
                                 );
