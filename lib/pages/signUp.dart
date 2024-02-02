@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
-import 'package:absoftexamination/utility/validators.dart';
-import 'package:absoftexamination/utility/widget.dart';
+import 'package:absoftexamination/util/validators.dart';
+import 'package:absoftexamination/util/widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;

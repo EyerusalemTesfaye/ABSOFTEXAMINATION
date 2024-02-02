@@ -2,13 +2,15 @@ import 'dart:convert';
 
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
-import 'package:absoftexamination/utility/validators.dart';
-import 'package:absoftexamination/utility/widget.dart';
+import 'package:absoftexamination/util/shared_preferences_util.dart';
+import 'package:absoftexamination/util/validators.dart';
+import 'package:absoftexamination/util/widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -65,6 +67,8 @@ class _LoginPageState extends State<LoginPage> {
           context.read<UserDataProvider>().setUserData(responseMap['data']);
 
           print('Login successful');
+          UserPreferences.saveUser(responseMap['data']);
+          UserPreferences.saveToken(responseMap['data']['token']);
           Navigator.pushNamed(context, '/examhome');
         } else {
           // Login failed, handle the error response

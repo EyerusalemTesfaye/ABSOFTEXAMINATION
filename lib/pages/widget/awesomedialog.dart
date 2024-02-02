@@ -1,4 +1,4 @@
-import 'package:absoftexamination/utility/constant.dart';
+import 'package:absoftexamination/util/constant.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
