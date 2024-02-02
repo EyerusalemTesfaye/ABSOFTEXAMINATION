@@ -208,12 +208,12 @@ class _ExamState extends State<Exam> {
                         ),
                       ),
                       SizedBox(
-                        height: 25,
+                        height: 60,
                       ),
                       Padding(
                         child: Align(
                           child: SizedBox(
-                            width: 200,
+                            width: 150,
                             child: TextButton(
                               onPressed: () {},
                               child: Text(

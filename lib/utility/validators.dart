@@ -29,3 +29,11 @@ String? validatePassword(String? value) {
   // If the password is valid, return null
   return null;
 }
+
+String? validateName(String? value) {
+  if (value == null || value.isEmpty) {
+    print('please enter name');
+    return 'Please enter your name';
+  }
+  return null;
+}

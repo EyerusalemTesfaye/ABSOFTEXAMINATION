@@ -1,7 +1,14 @@
+import 'dart:convert';
+
+import 'package:absoftexamination/providers/auth.dart';
+import 'package:absoftexamination/services/api.dart';
 import 'package:absoftexamination/utility/validators.dart';
 import 'package:absoftexamination/utility/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:absoftexamination/pages/dinamicForm.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,15 +38,69 @@ class MyApp extends StatelessWidget {
 }
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  //const SignUpPage({super.key});
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-TextEditingController _passwordController = new TextEditingController();
-
 class _SignUpPageState extends State<SignUpPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _gradeController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmpasswordController =
+      TextEditingController();
+
+  void _signUp() async {
+    if (_formKey.currentState!.validate()) {
+      // Perform registration logic here
+      print('Name: ${_nameController.text}');
+      print('Email: ${_emailController.text}');
+      print('Age: ${_ageController.text}');
+      print('Grade: ${_gradeController.text}');
+      print('Password: ${_passwordController.text}');
+      print('Confirm Password: ${_confirmpasswordController.text}');
+
+      // Rest of your signUp logic...
+
+      try {
+        var requestBody = http.MultipartRequest(
+          'POST',
+          Uri.parse(Api.userUrl),
+        )
+          ..fields['name'] = _nameController.text
+          ..fields['email'] = _emailController.text
+          ..fields['age'] = _ageController.text
+          ..fields['grade'] = _gradeController.text
+          ..fields['password'] = _passwordController.text
+          ..fields['confirm_password'] = _confirmpasswordController.text;
+
+        final response = await requestBody.send();
+        final Map<String, dynamic> responseMap =
+            json.decode(await response.stream.bytesToString());
+
+        if (responseMap['header']['error'].toLowerCase() == 'false') {
+          context.read<UserDataProvider>().setUserData(responseMap['data']);
+
+          print('Registration successful');
+          Navigator.pushNamed(context, '/login');
+        } else {
+          // Registration failed, handle the error response
+          print('Registration failed: ${responseMap['header']['message']}');
+          // Optionally, display an error message to the user
+        }
+      } catch (e) {
+        // Handle network or other errors
+        print('Error during registration: $e');
+        // Optionally, display an error message to the user
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -106,117 +167,144 @@ class _SignUpPageState extends State<SignUpPage> {
               left: 0,
               right: 0,
               bottom: 40,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextFormField(
-                      //controller: _emailController,
-                      cursorColor: Colors.grey,
-                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
-                      decoration: buildInputDecoration('Full Name'),
-                      //validator: validateEmail,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: TextFormField(
+                          controller: _nameController,
+                          cursorColor: Colors.grey,
+                          style: TextStyle(
+                              color: Color.fromRGBO(237, 234, 234, 1)),
+                          decoration: buildInputDecoration('Full Name'),
+                          validator: validateName),
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextFormField(
-                      // controller: _emailController,
-                      cursorColor: Colors.grey,
-                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
-                      decoration: buildInputDecoration('Email'),
-                      validator: validateEmail,
+                    SizedBox(
+                      height: 15,
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            //controller: _emailController,
-                            cursorColor: Colors.grey,
-                            style: TextStyle(
-                                color: Color.fromRGBO(237, 234, 234, 1)),
-                            decoration: buildInputDecoration('Age'),
-                            //validator: validateEmail,
-                          ),
-                        ),
-                        SizedBox(width: 5), // Spacer between Age and Grade
-                        Expanded(
-                          child: TextFormField(
-                            //controller: _emailController,
-                            cursorColor: Colors.grey,
-                            style: TextStyle(
-                                color: Color.fromRGBO(237, 234, 234, 1)),
-                            decoration: buildInputDecoration('Grade'),
-                            //validator: validateEmail,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextFormField(
-                      obscureText: true,
-                      //controller: _passwordController,
-
-                      cursorColor: Colors.grey, // Change cursor color
-                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
-                      decoration: buildInputDecoration('Password'),
-                      validator: validatePassword,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: TextFormField(
-                      obscureText: true,
-                      //controller: _passwordController,
-
-                      cursorColor: Colors.grey, // Change cursor color
-                      style: TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
-                      decoration: buildInputDecoration('Confirm Password'),
-                      validator: (value) {
-                        if (value != _passwordController.text) {
-                          return 'Password doesnot match';
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 100),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xFF3559E0)),
-                          foregroundColor: MaterialStateProperty.all<Color>(
-                              Colors.white) // Change to your desired color
-                          ),
-                      child: Text(
-                        'Sign Up',
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: TextFormField(
+                        controller: _emailController,
+                        cursorColor: Colors.grey,
+                        style:
+                            TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                        decoration: buildInputDecoration('Email'),
+                        validator: validateEmail,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              controller: _ageController,
+                              cursorColor: Colors.grey,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(237, 234, 234, 1)),
+                              decoration: buildInputDecoration('Age'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter age';
+                                }
+
+                                // Additional validation for age (e.g., must be a number)
+                                bool isNumeric(String? value) {
+                                  if (value == null) {
+                                    return false;
+                                  }
+                                  return double.tryParse(value) != null;
+                                }
+
+                                return null;
+                              },
+                              //validator: validateEmail,
+                            ),
+                          ),
+                          SizedBox(width: 5), // Spacer between Age and Grade
+                          Expanded(
+                            child: TextFormField(
+                                controller: _gradeController,
+                                cursorColor: Colors.grey,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(237, 234, 234, 1)),
+                                decoration: buildInputDecoration('Grade'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'please enter grade';
+                                  }
+                                }
+                                //validator: validateEmail,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _passwordController,
+
+                        cursorColor: Colors.grey, // Change cursor color
+                        style:
+                            TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                        decoration: buildInputDecoration('Password'),
+                        validator: validatePassword,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: _confirmpasswordController,
+
+                        cursorColor: Colors.grey, // Change cursor color
+                        style:
+                            TextStyle(color: Color.fromRGBO(237, 234, 234, 1)),
+                        decoration: buildInputDecoration('Confirm Password'),
+                        validator: (value) {
+                          if (value != _passwordController.text) {
+                            return 'Password doesnot match';
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 100),
+                      child: ElevatedButton(
+                        onPressed: _signUp,
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xFF3559E0)),
+                            foregroundColor: MaterialStateProperty.all<Color>(
+                                Colors.white) // Change to your desired color
+                            ),
+                        child: Text(
+                          'Sign Up',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
