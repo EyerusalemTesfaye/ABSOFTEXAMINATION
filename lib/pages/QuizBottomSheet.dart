@@ -1,14 +1,22 @@
+import 'dart:convert';
+
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
+import 'package:absoftexamination/services/api.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class QuizBottomSheet extends StatefulWidget {
   final String title;
   final String subTitle;
   final String subjects;
+  final String examId;
 
   const QuizBottomSheet(
-      {required this.title, required this.subTitle, required this.subjects})
+      {required this.title,
+      required this.subTitle,
+      required this.subjects,
+      required this.examId})
       : super();
 
   @override
@@ -17,6 +25,30 @@ class QuizBottomSheet extends StatefulWidget {
 
 class _QuizBottomSheetState extends State<QuizBottomSheet> {
   final globalKey = GlobalKey<ScaffoldState>();
+
+  void _examDetail(String examId) async {
+    print('Exam ID: $examId'); // Print examId before sending request
+    try {
+      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examDetail))
+        ..fields['exam_id'] = examId;
+
+      final response = await requestBody.send();
+
+      final Map<String, dynamic> responseMap =
+          json.decode(await response.stream.bytesToString());
+
+      if (responseMap['header']['error'].toLowerCase() == 'false') {
+        print('Exam details fetched successfully');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => Exam()));
+      } else {
+        print(
+            'Failed to fetch exam details: ${responseMap['header']['message']}');
+      }
+    } catch (e) {
+      print('Error fetching exam details: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +98,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
                 // shape: RoundedRectangleBorder(
                 //     borderRadius: BorderRadius.circular(15)),
                 onPressed: () {
-                  // Navigator.pushNamed(context, '/exam',
-                  //     arguments: widget.title);
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => Exam()));
+                  _examDetail(widget.examId);
                 },
                 child: Text(
                   "Start Exam",

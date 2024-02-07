@@ -8,6 +8,7 @@ class Api {
   static const authKey = 'token';
   static const userUrl = 'https://exambackend.amanuel-girma.dev/Users/register';
   static const showExamUrl = 'https://exambackend.amanuel-girma.dev/Exam/show';
+  static const examDetail = 'https://exambackend.amanuel-girma.dev/Exam/detail';
 }
 
 Future<void> getExam() async {

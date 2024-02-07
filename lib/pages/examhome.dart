@@ -220,7 +220,8 @@ class _ExamHomeState extends State<ExamHome> {
                                                           context,
                                                           question.title,
                                                           question.description,
-                                                          question.subject);
+                                                          question.subject,
+                                                          question.id);
                                                     },
                                                     style: OutlinedButton
                                                         .styleFrom(
@@ -471,7 +472,7 @@ class _ExamHomeState extends State<ExamHome> {
 // }
 
 _buildBottomSheet(BuildContext context, String cardTitle, String description,
-    String subjects) {
+    String subjects, String id) {
   // showModalBottomSheet(
   //   context: context,
   //   builder: (BuildContext context) {
@@ -494,6 +495,7 @@ _buildBottomSheet(BuildContext context, String cardTitle, String description,
           title: cardTitle,
           subTitle: description,
           subjects: subjects,
+          examId: id,
         );
       });
 }
