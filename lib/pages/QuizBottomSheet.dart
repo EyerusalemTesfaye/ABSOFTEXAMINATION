@@ -29,8 +29,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
   void _examDetail(String examId) async {
     print('Exam ID: $examId'); // Print examId before sending request
     try {
-      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examDetail))
-        ..fields['exam_id'] = examId;
+      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examStart))
+        ..fields['exam_id'] = examId
+        ..fields['token'] = '';
 
       final response = await requestBody.send();
 
@@ -38,7 +39,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
           json.decode(await response.stream.bytesToString());
 
       if (responseMap['header']['error'].toLowerCase() == 'false') {
+        final res = responseMap['data'];
         print('Exam details fetched successfully');
+        print('genet:${res}');
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (_) => Exam()));
       } else {

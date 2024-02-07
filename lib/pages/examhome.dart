@@ -53,7 +53,7 @@ class _ExamHomeState extends State<ExamHome> {
           json.decode(await response.stream.bytesToString());
 
       if (responseMap['header']['error'].toLowerCase() == 'false') {
-        print('Exam details fetched successfully');
+        print('Exam  fetched successfully');
 
         final res = responseMap['data'];
         print(res['title']);
