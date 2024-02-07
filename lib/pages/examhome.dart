@@ -217,10 +217,10 @@ class _ExamHomeState extends State<ExamHome> {
                                                   child: OutlinedButton(
                                                     onPressed: () {
                                                       _buildBottomSheet(
-                                                        context,
-                                                        question.title,
-                                                        question.description,
-                                                      );
+                                                          context,
+                                                          question.title,
+                                                          question.description,
+                                                          question.subject);
                                                     },
                                                     style: OutlinedButton
                                                         .styleFrom(
@@ -470,7 +470,8 @@ class _ExamHomeState extends State<ExamHome> {
 //  );
 // }
 
-_buildBottomSheet(BuildContext context, String cardTitle, String description) {
+_buildBottomSheet(BuildContext context, String cardTitle, String description,
+    String subjects) {
   // showModalBottomSheet(
   //   context: context,
   //   builder: (BuildContext context) {
@@ -489,7 +490,11 @@ _buildBottomSheet(BuildContext context, String cardTitle, String description) {
       ),
       context: context,
       builder: (_) {
-        return QuizBottomSheet(title: cardTitle, subTitle: description);
+        return QuizBottomSheet(
+          title: cardTitle,
+          subTitle: description,
+          subjects: subjects,
+        );
       });
 }
 //}

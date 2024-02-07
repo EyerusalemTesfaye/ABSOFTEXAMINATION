@@ -1,10 +1,14 @@
+import 'package:absoftexamination/pages/exam.dart';
+import 'package:absoftexamination/pages/examhome.dart';
 import 'package:flutter/material.dart';
 
 class QuizBottomSheet extends StatefulWidget {
   final String title;
   final String subTitle;
+  final String subjects;
 
-  const QuizBottomSheet({required this.title, required this.subTitle})
+  const QuizBottomSheet(
+      {required this.title, required this.subTitle, required this.subjects})
       : super();
 
   @override
@@ -40,7 +44,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
             const SizedBox(
               height: 20,
             ),
-            Text("English Subject"),
+            Text('${widget.subjects} Subject'),
             const SizedBox(
               height: 20,
             ),
@@ -62,8 +66,10 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
                 // shape: RoundedRectangleBorder(
                 //     borderRadius: BorderRadius.circular(15)),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/exam',
-                      arguments: widget.title);
+                  // Navigator.pushNamed(context, '/exam',
+                  //     arguments: widget.title);
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (_) => Exam()));
                 },
                 child: Text(
                   "Start Exam",
