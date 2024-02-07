@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/pages/QuizBottomSheet.dart';
 import 'package:absoftexamination/pages/login.dart';
 import 'package:absoftexamination/providers/question.dart';
+import 'package:absoftexamination/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class ExamHome extends StatefulWidget {
   const ExamHome({Key? key}) : super(key: key);
@@ -34,6 +38,36 @@ class _ExamHomeState extends State<ExamHome> {
         _isLoading =
             false; // Set local isLoading to false after the API call is complete
       });
+    }
+  }
+
+  void _examStart(String examId) async {
+    print('Exam ID: $examId'); // Print examId before sending request
+    try {
+      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examDetail))
+        ..fields['exam_id'] = examId;
+
+      final response = await requestBody.send();
+
+      final Map<String, dynamic> responseMap =
+          json.decode(await response.stream.bytesToString());
+
+      if (responseMap['header']['error'].toLowerCase() == 'false') {
+        print('Exam details fetched successfully');
+
+        final res = responseMap['data'];
+        print(res['title']);
+        _buildBottomSheet(context, res['title'], res['description'],
+            res['subject'], res['id']);
+
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (_) => Exam()));
+      } else {
+        print(
+            'Failed to fetch exam details: ${responseMap['header']['message']}');
+      }
+    } catch (e) {
+      print('Error fetching exam details: $e');
     }
   }
 
@@ -216,12 +250,7 @@ class _ExamHomeState extends State<ExamHome> {
                                                       horizontal: 25),
                                                   child: OutlinedButton(
                                                     onPressed: () {
-                                                      _buildBottomSheet(
-                                                          context,
-                                                          question.title,
-                                                          question.description,
-                                                          question.subject,
-                                                          question.id);
+                                                      _examStart(question.id);
                                                     },
                                                     style: OutlinedButton
                                                         .styleFrom(
