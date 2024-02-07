@@ -54,7 +54,7 @@ class _ExamHomeState extends State<ExamHome> {
                 )
               : Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(color: Colors.blue[900]),
+                  decoration: BoxDecoration(color: Color(0xFF4042C9)),
                   child: Column(
                     children: <Widget>[
                       const SizedBox(
@@ -65,21 +65,76 @@ class _ExamHomeState extends State<ExamHome> {
                           SizedBox(
                             width: 10,
                           ),
-                          Text('hey'),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => LoginPage(),
+                                    ));
+                              },
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              )),
                           SizedBox(
-                            width: 110,
+                            width: screenWidth * 0.18,
                           ),
                           Text(
-                            "Home",
+                            "Select Subject",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 30),
+                                fontSize: 18),
                           ),
                           SizedBox(
-                            width: 100,
+                            width: screenWidth * 0.15,
                           ),
-                          Text('yt')
+                          PopupMenuItem(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.more_horiz,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                showMenu(
+                                  shape: Border.all(),
+                                  context: context,
+                                  position: RelativeRect.fromLTRB(82, 82, 0, 0),
+                                  items: [
+                                    PopupMenuItem(
+                                      child: Center(
+                                        child: Text('Results'),
+                                      ),
+                                      onTap: () => print('fgfddfg'),
+                                      value: 0,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Center(
+                                        child: Text('Exams'),
+                                      ),
+                                      onTap: () {
+                                        fetchData();
+                                      },
+                                      value: 1,
+                                    ),
+                                    PopupMenuItem(
+                                      child: Center(
+                                        child: Text('Logout'),
+                                      ),
+                                      onTap: () => Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => LoginPage(),
+                                        ),
+                                      ),
+                                      value: 2,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(
@@ -149,7 +204,7 @@ class _ExamHomeState extends State<ExamHome> {
                                                       .symmetric(
                                                       horizontal: 20),
                                                   child: Text(
-                                                    'Subject: ${question.subject}',
+                                                    '[${question.count}] ${question.subject} Subject Questions',
                                                     style:
                                                         TextStyle(fontSize: 16),
                                                   ),
@@ -158,11 +213,34 @@ class _ExamHomeState extends State<ExamHome> {
                                                 Padding(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 20),
-                                                  child: Text(
-                                                    'Count: ${question.count}',
-                                                    style:
-                                                        TextStyle(fontSize: 16),
+                                                      horizontal: 25),
+                                                  child: OutlinedButton(
+                                                    onPressed: () {
+                                                      _buildBottomSheet(
+                                                        context,
+                                                        question.title,
+                                                        question.description,
+                                                      );
+                                                    },
+                                                    style: OutlinedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Color(0xFF3559E0),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                      ),
+                                                      side: BorderSide(
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      'Take Exam',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ],
