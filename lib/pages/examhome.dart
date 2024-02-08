@@ -1,5 +1,9 @@
+import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/pages/QuizBottomSheet.dart';
+import 'package:absoftexamination/pages/login.dart';
+import 'package:absoftexamination/providers/question.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExamHome extends StatefulWidget {
   const ExamHome({Key? key}) : super(key: key);
@@ -9,272 +13,408 @@ class ExamHome extends StatefulWidget {
 }
 
 class _ExamHomeState extends State<ExamHome> {
+  bool _isLoading = false; // Local loading state in ExamHome
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      setState(() {
+        _isLoading =
+            true; // Set local isLoading to true before making the API call
+      });
+      // Use the provider to fetch data
+      await context.read<ExamProvider>().fetchExamData();
+    } finally {
+      setState(() {
+        _isLoading =
+            false; // Set local isLoading to false after the API call is complete
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var examProvider = Provider.of<ExamProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ClipPath(
-              clipper: HomeClipper(),
-              child: Container(
-                width: screenWidth,
-                height: screenHeight * 0.25, // Adjust the height as needed
-                color: Color(0xFF4042C9),
-                padding: EdgeInsets.all(0),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: screenHeight *
-                          0.07, // Adjust the top position as needed
-                      right: 0,
-                      left: 0,
-                      child: Row(
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : examProvider.error.isNotEmpty
+              ? Center(
+                  child: Text('Error: ${examProvider.error}'),
+                )
+              : Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(color: Colors.blue[900]),
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Row(
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                          ),
                           SizedBox(
-                            width: screenWidth *
-                                0.18, // Adjust the width as needed
+                            width: 10,
+                          ),
+                          Text('hey'),
+                          SizedBox(
+                            width: 110,
                           ),
                           Text(
-                            'Select Subject',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            "Home",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30),
                           ),
                           SizedBox(
-                            width: screenWidth *
-                                0.15, // Adjust the width as needed
+                            width: 100,
                           ),
-                          PopupMenuItem(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.more_horiz,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                showMenu(
-                                  shape: Border.all(),
-                                  context: context,
-                                  position: RelativeRect.fromLTRB(82, 82, 0, 0),
-                                  items: [
-                                    PopupMenuItem(
-                                      child: Center(
-                                        child: Text('Results'),
-                                      ),
-                                      value: 0,
-                                    ),
-                                    PopupMenuItem(
-                                      child: Center(
-                                        child: Text('Exams'),
-                                      ),
-                                      value: 1,
-                                    ),
-                                    PopupMenuItem(
-                                      child: Center(
-                                        child: Text('Logout'),
-                                      ),
-                                      value: 2,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
+                          Text('yt')
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Positioned(
-                        top: screenHeight *
-                            0.25, // Adjust the top position as needed
-                        right: 0,
-                        left: 0,
-                        child: Card(
-                          elevation: 2,
-                          child: ClipPath(
-                            child: Container(
-                              height: screenHeight * 0.2,
-                              width: screenWidth * 0.94,
-                              child: Column(
-                                //crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Introduction to Quadratic',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('[1] English Subject Questions '),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      _buildBottomSheet(
-                                          context,
-                                          'Introduction to Quadratic',
-                                          'exam on simple quadratic equation.');
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      backgroundColor: Color(0xFF3559E0),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            8.0), // Adjust the border radius as needed
-                                      ),
-                                      side: BorderSide(
-                                          color: Colors
-                                              .black), // Specify the border color
-                                    ),
-                                    child: Text(
-                                      'Take Exam',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Colors.green,
-                                    width: 5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            clipper: ShapeBorderClipper(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(3),
-                              ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40),
                             ),
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        top: screenHeight *
-                            0.50, // Adjust the top position as needed
-                        right: 0,
-                        left: 0,
-                        child: Card(
-                          elevation: 2,
-                          child: ClipPath(
-                            child: Container(
-                              height: screenHeight * 0.2,
-                              width: screenWidth * 0.94,
-                              child: Column(
-                                //crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'System Administrator',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('[3] English Subject Questions'),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  OutlinedButton(
-                                    onPressed: () {
-                                      _buildBottomSheet(
-                                          context,
-                                          'System Administrator',
-                                          'ServiceNow System administrator examination');
-                                    },
-                                    style: OutlinedButton.styleFrom(
-                                      backgroundColor: Color(0xFF3559E0),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            8.0), // Adjust the border radius as needed
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                ListView.builder(
+                                  itemCount: examProvider.questions.length,
+                                  physics: ClampingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Question question =
+                                        examProvider.questions[index];
+                                    print(
+                                        'Number of questions: ${examProvider.questions.length}'); // Add this line
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 10, right: 10, left: 10),
+                                      child: InkWell(
+                                        onTap: () => {},
+                                        child: Card(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                border: Border(
+                                                    left: BorderSide(
+                                                        color: Colors.green,
+                                                        width: 5))),
+                                            height: screenHeight * 0.2,
+                                            width: screenWidth * 0.94,
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  child: Text(
+                                                    question.title,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 10),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  child: Text(
+                                                    'Subject: ${question.subject}',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 10),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  child: Text(
+                                                    'Count: ${question.count}',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      side: BorderSide(
-                                          color: Colors
-                                              .black), // Specify the border color
-                                    ),
-                                    child: Text(
-                                      'Take Exam',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Colors.green,
-                                    width: 5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            clipper: ShapeBorderClipper(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(3),
-                              ),
+                                    );
+                                  },
+                                )
+                              ],
                             ),
                           ),
                         ),
                       ),
                     ],
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+                  ),
+                ),
     );
   }
-
-  _buildBottomSheet(
-      BuildContext context, String cardTitle, String description) {
-    // showModalBottomSheet(
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return SizedBox(
-    //       height: 400,
-    //       child: Center(
-    //         child: Text('$cardTitle'),
-    //       ),
-    //     );
-    //   },
-    // );
-
-    return showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40),
-        ),
-        context: context,
-        builder: (_) {
-          return QuizBottomSheet(title: cardTitle, subTitle: description);
-        });
-  }
 }
+
+// : SingleChildScrollView(
+//     child: Column(
+//       children: [
+//         ClipPath(
+//           clipper: HomeClipper(),
+//           child: Container(
+//             width: screenWidth,
+//             height: screenHeight *
+//                 0.25, // Adjust the height as needed
+//             color: Color(0xFF4042C9),
+//             padding: EdgeInsets.all(0),
+//             child: Stack(
+//               children: [
+//                 Positioned(
+//                   top: screenHeight *
+//                       0.07, // Adjust the top position as needed
+//                   right: 0,
+//                   left: 0,
+//                   child: Row(
+//                     children: [
+//                       IconButton(
+//                         onPressed: () {
+//                           Navigator.pushReplacement(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (_) => LoginPage(),
+//                             ),
+//                           );
+//                         },
+//                         icon: Icon(
+//                           Icons.arrow_back,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         width: screenWidth *
+//                             0.18, // Adjust the width as needed
+//                       ),
+//                       Text(
+//                         'Select Subject',
+//                         style: TextStyle(
+//                             color: Colors.white, fontSize: 18),
+//                       ),
+//                       SizedBox(
+//                         width: screenWidth *
+//                             0.15, // Adjust the width as needed
+//                       ),
+//                       PopupMenuItem(
+//                         child: IconButton(
+//                           icon: Icon(
+//                             Icons.more_horiz,
+//                             color: Colors.white,
+//                           ),
+//                           onPressed: () {
+//                             showMenu(
+//                               shape: Border.all(),
+//                               context: context,
+//                               position: RelativeRect.fromLTRB(
+//                                   82, 82, 0, 0),
+//                               items: [
+//                                 PopupMenuItem(
+//                                   child: Center(
+//                                     child: Text('Results'),
+//                                   ),
+//                                   onTap: () => print('fgfddfg'),
+//                                   value: 0,
+//                                 ),
+//                                 PopupMenuItem(
+//                                   child: Center(
+//                                     child: Text('Exams'),
+//                                   ),
+//                                   onTap: () {
+//                                     fetchData();
+//                                   },
+//                                   value: 1,
+//                                 ),
+//                                 PopupMenuItem(
+//                                   child: Center(
+//                                     child: Text('Logout'),
+//                                   ),
+//                                   onTap: () =>
+//                                       Navigator.pushReplacement(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (_) => LoginPage(),
+//                                     ),
+//                                   ),
+//                                   value: 2,
+//                                 ),
+//                               ],
+//                             );
+//                           },
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//         SingleChildScrollView(
+//           child: Stack(
+//             children: [
+//               Column(
+//                 children: [
+//                   Positioned(
+//                     top: screenHeight * 0.50,
+//                     right: 0,
+//                     left: 0,
+//                     child: Column(
+//                       children: [
+//                         Card(
+//                           elevation: 2,
+//                           child: ClipPath(
+//                             child: Container(
+//                               height: screenHeight * 0.25,
+//                               width: screenWidth * 0.94,
+//                               child: Column(
+//                                 mainAxisAlignment:
+//                                     MainAxisAlignment.center,
+//                                 children: [
+//                                   for (Question question
+//                                       in examProvider.questions)
+//                                     Column(
+//                                       children: [
+//                                         Text(
+//                                           question.title,
+//                                           style: TextStyle(
+//                                             fontSize: 18,
+//                                             fontWeight:
+//                                                 FontWeight.bold,
+//                                           ),
+//                                         ),
+//                                         SizedBox(height: 10),
+//                                         Text(
+//                                             '[${question.count}] ${question.subject} Subject Questions'),
+//                                         SizedBox(height: 10),
+//                                         OutlinedButton(
+//                                           onPressed: () {
+//                                             _buildBottomSheet(
+//                                               context,
+//                                               question.title,
+//                                               question
+//                                                   .description,
+//                                             );
+//                                           },
+//                                           style: OutlinedButton
+//                                               .styleFrom(
+//                                             backgroundColor:
+//                                                 Color(0xFF3559E0),
+//                                             shape:
+//                                                 RoundedRectangleBorder(
+//                                               borderRadius:
+//                                                   BorderRadius
+//                                                       .circular(
+//                                                           8.0),
+//                                             ),
+//                                             side: BorderSide(
+//                                               color: Colors.black,
+//                                             ),
+//                                           ),
+//                                           child: Text(
+//                                             'Take Exam',
+//                                             style: TextStyle(
+//                                                 color:
+//                                                     Colors.white),
+//                                           ),
+//                                         ),
+//                                         SizedBox(
+//                                             height:
+//                                                 20), // Adjust spacing between questions
+//                                       ],
+//                                     ),
+//                                 ],
+//                               ),
+//                               decoration: BoxDecoration(
+//                                 border: Border(
+//                                   left: BorderSide(
+//                                     color: Colors.green,
+//                                     width: 5,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             clipper: ShapeBorderClipper(
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius:
+//                                     BorderRadius.circular(3),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               )
+//             ],
+//           ),
+//         )
+//       ],
+//     ),
+//   ),
+//  );
+// }
+
+_buildBottomSheet(BuildContext context, String cardTitle, String description) {
+  // showModalBottomSheet(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return SizedBox(
+  //       height: 400,
+  //       child: Center(
+  //         child: Text('$cardTitle'),
+  //       ),
+  //     );
+  //   },
+  // );
+
+  return showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(40),
+      ),
+      context: context,
+      builder: (_) {
+        return QuizBottomSheet(title: cardTitle, subTitle: description);
+      });
+}
+//}
 
 class HomeClipper extends CustomClipper<Path> {
   @override

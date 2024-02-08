@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_flushbar: ^0.0.2
   awesome_dialog: ^3.2.0
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:

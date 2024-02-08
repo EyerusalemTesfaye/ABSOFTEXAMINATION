@@ -1,3 +1,5 @@
+import 'package:absoftexamination/pages/login.dart';
+import 'package:absoftexamination/pages/signUp.dart';
 import 'package:flutter/material.dart';
 
 // void main() => runApp(MaterialApp(
@@ -66,7 +68,13 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/login');
+                      //Navigator.pushNamed(context, '/login');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LoginPage(),
+                        ),
+                      );
                     },
                     style: ButtonStyle(
                         backgroundColor:
@@ -82,7 +90,12 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 10), // Add space between buttons
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SignUpPage(),
+                        ),
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor:

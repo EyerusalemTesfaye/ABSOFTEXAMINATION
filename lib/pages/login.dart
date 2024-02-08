@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/model/user.dart';
+import 'package:absoftexamination/pages/examhome.dart';
+import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
+import 'package:absoftexamination/util/router.dart';
 import 'package:absoftexamination/util/shared_preferences_util.dart';
 import 'package:absoftexamination/util/validators.dart';
 import 'package:absoftexamination/util/widget.dart';
@@ -48,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  List<Question> questions = [];
   void _login() async {
     if (_formKey.currentState!.validate()) {
       // Perform login logic here
@@ -74,8 +79,10 @@ class _LoginPageState extends State<LoginPage> {
           } else {
             // User data not found
           }
-
-          Navigator.pushNamed(context, '/examhome');
+          //questions = await ();
+          Navigator.pushNamed(context, ExamHomeScreen, arguments: questions
+              // Make sure this list is not empty
+              );
         } else {
           // Login failed, handle the error response
           print('Login failed: ${responseMap['header']['message']}');
@@ -124,7 +131,12 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: TextButton.icon(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/');
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => HomePage(),
+                                  ),
+                                );
                               },
                               icon: Icon(
                                 Icons.arrow_back,
