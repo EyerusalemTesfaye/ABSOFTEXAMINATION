@@ -38,8 +38,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
       print('+++++++++:${token}');
       var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examStart))
         ..fields['exam_id'] = examId
-        ..fields['token'] = token ??
-            ''; // Use token if available, otherwise use an empty string
+        ..fields['token'] = token ?? '';
 
       final response = await requestBody.send();
 
@@ -60,18 +59,34 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
           final List<dynamic> questions = respExamViewMap['data']['questions'];
 
           for (var question in questions) {
-            // Access each question
-            print('Question: ${question['question']}');
+            // Access each
+            var quest = question['question'];
+            print('Question: ${quest}');
+            requestBody =
+                http.MultipartRequest('POST', Uri.parse(Api.questionView))
+                  ..fields['question_id'] = quest;
+            final respQuestionView = await requestBody.send();
+            final Map<String, dynamic> respQuestionViewMap =
+                json.decode(await respQuestionView.stream.bytesToString());
+            if (respQuestionViewMap['header']['error'].toLowerCase() ==
+                'false') {
+              print('******:${respQuestionViewMap['data']['question']}');
+            }
           }
-
-          final resExamView = respExamViewMap['data'];
+          final resExamView = respExamViewMap['data']['exam'];
+          final examViewTitle = respExamViewMap['data']['exam']['title'];
           print('exam view fetched successfully');
           print('exam view====:${resExamView}');
-          //requestBody = http.MultipartRequest('POST', Uri.parse(Api.questionView))
-        } else {}
+          print(examViewTitle);
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => Exam(examData: res)));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => Exam(
+                      examTitle: respExamViewMap['data']['exam']['title'],
+                      examSubject: respExamViewMap['data']['exam']
+                          ['subject'])));
+        }
       } else {
         print(
             'Failed to fetch exam details: ${responseMap['header']['message']}');

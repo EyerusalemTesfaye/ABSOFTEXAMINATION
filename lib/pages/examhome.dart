@@ -204,87 +204,65 @@ class _ExamHomeState extends State<ExamHome> {
                                     print(
                                         'Number of questions: ${examProvider.questions.length}'); // Add this line
 
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 10, right: 10, left: 10),
-                                      child: InkWell(
-                                        onTap: () => {},
-                                        child: Card(
-                                          child: Container(
-                                            height: screenHeight * 0.2,
-                                            width: screenWidth * 0.94,
-                                            decoration: BoxDecoration(
-                                                border: Border(
-                                                    left: BorderSide(
-                                                        color: Colors.green,
-                                                        width: 5))),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20),
-                                                  child: Text(
-                                                    question.title,
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 10),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 20),
-                                                  child: Text(
-                                                    '[${question.count}] ${question.subject} Subject Questions',
-                                                    style:
-                                                        TextStyle(fontSize: 16),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 10),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 25),
-                                                    child: OutlinedButton(
-                                                      onPressed: () {
-                                                        _examStart(question.id);
-                                                      },
-                                                      style: OutlinedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Color(0xFF3559E0),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                        side: BorderSide(
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                      child: Text(
-                                                        'Take Exam',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                    return InkWell(
+                                      onTap: () => {},
+                                      child: Card(
+                                        child: Container(
+                                          height: screenHeight * 0.2,
+                                          width: screenWidth * 0.94,
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  left: BorderSide(
+                                                      color: Colors.green,
+                                                      width: 5))),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                question.title,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Text(
+                                                '[${question.count}] ${question.subject} Subject Questions',
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              SizedBox(height: 25),
+                                              Expanded(
+                                                child: OutlinedButton(
+                                                  onPressed: () {
+                                                    _examStart(question.id);
+                                                  },
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color(0xFF3559E0),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    side: BorderSide(
+                                                      color: Colors.black,
                                                     ),
                                                   ),
+                                                  child: Text(
+                                                    'Take Exam',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
                                                 ),
-                                                SizedBox(
-                                                  height: 10,
-                                                )
-                                              ],
-                                            ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              )
+                                            ],
                                           ),
                                         ),
                                       ),

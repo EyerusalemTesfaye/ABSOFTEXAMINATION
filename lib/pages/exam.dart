@@ -4,8 +4,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Exam extends StatefulWidget {
-  final dynamic examData;
-  const Exam({super.key, this.examData});
+  final dynamic examTitle, examSubject;
+  const Exam({super.key, this.examTitle, this.examSubject});
 
   @override
   State<Exam> createState() => _ExamState();
@@ -15,7 +15,7 @@ class _ExamState extends State<Exam> {
   @override
   void initState() {
     super.initState();
-    print('=====:${widget.examData}');
+    print('=====:${widget.examTitle}');
   }
 
   @override
@@ -47,16 +47,23 @@ class _ExamState extends State<Exam> {
             title: Column(
               children: <Widget>[
                 Text(
-                  'General questions',
+                  widget.examTitle,
                   style: kHeadingTextStyleAppBar.copyWith(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 18,
                     letterSpacing: 1.0,
                   ),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 20,
                 ),
+                Text(
+                  '${widget.examSubject} Subject',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.normal),
+                )
                 // Text(
                 //   "Difficult: ${widget.difficult}",
                 //   style: kHeadingTextStyleAppBar.copyWith(
@@ -160,7 +167,7 @@ class _ExamState extends State<Exam> {
                                     color: Colors.white,
                                   ),
                                   BoxShadow(
-                                    offset: Offset(10, 10),
+                                    offset: Offset(1, 1),
                                     color: Colors.grey,
                                   ),
                                   BoxShadow(
@@ -211,59 +218,12 @@ class _ExamState extends State<Exam> {
                                 ],
                               ),
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text('ifi'),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 60,
-                      ),
-                      Padding(
-                        child: Align(
-                          child: SizedBox(
-                            width: 150,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Submit",
-                                style: kHeadingTextStyleAppBar.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                ),
-                              )
-                              // shape: RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.circular(10),
-                              // ),
-
-                              //color: kItemSelectBottomNav,
-
-                              // if (value.answer[value.currentIndex] == null) {
-                              //   SnackBars.buildMessage(context, "Please checked answer!");
-                              // }
-                              //  else if ( ) {
-                              //     buildDialog(
-                              //         context,
-                              //         "Finish?", "Are you sure finish quiz?",
-                              //         DialogType.success,
-                              //             ()=>Navigator.pushReplacement(context,
-                              //                 MaterialPageRoute(builder: (_)=>
-                              //                     // QuizFinishPage(title: widget.listQuestion[widget.id].category,
-                              //                     //   answer: value.answer,
-                              //                     //   listQuestion: widget.listQuestion,
-                              //                     // ),
-                              //                 ),
-                              //             ),()=>null,
-                              //     );
-                              // }
-                              // else{
-                              //  // value.submitQuiz(widget.listQuestion);
-                              // }
-
-                              ,
-                            ),
-                          ),
-                          alignment: Alignment.topRight,
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
                       ),
                     ],
                   ),
