@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
+import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class QuizBottomSheet extends StatefulWidget {
   final String title;
@@ -29,9 +31,15 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
   void _examDetail(String examId) async {
     print('Exam ID: $examId'); // Print examId before sending request
     try {
+      var userDataProvider =
+          Provider.of<UserDataProvider>(context, listen: false);
+      String? token =
+          userDataProvider.userData?['token']; // Extract token from userData
+      print('+++++++++:${token}');
       var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examStart))
         ..fields['exam_id'] = examId
-        ..fields['token'] = '';
+        ..fields['token'] = token ??
+            ''; // Use token if available, otherwise use an empty string
 
       final response = await requestBody.send();
 

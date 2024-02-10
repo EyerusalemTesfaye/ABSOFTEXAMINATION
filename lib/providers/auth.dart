@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 
 class UserDataProvider extends ChangeNotifier {
   Map<String, dynamic>? _userData;
+  String? _token;
 
   Map<String, dynamic>? get userData => _userData;
+  String? get token => _token;
 
   void setUserData(Map<String, dynamic> data) {
     _userData = data;
     print(_userData);
+    notifyListeners();
+  }
+
+  void setToken(String token) {
+    _token = token;
+    print('token isnnnnnnnnn: ${_token}');
     notifyListeners();
   }
 }

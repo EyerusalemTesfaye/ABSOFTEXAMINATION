@@ -79,6 +79,9 @@ class _LoginPageState extends State<LoginPage> {
           } else {
             // User data not found
           }
+          String token = responseMap['data']
+              ['token']; // Assuming the token is in 'data' field
+          context.read<UserDataProvider>().setToken(token);
           //questions = await ();
           Navigator.pushNamed(context, ExamHomeScreen, arguments: questions
               // Make sure this list is not empty

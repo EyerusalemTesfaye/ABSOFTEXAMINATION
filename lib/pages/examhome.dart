@@ -124,49 +124,52 @@ class _ExamHomeState extends State<ExamHome> {
                           SizedBox(
                             width: screenWidth * 0.15,
                           ),
-                          PopupMenuItem(
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.more_horiz,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                showMenu(
-                                  shape: Border.all(),
-                                  context: context,
-                                  position: RelativeRect.fromLTRB(82, 82, 0, 0),
-                                  items: [
-                                    PopupMenuItem(
-                                      child: Center(
-                                        child: Text('Results'),
-                                      ),
-                                      onTap: () => print('fgfddfg'),
-                                      value: 0,
-                                    ),
-                                    PopupMenuItem(
-                                      child: Center(
-                                        child: Text('Exams'),
-                                      ),
-                                      onTap: () {
-                                        fetchData();
-                                      },
-                                      value: 1,
-                                    ),
-                                    PopupMenuItem(
-                                      child: Center(
-                                        child: Text('Logout'),
-                                      ),
-                                      onTap: () => Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => LoginPage(),
+                          Expanded(
+                            child: PopupMenuItem(
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.more_horiz,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  showMenu(
+                                    shape: Border.all(),
+                                    context: context,
+                                    position:
+                                        RelativeRect.fromLTRB(82, 82, 0, 0),
+                                    items: [
+                                      PopupMenuItem(
+                                        child: Center(
+                                          child: Text('Results'),
                                         ),
+                                        onTap: () => print('fgfddfg'),
+                                        value: 0,
                                       ),
-                                      value: 2,
-                                    ),
-                                  ],
-                                );
-                              },
+                                      PopupMenuItem(
+                                        child: Center(
+                                          child: Text('Exams'),
+                                        ),
+                                        onTap: () {
+                                          fetchData();
+                                        },
+                                        value: 1,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Center(
+                                          child: Text('Logout'),
+                                        ),
+                                        onTap: () => Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => LoginPage(),
+                                          ),
+                                        ),
+                                        value: 2,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -208,17 +211,17 @@ class _ExamHomeState extends State<ExamHome> {
                                         onTap: () => {},
                                         child: Card(
                                           child: Container(
+                                            height: screenHeight * 0.2,
+                                            width: screenWidth * 0.94,
                                             decoration: BoxDecoration(
                                                 border: Border(
                                                     left: BorderSide(
                                                         color: Colors.green,
                                                         width: 5))),
-                                            height: screenHeight * 0.2,
-                                            width: screenWidth * 0.94,
                                             child: Column(
                                               children: [
                                                 SizedBox(
-                                                  height: 20,
+                                                  height: 10,
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
@@ -244,35 +247,42 @@ class _ExamHomeState extends State<ExamHome> {
                                                   ),
                                                 ),
                                                 SizedBox(height: 10),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 25),
-                                                  child: OutlinedButton(
-                                                    onPressed: () {
-                                                      _examStart(question.id);
-                                                    },
-                                                    style: OutlinedButton
-                                                        .styleFrom(
-                                                      backgroundColor:
-                                                          Color(0xFF3559E0),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 25),
+                                                    child: OutlinedButton(
+                                                      onPressed: () {
+                                                        _examStart(question.id);
+                                                      },
+                                                      style: OutlinedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Color(0xFF3559E0),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        side: BorderSide(
+                                                          color: Colors.black,
+                                                        ),
                                                       ),
-                                                      side: BorderSide(
-                                                        color: Colors.black,
+                                                      child: Text(
+                                                        'Take Exam',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
                                                       ),
-                                                    ),
-                                                    child: Text(
-                                                      'Take Exam',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
                                                     ),
                                                   ),
                                                 ),
+                                                SizedBox(
+                                                  height: 10,
+                                                )
                                               ],
                                             ),
                                           ),
