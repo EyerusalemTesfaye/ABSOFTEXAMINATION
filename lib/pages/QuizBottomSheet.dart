@@ -50,8 +50,28 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
         final res = responseMap['data'];
         print('Exam details fetched successfully');
         print('genet:${res}');
+
+        requestBody = http.MultipartRequest('POST', Uri.parse(Api.examView))
+          ..fields['exam_id'] = examId;
+        final respExamView = await requestBody.send();
+        final Map<String, dynamic> respExamViewMap =
+            json.decode(await respExamView.stream.bytesToString());
+        if (respExamViewMap['header']['error'].toLowerCase() == 'false') {
+          final List<dynamic> questions = respExamViewMap['data']['questions'];
+
+          for (var question in questions) {
+            // Access each question
+            print('Question: ${question['question']}');
+          }
+
+          final resExamView = respExamViewMap['data'];
+          print('exam view fetched successfully');
+          print('exam view====:${resExamView}');
+          //requestBody = http.MultipartRequest('POST', Uri.parse(Api.questionView))
+        } else {}
+
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => Exam()));
+            context, MaterialPageRoute(builder: (_) => Exam(examData: res)));
       } else {
         print(
             'Failed to fetch exam details: ${responseMap['header']['message']}');

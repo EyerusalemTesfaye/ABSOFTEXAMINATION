@@ -4,13 +4,20 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Exam extends StatefulWidget {
-  const Exam({super.key});
+  final dynamic examData;
+  const Exam({super.key, this.examData});
 
   @override
   State<Exam> createState() => _ExamState();
 }
 
 class _ExamState extends State<Exam> {
+  @override
+  void initState() {
+    super.initState();
+    print('=====:${widget.examData}');
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;

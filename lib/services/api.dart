@@ -11,6 +11,9 @@ class Api {
   static const examDetail = 'https://exambackend.amanuel-girma.dev/Exam/detail';
   static const examStart =
       'https://exambackend.amanuel-girma.dev/ExamResult/save';
+  static const examView = 'https://exambackend.amanuel-girma.dev/Exam/view';
+  static const questionView =
+      'https://exambackend.amanuel-girma.dev/Question/view';
 }
 
 Future<void> getExam() async {
