@@ -221,7 +221,22 @@ class _ExamState extends State<Exam> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text('ifi'),
+                            OutlinedButton(
+                              onPressed: () {},
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Color(0xFF3559E0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                side: BorderSide(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              child: Text(
+                                'Answer',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
                           ],
                         ),
                       ),
