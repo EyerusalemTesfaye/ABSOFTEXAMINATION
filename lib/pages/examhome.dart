@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/pages/QuizBottomSheet.dart';
+import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
 import 'package:absoftexamination/providers/question.dart';
 import 'package:absoftexamination/services/api.dart';
+import 'package:absoftexamination/util/shared_preferences_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -101,12 +103,15 @@ class _ExamHomeState extends State<ExamHome> {
                           ),
                           IconButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => LoginPage(),
-                                    ));
+                                Navigator.pop(context);
                               },
+                              // {
+                              //   Navigator.pushReplacement(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (_) => LoginPage(),
+                              //       ));
+                              // },
                               icon: Icon(
                                 Icons.arrow_back,
                                 color: Colors.white,
@@ -158,12 +163,16 @@ class _ExamHomeState extends State<ExamHome> {
                                         child: Center(
                                           child: Text('Logout'),
                                         ),
-                                        onTap: () => Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) => LoginPage(),
-                                          ),
-                                        ),
+                                        onTap: () async {
+                                          await UserPreferences.removeToken();
+
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => HomePage(),
+                                            ),
+                                          );
+                                        },
                                         value: 2,
                                       ),
                                     ],

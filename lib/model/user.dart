@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class User {
   final String id;
   final String email;
@@ -16,4 +18,16 @@ class User {
     required this.grade,
     required this.token,
   });
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      id: map['id'],
+      email: map['email'],
+      role: map['role'],
+      fullname: map['fullname'],
+      age: map['age'],
+      grade: map['grade'],
+      token: map['token'],
+    );
+  }
 }

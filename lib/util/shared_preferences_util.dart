@@ -42,6 +42,7 @@ class UserPreferences {
   static Future<void> saveToken(String token) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(tokenKey, token);
+    print('tokenKey${token}');
   }
 
   static Future<String?> getToken() async {
@@ -49,8 +50,19 @@ class UserPreferences {
     return prefs.getString(tokenKey);
   }
 
+  static Future<bool> isUserLoggedIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(_userKey);
+  }
+
   static Future<void> removeToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(_userKey);
+    print('fgggfgfffffff${_userKey}');
+  }
+
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userKey);
   }
 }

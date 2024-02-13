@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/providers/auth.dart';
+import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,10 +32,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
   void _examDetail(String examId) async {
     print('Exam ID: $examId'); // Print examId before sending request
     try {
-      var userDataProvider =
-          Provider.of<UserDataProvider>(context, listen: false);
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
       String? token =
-          userDataProvider.userData?['token']; // Extract token from userData
+          userProvider.userData?['token']; // Extract token from userData
       print('+++++++++:${token}');
       var requestBody = http.MultipartRequest('POST', Uri.parse(Api.examStart))
         ..fields['exam_id'] = examId

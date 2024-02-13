@@ -5,6 +5,7 @@ import 'package:absoftexamination/model/user.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/providers/auth.dart';
+import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:absoftexamination/util/router.dart';
 import 'package:absoftexamination/util/shared_preferences_util.dart';
@@ -70,29 +71,26 @@ class _LoginPageState extends State<LoginPage> {
             json.decode(await response.stream.bytesToString());
 
         if (responseMap['header']['error'].toLowerCase() == 'false') {
-          context.read<UserDataProvider>().setUserData(responseMap['data']);
-
+          context.read<UserProvider>().setUserData(responseMap['data']);
           print('Login successful');
+          String token = responseMap['data']['token'];
+          await UserPreferences.saveToken(responseMap['data']['token']);
+
           User? user = await UserPreferences.getUser() as User?;
           if (user != null) {
-            // Handle the user object
-          } else {
-            // User data not found
-          }
-          String token = responseMap['data']
-              ['token']; // Assuming the token is in 'data' field
-          context.read<UserDataProvider>().setToken(token);
-          //questions = await ();
-          Navigator.pushNamed(context, ExamHomeScreen, arguments: questions
-              // Make sure this list is not empty
+          } else {}
+          context.read<UserProvider>().loginUser(
+                User.fromMap(responseMap['data']),
+                responseMap['data']['token'],
               );
+
+          // context.read<UserDataProvider>().setToken(token);
+
+          Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
         } else {
-          // Login failed, handle the error response
           print('Login failed: ${responseMap['header']['message']}');
-          // Optionally, display an error message to the user
         }
       } catch (e) {
-        // Handle network or other errors
         print('Error during login: $e');
         // Optionally, display an error message to the user
       }
