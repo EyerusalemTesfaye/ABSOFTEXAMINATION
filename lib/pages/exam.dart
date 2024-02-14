@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 class Exam extends StatefulWidget {
   final dynamic examTitle, examSubject;
   final List<dynamic> choices;
-
+  final List<dynamic> questions;
   const Exam({
     super.key,
     this.examTitle,
     this.examSubject,
     required this.choices,
+    required this.questions,
   });
 
   @override
@@ -24,7 +25,7 @@ class _ExamState extends State<Exam> {
   void initState() {
     super.initState();
     print('=====:${widget.examTitle}');
-    print('gdsgagdgdg choiche: ${widget.choices}');
+    print('gdsgagdgdg questions: ${widget.questions}');
   }
 
   @override
@@ -245,91 +246,6 @@ class MyClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-
-// Scaffold(
-//   body: SingleChildScrollView(
-//     child: Column(
-//       children: [
-//         ClipPath(
-//           clipper: HomeClipper(),
-//           child: Container(
-//             width: screenWidth,
-//             height: screenHeight * 0.4, // Adjust the height as needed
-//             color: Color(0xFF4042C9),
-//             padding: EdgeInsets.all(0),
-//             child: Stack(
-//               children: [
-//                 Positioned(
-//                   top: screenHeight *
-//                       0.07, // Adjust the top position as needed
-//                   right: 0,
-//                   left: 0,
-//                   child: Row(
-//                     children: [
-//                       IconButton(
-//                         onPressed: () {
-//                           Navigator.pushNamed(context, '/login');
-//                         },
-//                         icon: Icon(
-//                           Icons.arrow_back,
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                       SizedBox(
-//                         width: screenWidth *
-//                             0.18, // Adjust the width as needed
-//                       ),
-//                       Text(
-//                         'Select Subject',
-//                         style: TextStyle(color: Colors.white, fontSize: 18),
-//                       ),
-//                       SizedBox(
-//                         width: screenWidth *
-//                             0.15, // Adjust the width as needed
-//                       ),
-//                       PopupMenuItem(
-//                         child: IconButton(
-//                           icon: Icon(
-//                             Icons.more_horiz,
-//                             color: Colors.white,
-//                           ),
-//                           onPressed: () {
-//                             showMenu(
-//                               shape: Border.all(),
-//                               context: context,
-//                               position: RelativeRect.fromLTRB(82, 82, 0, 0),
-//                               items: [
-//                                 PopupMenuItem(
-//                                   child: Center(
-//                                     child: Text('Results'),
-//                                   ),
-//                                 ),
-//                                 PopupMenuItem(
-//                                   child: Center(
-//                                     child: Text('Exams'),
-//                                   ),
-//                                 ),
-//                                 PopupMenuItem(
-//                                   child: Center(
-//                                     child: Text('Logout'),
-//                                   ),
-//                                 ),
-//                               ],
-//                             );
-//                           },
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//   ),
-// );
 
 class HomeClipper extends CustomClipper<Path> {
   @override

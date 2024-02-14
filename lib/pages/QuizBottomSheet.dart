@@ -83,7 +83,8 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
                           examTitle: respExamViewMap['data']['exam']['title'],
                           examSubject: respExamViewMap['data']['exam']
                               ['subject'],
-                          choices: respQuestionViewMap['data']['choices'])));
+                          choices: respQuestionViewMap['data']['choices'],
+                          questions: questions)));
             }
           }
 

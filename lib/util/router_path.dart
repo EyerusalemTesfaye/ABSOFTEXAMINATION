@@ -47,9 +47,12 @@ class Routerr {
           builder: (BuildContext context) {
             final List<dynamic> choices =
                 ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+            final List<dynamic> questions =
+                ModalRoute.of(context)!.settings.arguments as List<dynamic>;
             return Exam(
-              choices: choices, // Pass the choices argument here
-            );
+                choices: choices,
+                questions: questions // Pass the choices argument here
+                );
           },
         );
       // Add more cases for other routes if needed
