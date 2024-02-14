@@ -30,6 +30,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
   final globalKey = GlobalKey<ScaffoldState>();
 
   void _examDetail(String examId) async {
+    List<dynamic> choices;
     print('Exam ID: $examId'); // Print examId before sending request
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -57,7 +58,8 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
             json.decode(await respExamView.stream.bytesToString());
         if (respExamViewMap['header']['error'].toLowerCase() == 'false') {
           final List<dynamic> questions = respExamViewMap['data']['questions'];
-
+          final resExamView = respExamViewMap['data']['exam'];
+          final examViewTitle = respExamViewMap['data']['exam']['title'];
           for (var question in questions) {
             // Access each
             var quest = question['question'];
@@ -71,21 +73,23 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
             if (respQuestionViewMap['header']['error'].toLowerCase() ==
                 'false') {
               print('******:${respQuestionViewMap['data']['question']}');
+              choices = respQuestionViewMap['data']['choices'];
+
+              print(choices);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => Exam(
+                          examTitle: respExamViewMap['data']['exam']['title'],
+                          examSubject: respExamViewMap['data']['exam']
+                              ['subject'],
+                          choices: respQuestionViewMap['data']['choices'])));
             }
           }
-          final resExamView = respExamViewMap['data']['exam'];
-          final examViewTitle = respExamViewMap['data']['exam']['title'];
+
           print('exam view fetched successfully');
           print('exam view====:${resExamView}');
           print(examViewTitle);
-
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => Exam(
-                      examTitle: respExamViewMap['data']['exam']['title'],
-                      examSubject: respExamViewMap['data']['exam']
-                          ['subject'])));
         }
       } else {
         print(

@@ -37,8 +37,20 @@ class Routerr {
       case ExamHomeScreen:
         return MaterialPageRoute(builder: (BuildContext Context) => ExamHome());
       case ExamScreen:
+        // return MaterialPageRoute(
+        //   builder: (BuildContext context) => Exam(
+
+        //   ),
+        // );
+
         return MaterialPageRoute(
-          builder: (BuildContext context) => Exam(),
+          builder: (BuildContext context) {
+            final List<dynamic> choices =
+                ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+            return Exam(
+              choices: choices, // Pass the choices argument here
+            );
+          },
         );
       // Add more cases for other routes if needed
       default:

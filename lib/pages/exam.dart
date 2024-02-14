@@ -5,17 +5,26 @@ import 'package:flutter/material.dart';
 
 class Exam extends StatefulWidget {
   final dynamic examTitle, examSubject;
-  const Exam({super.key, this.examTitle, this.examSubject});
+  final List<dynamic> choices;
+
+  const Exam({
+    super.key,
+    this.examTitle,
+    this.examSubject,
+    required this.choices,
+  });
 
   @override
   State<Exam> createState() => _ExamState();
 }
 
 class _ExamState extends State<Exam> {
+  String? selectedChoice;
   @override
   void initState() {
     super.initState();
     print('=====:${widget.examTitle}');
+    print('gdsgagdgdg choiche: ${widget.choices}');
   }
 
   @override
@@ -46,6 +55,9 @@ class _ExamState extends State<Exam> {
             centerTitle: true,
             title: Column(
               children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
                 Text(
                   widget.examTitle,
                   style: kHeadingTextStyleAppBar.copyWith(
@@ -57,13 +69,7 @@ class _ExamState extends State<Exam> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  '${widget.examSubject} Subject',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.normal),
-                )
+
                 // Text(
                 //   "Difficult: ${widget.difficult}",
                 //   style: kHeadingTextStyleAppBar.copyWith(
@@ -78,9 +84,16 @@ class _ExamState extends State<Exam> {
           width: double.infinity,
           child: Stack(
             children: <Widget>[
-              SizedBox(
-                height: 20,
+              Text(
+                '${widget.examSubject} Subject',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
               ),
+              // SizedBox(
+              //   height: 40,
+              // ),
               ClipPath(
                 clipper: MyClipper(),
                 child: Container(
@@ -104,31 +117,6 @@ class _ExamState extends State<Exam> {
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               physics: BouncingScrollPhysics(),
-                              // child: InkWell(
-                              //   onTap: () {
-                              //     // value.selectQuestion(e);
-                              //   },
-                              //   child: Padding(
-                              //     padding: EdgeInsets.only(left: 15, right: 10),
-                              //     child: Container(
-                              //       decoration: BoxDecoration(
-                              //         shape: BoxShape.circle,
-                              //         // color: value.currentIndex == e ? Colors.grey[200] : Color(0xff7146ff),
-                              //       ),
-                              //       child: Center(
-                              //         child: Padding(
-                              //           padding: const EdgeInsets.all(7),
-                              //           child: Text(
-                              //             'kkyyyyk',
-                              //             style: TextStyle(
-                              //                 // color: value.currentIndex == e ? Colors.black : Colors.white,
-                              //                 fontWeight: FontWeight.bold),
-                              //           ),
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
                             ),
                           ],
                         ),
@@ -179,41 +167,22 @@ class _ExamState extends State<Exam> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  RadioListTile(
-                                    groupValue: 'iuuuu',
-                                    activeColor: Colors.red,
-                                    title: Text('Platform as a Service'),
-                                    onChanged: (abc) {
-                                      //value.selectRadio(e);
-                                    },
-                                    value: 'oi',
-                                    //value: e,
-                                  ),
+                                  for (var choice in widget.choices)
+                                    RadioListTile(
+                                      groupValue: selectedChoice,
+                                      activeColor: Colors.red,
+                                      title: Text(choice['text']),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedChoice = value as String;
+                                        });
+                                        //value.selectRadio(e);
+                                      },
+                                      value: choice['id'].toString(),
+                                      //value: e,
+                                    ),
                                   SizedBox(
                                     height: 10,
-                                  ),
-                                  RadioListTile(
-                                    groupValue: 'iuuuu',
-                                    activeColor: Colors.red,
-                                    title: Text('Platform as a Service'),
-                                    onChanged: (abc) {
-                                      //value.selectRadio(e);
-                                    },
-                                    value: 'oi',
-                                    //value: e,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  RadioListTile(
-                                    groupValue: 'iuuuu',
-                                    activeColor: Colors.red,
-                                    title: Text('Platform as a Service'),
-                                    onChanged: (abc) {
-                                      //value.selectRadio(e);
-                                    },
-                                    value: 'oi',
-                                    //value: e,
                                   ),
                                 ],
                               ),
