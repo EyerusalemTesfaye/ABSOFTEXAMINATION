@@ -58,6 +58,7 @@ class _ExamHomeState extends State<ExamHome> {
         print('Exam  fetched successfully');
 
         final res = responseMap['data'];
+        print('res:***:${res}');
         print(res['title']);
         _buildBottomSheet(context, res['title'], res['description'],
             res['subject'], res['id']);
