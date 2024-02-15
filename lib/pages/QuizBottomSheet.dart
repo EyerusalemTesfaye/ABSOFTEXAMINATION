@@ -72,7 +72,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
                 json.decode(await respQuestionView.stream.bytesToString());
             if (respQuestionViewMap['header']['error'].toLowerCase() ==
                 'false') {
-              print('******:${respQuestionViewMap['data']['question']}');
+              print(
+                  '******:${respQuestionViewMap['data']['question']['text']}');
+              print('daata*******:${respQuestionViewMap['data']}');
               choices = respQuestionViewMap['data']['choices'];
 
               print(choices);
@@ -84,7 +86,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
                           examSubject: respExamViewMap['data']['exam']
                               ['subject'],
                           choices: respQuestionViewMap['data']['choices'],
-                          questions: questions)));
+                          questions: questions,
+                          question: respQuestionViewMap['data']['question']
+                              ['text'])));
             }
           }
 

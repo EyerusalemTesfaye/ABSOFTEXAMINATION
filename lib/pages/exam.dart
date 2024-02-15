@@ -4,7 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Exam extends StatefulWidget {
-  final dynamic examTitle, examSubject;
+  final dynamic examTitle, examSubject, question;
   final List<dynamic> choices;
   final List<dynamic> questions;
   const Exam({
@@ -13,6 +13,7 @@ class Exam extends StatefulWidget {
     this.examSubject,
     required this.choices,
     required this.questions,
+    this.question,
   });
 
   @override
@@ -130,7 +131,7 @@ class _ExamState extends State<Exam> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         child: Text(
-                          'What is ServiceNow system architecture?',
+                          widget.question,
                           style: kHeadingTextStyleAppBar.copyWith(
                               color: Colors.white, fontSize: 16),
                         ),
