@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:absoftexamination/pages/widget/awesomedialog.dart';
+import 'package:absoftexamination/providers/examData.dart';
+import 'package:absoftexamination/providers/userProvider.dart';
+import 'package:absoftexamination/services/api.dart';
 import 'package:absoftexamination/util/constant.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class Exam extends StatefulWidget {
   final dynamic examTitle, examSubject, question;
@@ -22,11 +29,43 @@ class Exam extends StatefulWidget {
 
 class _ExamState extends State<Exam> {
   String? selectedChoice;
+  var choice;
+  String selectedId = '';
   @override
   void initState() {
     super.initState();
     print('=====:${widget.examTitle}');
-    print('gdsgagdgdg questions: ${widget.questions}');
+    print('gdsgagdgdg choices: ${widget.choices}');
+  }
+
+  void _Answer(String choice, String question) async {
+    try {
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      String? token =
+          userProvider.userData?['token']; // Extract token from userData
+      // print('+Genet TTTT:${token}');
+      var examDataProvider =
+          Provider.of<ExamDataProvider>(context, listen: false);
+      String? resultId = examDataProvider.examData?.id;
+      print('+Genet TTTT:${resultId}');
+      print(choice);
+      print(question);
+      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.answerPost))
+        ..fields['choice'] = choice
+        ..fields['result_id'] = resultId!
+        ..fields['question'] = question
+        ..fields['token'] = token!;
+      final response = await requestBody.send();
+      final Map<String, dynamic> responseMap =
+          json.decode(await response.stream.bytesToString());
+      if (responseMap['header']['error'].toLowerCase() == 'false') {
+        final res = responseMap['data'];
+        print(res);
+        print('Answer fetched successful');
+      }
+    } catch (e) {
+      print('Error fetching exam details: $e');
+    }
   }
 
   @override
@@ -169,16 +208,24 @@ class _ExamState extends State<Exam> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  for (var choice in widget.choices)
+                                  for (choice in widget.choices)
                                     RadioListTile(
                                       groupValue: selectedChoice,
                                       activeColor: Colors.red,
                                       title: Text(choice['text']),
+                                      // onChanged: (value) {
+                                      //   setState(() {
+                                      //     selectedChoice = value as String;
+                                      //   });
+                                      //   //value.selectRadio(e);
+                                      // },
                                       onChanged: (value) {
                                         setState(() {
-                                          selectedChoice = value as String;
+                                          selectedChoice = value
+                                              as String; // Update selectedChoice with the selected ID
+                                          selectedId = value
+                                              as String; // Update selectedId with the selected ID
                                         });
-                                        //value.selectRadio(e);
                                       },
                                       value: choice['id'].toString(),
                                       //value: e,
@@ -193,7 +240,9 @@ class _ExamState extends State<Exam> {
                               height: 20,
                             ),
                             OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                _Answer(selectedId, choice['question']);
+                              },
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: Color(0xFF3559E0),
                                 shape: RoundedRectangleBorder(

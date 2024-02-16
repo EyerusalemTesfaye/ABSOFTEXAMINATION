@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/providers/auth.dart';
+import 'package:absoftexamination/providers/examData.dart';
 import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
         final res = responseMap['data'];
         print('Exam details fetched successfully');
         print('genet:${res}');
+        context.read<ExamDataProvider>().setExamData(responseMap['data']);
 
         requestBody = http.MultipartRequest('POST', Uri.parse(Api.examView))
           ..fields['exam_id'] = examId;

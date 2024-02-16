@@ -5,9 +5,11 @@ class ExamDataProvider extends ChangeNotifier {
   ExamData? _examData;
 
   ExamData? get examData => _examData;
-
-  void setExamData(Map<String, dynamic> json) {
-    _examData = ExamData.fromJson(json['data']);
+//result id
+  void setExamData(Map<String, dynamic> data) {
+    _examData = ExamData.fromJson(data);
+    print('exam data provider: ${_examData}');
+    //print(_examData);
     notifyListeners();
   }
 }
