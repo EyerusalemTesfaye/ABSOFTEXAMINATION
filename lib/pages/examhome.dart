@@ -242,7 +242,8 @@ class _ExamHomeState extends State<ExamHome> {
                                                 '[${question.count}] ${question.subject} Subject Questions',
                                                 style: TextStyle(fontSize: 16),
                                               ),
-                                              SizedBox(height: 25),
+                                              SizedBox(
+                                                  height: screenHeight * 0.013),
                                               Expanded(
                                                 child: OutlinedButton(
                                                   onPressed: () {
