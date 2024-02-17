@@ -76,28 +76,31 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
             final Map<String, dynamic> respQuestionViewMap =
                 json.decode(await respQuestionView.stream.bytesToString());
 
+            // Check if the widget is still mounted before proceeding
+            if (!mounted) return;
+
             // Print the response for each question
             print('Response for question: $quest');
             print(respQuestionViewMap);
 
             if (respQuestionViewMap['header']['error'].toLowerCase() ==
                 'false') {
-              print(
-                  'Question: ${respQuestionViewMap['data']['question']['text']}');
+              final questionData = respQuestionViewMap['data']['question'];
+              final choicesData = respQuestionViewMap['data']['choices'];
 
-              // Process the response for each question
-              choices = respQuestionViewMap['data']['choices'];
-              print('Choices: $choices');
+              print('Question: ${questionData['text']}');
+              print('Choices: $choicesData');
 
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => Exam(
                     examTitle: respExamViewMap['data']['exam']['title'],
                     examSubject: respExamViewMap['data']['exam']['subject'],
-                    choices: respQuestionViewMap['data']['choices'],
+                    choices: choicesData,
                     questions: questions,
-                    question: respQuestionViewMap['data']['question']['text'],
+                    question: questionData['text'] ??
+                        '', // Handle potential null value
                   ),
                 ),
               );

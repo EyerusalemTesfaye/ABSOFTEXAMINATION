@@ -31,11 +31,54 @@ class _ExamState extends State<Exam> {
   String? selectedChoice;
   var choice;
   String selectedId = '';
+  int currentQuestionIndex = 0;
+
   @override
   void initState() {
     super.initState();
     print('=====:${widget.examTitle}');
     print('gdsgagdgdg question: ${widget.questions.length}');
+    print(widget.questions[currentQuestionIndex]['question']);
+  }
+
+  // void _answerCurrentQuestion() {
+  //   // Submit the answer for the current question
+  //   _Answer(selectedId, widget.questions[currentQuestionIndex]['id']);
+  // }
+  void _answerCurrentQuestion() {
+    // Check if selectedId and question id are not null before proceeding
+    if (selectedId != null &&
+        widget.questions[currentQuestionIndex]['question'] != null) {
+      // Submit the answer for the current question
+      _Answer(selectedId!, widget.questions[currentQuestionIndex]['question']!);
+    } else {
+      // Handle the case when selectedId or question id is null
+      print('Selected ID or question ID is null');
+    }
+  }
+
+  void _selectChoice(String? choiceId) {
+    // Update the selected choice for the current question
+    setState(() {
+      selectedChoice = choiceId;
+      if (choiceId != null) {
+        selectedId = choiceId; // Update selectedId only if choiceId is not null
+      }
+    });
+  }
+
+  void _navigateToNextQuestion() {
+    setState(() {
+      // Increment the current question index
+      currentQuestionIndex++;
+      if (currentQuestionIndex >= widget.questions.length) {
+        // Reset the index to 0 when reaching the end of questions
+        currentQuestionIndex = 0;
+      }
+      // Reset selectedChoice and selectedId for the new question
+      selectedChoice = null;
+      selectedId = '';
+    });
   }
 
   void _Answer(String choice, String question) async {
@@ -70,6 +113,8 @@ class _ExamState extends State<Exam> {
 
   @override
   Widget build(BuildContext context) {
+    var currentQuestion = widget.questions[currentQuestionIndex];
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -171,6 +216,8 @@ class _ExamState extends State<Exam> {
                             horizontal: 20, vertical: 10),
                         child: Text(
                           widget.question,
+                          //currentQuestion['text'] ??
+                          // 'No question text available',
                           style: kHeadingTextStyleAppBar.copyWith(
                               color: Colors.white, fontSize: 16),
                         ),
@@ -211,26 +258,32 @@ class _ExamState extends State<Exam> {
                                   // for(var quest in widget.questions)
                                   for (choice in widget.choices)
                                     RadioListTile(
-                                      groupValue: selectedChoice,
-                                      activeColor: Colors.red,
                                       title: Text(choice['text']),
-                                      // onChanged: (value) {
-                                      //   setState(() {
-                                      //     selectedChoice = value as String;
-                                      //   });
-                                      //   //value.selectRadio(e);
-                                      // },
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedChoice = value
-                                              as String; // Update selectedChoice with the selected ID
-                                          selectedId = value
-                                              as String; // Update selectedId with the selected ID
-                                        });
-                                      },
                                       value: choice['id'].toString(),
-                                      //value: e,
+                                      groupValue: selectedChoice,
+                                      onChanged: _selectChoice,
                                     ),
+                                  // RadioListTile(
+                                  //   groupValue: selectedChoice,
+                                  //   activeColor: Colors.red,
+                                  //   title: Text(choice['text']),
+                                  //   // onChanged: (value) {
+                                  //   //   setState(() {
+                                  //   //     selectedChoice = value as String;
+                                  //   //   });
+                                  //   //   //value.selectRadio(e);
+                                  //   // },
+                                  // onChanged: (value) {
+                                  //   setState(() {
+                                  //     selectedChoice = value
+                                  //         as String; // Update selectedChoice with the selected ID
+                                  //     selectedId = value
+                                  //         as String; // Update selectedId with the selected ID
+                                  //   });
+                                  // },
+                                  //   value: choice['id'].toString(),
+                                  //   //value: e,
+                                  // ),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -242,7 +295,9 @@ class _ExamState extends State<Exam> {
                             ),
                             OutlinedButton(
                               onPressed: () {
-                                _Answer(selectedId, choice['question']);
+                                // _Answer(selectedId, choice['question']);
+                                _answerCurrentQuestion();
+                                _navigateToNextQuestion();
                               },
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: Color(0xFF3559E0),
