@@ -35,7 +35,7 @@ class _ExamState extends State<Exam> {
   void initState() {
     super.initState();
     print('=====:${widget.examTitle}');
-    print('gdsgagdgdg choices: ${widget.choices}');
+    print('gdsgagdgdg question: ${widget.questions.length}');
   }
 
   void _Answer(String choice, String question) async {
@@ -208,6 +208,7 @@ class _ExamState extends State<Exam> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
+                                  // for(var quest in widget.questions)
                                   for (choice in widget.choices)
                                     RadioListTile(
                                       groupValue: selectedChoice,

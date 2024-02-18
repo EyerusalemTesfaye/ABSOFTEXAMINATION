@@ -63,34 +63,44 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
           final resExamView = respExamViewMap['data']['exam'];
           final examViewTitle = respExamViewMap['data']['exam']['title'];
           for (var question in questions) {
-            // Access each
+            // Access each question
+            print('Total questions: ${questions.length}');
             var quest = question['question'];
-            print('Question: ${quest}');
+
+            // Send a request for each question
             requestBody =
                 http.MultipartRequest('POST', Uri.parse(Api.questionView))
                   ..fields['question_id'] = quest;
+
             final respQuestionView = await requestBody.send();
             final Map<String, dynamic> respQuestionViewMap =
                 json.decode(await respQuestionView.stream.bytesToString());
+
+            // Print the response for each question
+            print('Response for question: $quest');
+            print(respQuestionViewMap);
+
             if (respQuestionViewMap['header']['error'].toLowerCase() ==
                 'false') {
               print(
-                  '******:${respQuestionViewMap['data']['question']['text']}');
-              print('daata*******:${respQuestionViewMap['data']}');
-              choices = respQuestionViewMap['data']['choices'];
+                  'Question: ${respQuestionViewMap['data']['question']['text']}');
 
-              print(choices);
+              // Process the response for each question
+              choices = respQuestionViewMap['data']['choices'];
+              print('Choices: $choices');
+
               Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => Exam(
-                          examTitle: respExamViewMap['data']['exam']['title'],
-                          examSubject: respExamViewMap['data']['exam']
-                              ['subject'],
-                          choices: respQuestionViewMap['data']['choices'],
-                          questions: questions,
-                          question: respQuestionViewMap['data']['question']
-                              ['text'])));
+                context,
+                MaterialPageRoute(
+                  builder: (_) => Exam(
+                    examTitle: respExamViewMap['data']['exam']['title'],
+                    examSubject: respExamViewMap['data']['exam']['subject'],
+                    choices: respQuestionViewMap['data']['choices'],
+                    questions: questions,
+                    question: respQuestionViewMap['data']['question']['text'],
+                  ),
+                ),
+              );
             }
           }
 
