@@ -7,6 +7,7 @@ import 'package:absoftexamination/pages/takeExam.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/providers/examData.dart';
 import 'package:absoftexamination/providers/question.dart';
+import 'package:absoftexamination/providers/questionProvider.dart';
 import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/util/router.dart';
 import 'package:absoftexamination/util/router_path.dart';
@@ -47,6 +48,7 @@ void main() async {
         create: (BuildContext context) => UserDataProvider(),
       ),
       ChangeNotifierProvider(create: (BuildContext context) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => QuestionProvider()),
       ChangeNotifierProvider(
         create: (_) => ExamProvider(),
       ),

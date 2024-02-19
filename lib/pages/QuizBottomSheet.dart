@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:absoftexamination/model/exam.dart';
+import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/providers/examData.dart';
+import 'package:absoftexamination/providers/questionProvider.dart';
 import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +34,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
   final globalKey = GlobalKey<ScaffoldState>();
 
   void _examDetail(String examId) async {
-    List<dynamic> choices;
+    //  List<dynamic> choice;
+    List<QuestionChoice> questionsList = [];
+
     print('Exam ID: $examId'); // Print examId before sending request
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -62,6 +67,9 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
           final List<dynamic> questions = respExamViewMap['data']['questions'];
           final resExamView = respExamViewMap['data']['exam'];
           final examViewTitle = respExamViewMap['data']['exam']['title'];
+          final questionProvider =
+              Provider.of<QuestionProvider>(context, listen: false);
+
           for (var question in questions) {
             // Access each question
             print('Total questions: ${questions.length}');
@@ -91,21 +99,58 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
               print('Question: ${questionData['text']}');
               print('Choices: $choicesData');
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => Exam(
-                    examTitle: respExamViewMap['data']['exam']['title'],
-                    examSubject: respExamViewMap['data']['exam']['subject'],
-                    choices: choicesData,
-                    questions: questions,
-                    question: questionData['text'] ??
-                        '', // Handle potential null value
+// Create a list to hold Choice objects
+              List<Choice> choicesList = [];
+
+              // Convert choicesData to List<Choice>
+              choicesData.forEach((choice) {
+                choicesList.add(
+                  Choice(
+                    id: choice['id'],
+                    text: choice['text'],
                   ),
-                ),
+                );
+              });
+
+              // Create a QuestionChoice object
+              final questionChoice = QuestionChoice(
+                id: questionData['id'],
+                text: questionData['text'],
+                choices: choicesList,
               );
+              questionsList.add(questionChoice);
+              print('pleassssssssssss:$questionChoice');
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (_) => Exam(
+              //       examTitle: respExamViewMap['data']['exam']['title'],
+              //       examSubject: respExamViewMap['data']['exam']['subject'],
+              //       choices: choicesData,
+              //       questions: questions,
+              //       question: questionData['text'] ??
+              //           '', // Handle potential null value
+              //     ),
+              //   ),
+              // );
             }
           }
+
+          if (questionsList.isNotEmpty) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => Exam(
+                  examTitle: respExamViewMap['data']['exam']['title'],
+                  examSubject: respExamViewMap['data']['exam']['subject'],
+                  choices: questionsList[0].choices,
+                  questions: questions,
+                  question: questionsList[0].text,
+                ),
+              ),
+            );
+          }
+          questionProvider.setQuestions(questionsList);
 
           print('exam view fetched successfully');
           print('exam view====:${resExamView}');

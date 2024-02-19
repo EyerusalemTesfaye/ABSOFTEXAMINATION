@@ -257,12 +257,21 @@ class _ExamState extends State<Exam> {
                                 children: <Widget>[
                                   // for(var quest in widget.questions)
                                   for (choice in widget.choices)
-                                    RadioListTile(
-                                      title: Text(choice['text']),
-                                      value: choice['id'].toString(),
+                                    // RadioListTile(
+                                    //   title: Text(choice['text']),
+                                    //   value: choice['id'].toString(),
+                                    //   groupValue: selectedChoice,
+                                    //   onChanged: _selectChoice,
+                                    // ),
+
+                                    RadioListTile<String>(
+                                      title: Text(choice.text),
+                                      value: choice.id,
                                       groupValue: selectedChoice,
-                                      onChanged: _selectChoice,
+                                      onChanged: (String? value) =>
+                                          _selectChoice(value),
                                     ),
+
                                   // RadioListTile(
                                   //   groupValue: selectedChoice,
                                   //   activeColor: Colors.red,
