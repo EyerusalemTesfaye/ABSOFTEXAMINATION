@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/exam.dart';
-import 'package:absoftexamination/pages/examhome.dart';
-import 'package:absoftexamination/providers/auth.dart';
+
 import 'package:absoftexamination/providers/examData.dart';
 import 'package:absoftexamination/providers/questionProvider.dart';
 import 'package:absoftexamination/providers/userProvider.dart';
@@ -120,19 +118,6 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
               );
               questionsList.add(questionChoice);
               print('pleassssssssssss:$questionChoice');
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (_) => Exam(
-              //       examTitle: respExamViewMap['data']['exam']['title'],
-              //       examSubject: respExamViewMap['data']['exam']['subject'],
-              //       choices: choicesData,
-              //       questions: questions,
-              //       question: questionData['text'] ??
-              //           '', // Handle potential null value
-              //     ),
-              //   ),
-              // );
             }
           }
 
@@ -143,9 +128,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
                 builder: (_) => Exam(
                   examTitle: respExamViewMap['data']['exam']['title'],
                   examSubject: respExamViewMap['data']['exam']['subject'],
-                  choices: questionsList[0].choices,
                   questions: questions,
-                  question: questionsList[0].text,
                 ),
               ),
             );

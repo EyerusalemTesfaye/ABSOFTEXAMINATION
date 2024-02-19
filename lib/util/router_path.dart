@@ -45,12 +45,12 @@ class Routerr {
 
         return MaterialPageRoute(
           builder: (BuildContext context) {
-            final List<dynamic> choices =
-                ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+            // final List<dynamic> choices =
+            //     ModalRoute.of(context)!.settings.arguments as List<dynamic>;
             final List<dynamic> questions =
                 ModalRoute.of(context)!.settings.arguments as List<dynamic>;
             return Exam(
-                choices: choices,
+                //choices: choices,
                 questions: questions // Pass the choices argument here
                 );
           },
