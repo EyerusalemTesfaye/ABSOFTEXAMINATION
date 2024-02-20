@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:absoftexamination/model/questionModal.dart';
+import 'package:absoftexamination/pages/soreResult.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -84,8 +85,26 @@ class _ExamState extends State<Exam> {
         selectedId = '';
       });
     } else {
-      buildDialog(context, "Success", 'You have finished the Quiz ',
-          DialogType.success, () => Navigator.pop(context), () => null);
+      // buildDialog(context, "Success", 'You have finished the Quiz ',
+      //     DialogType.success, () => Navigator.pop(context), () => QuizFinishPage(title: 'kkj', answer: {},));
+      buildDialog(
+        context,
+        "Success",
+        'You have finished the Quiz',
+        DialogType.success,
+        () {
+          // Pop the dialog
+          Navigator.pop(context);
+          // Push to the QuizFinishPage with the desired parameters
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuizFinishPage(title: 'kkj', answer: {}),
+            ),
+          );
+        },
+        () => null,
+      );
     }
   }
 

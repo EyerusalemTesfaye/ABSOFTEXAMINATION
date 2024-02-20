@@ -3,7 +3,9 @@ import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
+import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/pages/signUp.dart';
+import 'package:absoftexamination/pages/soreResult.dart';
 import 'package:absoftexamination/util/router.dart';
 import 'package:flutter/material.dart';
 
@@ -55,6 +57,18 @@ class Routerr {
                 );
           },
         );
+      case QuestionFinishScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => QuizFinishPage(
+                  title: null,
+                  answer: {},
+                ));
+      case ShowQuestion:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => ShowQuestionScreen(
+                  listQuestion: [],
+                  answer: {},
+                ));
       // Add more cases for other routes if needed
       default:
         throw Exception('Unknown route: ${settings.name}');
