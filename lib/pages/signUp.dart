@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
 import 'package:absoftexamination/util/validators.dart';
@@ -146,7 +147,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           child: TextButton.icon(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/');
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => HomePage(),
+                                ),
+                              );
                             },
                             icon: Icon(
                               Icons.arrow_back,
