@@ -55,6 +55,18 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _confirmpasswordController =
       TextEditingController();
 
+  @override
+  void dispose() {
+    // Dispose of the controllers when the widget is disposed
+    _nameController.dispose();
+    _emailController.dispose();
+    _ageController.dispose();
+    _gradeController.dispose();
+    _passwordController.dispose();
+    _confirmpasswordController.dispose();
+    super.dispose();
+  }
+
   void _signUp() async {
     if (_formKey.currentState!.validate()) {
       // Perform registration logic here

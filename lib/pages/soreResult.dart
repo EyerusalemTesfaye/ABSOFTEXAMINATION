@@ -78,41 +78,45 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: -60,
-              left: -50,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/ballon2.png'),
-                      fit: BoxFit.cover),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: -60,
-              right: -20,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/ballon4.png'),
-                      fit: BoxFit.cover),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   bottom: -60,
+            //   left: -50,
+            //   child: Container(
+            //     width: 150,
+            //     height: 150,
+            //     decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //           image: AssetImage('assets/ballon2.png'),
+            //           fit: BoxFit.cover),
+            //     ),
+            //   ),
+            // ),
+            // Positioned(
+            //   bottom: -60,
+            //   right: -20,
+            //   child: Container(
+            //     width: 150,
+            //     height: 150,
+            //     decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //           image: AssetImage('assets/ballon4.png'),
+            //           fit: BoxFit.cover),
+            //     ),
+            //   ),
+            // ),
             Positioned(
               child: Column(
                 children: <Widget>[
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height *
+                        0.1, // Adjust the multiplier as needed
                   ),
                   Container(
                     width: double.infinity,
-                    child: Image.asset('assets/congratulate.png'),
+                    child: score >= 80
+                        ? Image.asset('assets/congratulate.png')
+                        : Image.asset(
+                            'assets/fail.png'), // Display fail image otherwise
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -193,47 +197,13 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                               borderRadius: BorderRadius.circular(12))),
                     ],
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
                   SizedBox(
-                    width: 280,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue),
-                        elevation: MaterialStateProperty.all<double>(
-                            0), // Remove elevation
-                        overlayColor: MaterialStateProperty.all<Color>(
-                            Colors.transparent), // Remove overlay color
-                        side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(
-                              color: Colors.blue,
-                              width: 1.0), // Define border color and width
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShowQuestionScreen(
-                                      listQuestion: [],
-                                      answer: {},
-                                    )));
-                      },
-                      child: Text('Show Question'),
-                    ),
+                    height: MediaQuery.of(context).size.height *
+                        0.06, // Adjust the multiplier as needed
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                      width: 280,
+                  Expanded(
+                    child: SizedBox(
+                      width: 200,
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
@@ -254,15 +224,52 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ExamHome()));
+                                  builder: (context) => ShowQuestionScreen(
+                                        listQuestion: [],
+                                        answer: {},
+                                      )));
                         },
-                        child: Text('Home'),
+                        child: Text('Show Question'),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height *
+                        0.04, // Adjust the multiplier as needed
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent),
+                            foregroundColor:
+                                MaterialStateProperty.all<Color>(Colors.blue),
+                            elevation: MaterialStateProperty.all<double>(
+                                0), // Remove elevation
+                            overlayColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent), // Remove overlay color
+                            side: MaterialStateProperty.all<BorderSide>(
+                              BorderSide(
+                                  color: Colors.blue,
+                                  width: 1.0), // Define border color and width
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ExamHome()));
+                          },
+                          child: Text('Home'),
 
-                        // title: 'Home',
-                        // onTap: (){
-                        //   Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (_)=>DashboardPage()), (e) => false);
-                        // }
-                      )),
+                          // title: 'Home',
+                          // onTap: (){
+                          //   Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (_)=>DashboardPage()), (e) => false);
+                          // }
+                        )),
+                  ),
                 ],
               ),
             ),

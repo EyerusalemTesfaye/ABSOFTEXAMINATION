@@ -52,6 +52,13 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  @override
+  void dispose() {
+    // Dispose of the controllers when the widget is disposed
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   List<Question> questions = [];
   void _login() async {
