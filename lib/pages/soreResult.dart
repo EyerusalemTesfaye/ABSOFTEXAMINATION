@@ -4,7 +4,7 @@ import 'package:absoftexamination/util/constant.dart';
 import 'package:flutter/material.dart';
 
 class QuizFinishPage extends StatefulWidget {
-  final dynamic title, score;
+  final dynamic title, score, questionLen;
   //final Map<int, dynamic> answer;
   final listQuestion;
 
@@ -14,6 +14,7 @@ class QuizFinishPage extends StatefulWidget {
     //required this.answer,
     this.listQuestion,
     this.score,
+    this.questionLen
   });
 
   @override
@@ -21,6 +22,8 @@ class QuizFinishPage extends StatefulWidget {
 }
 
 class _QuizFinishPageState extends State<QuizFinishPage> {
+    int resultOfPresent=0;
+
   int correct = 0;
   int incorrect = 0;
   // int score = 0;
@@ -38,6 +41,11 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
     super.initState();
     print('hhdjhytarararr:${widget.title}');
     print('jkdjdjdjjdhhdhhhdhhdhd:${widget.score}');
+    print('questionLen:${widget.questionLen}');
+    //resultOfPresent= widget.score/widget.questionLen*100;
+ // resultOfPresent = (widget.score * 100) ~/ widget.questionLen;
+
+  //  print('resultOfPresent:${resultOfPresent}');
     // widget.answer.forEach((key, value) {
     //   if (widget.listQuestion[key].correctAnswer == value) {
     //     correct++;

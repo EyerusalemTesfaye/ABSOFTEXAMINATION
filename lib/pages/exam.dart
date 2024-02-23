@@ -36,12 +36,13 @@ class _ExamState extends State<Exam> {
   String selectedId = '';
   int currentQuestionIndex = 0;
   List<QuestionChoice> questionChoice = [];
-  dynamic? score, title;
+  dynamic? score, title,questionLen;
   @override
   void initState() {
     super.initState();
+    questionLen= widget.questions.length;
     print('=====:${widget.examTitle}');
-    print('gdsgagdgdg question: ${widget.questions.length}');
+    print('gdsgagdgdg question: ${questionLen}');
     print(widget.questions[currentQuestionIndex]['question']);
     var questionProvider =
         Provider.of<QuestionProvider>(context, listen: false);
@@ -92,6 +93,7 @@ class _ExamState extends State<Exam> {
           final res = responseMap['data'];
           score = responseMap['data']['result']['score'];
           title = responseMap['data']['exam']['title'];
+
           print('result fetched successful');
           print(title);
         }
@@ -127,7 +129,7 @@ class _ExamState extends State<Exam> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QuizFinishPage(title: title, score: score),
+              builder: (context) => QuizFinishPage(title: title, score: score, questionLen:questionLen),
             ),
           );
         },
