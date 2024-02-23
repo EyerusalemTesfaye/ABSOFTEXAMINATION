@@ -62,53 +62,61 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   List<Question> questions = [];
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      // Perform login logic here
-      print('Email: ${_emailController.text}');
-      print('Password: ${_passwordController.text}');
+ void _login() async {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;
+    });
+    // Perform login logic here
+    print('Email: ${_emailController.text}');
+    print('Password: ${_passwordController.text}');
 
-      try {
-        var requestBody = http.MultipartRequest('POST', Uri.parse(Api.authUrl))
-          ..fields['email'] = _emailController.text
-          ..fields['password'] = _passwordController.text;
+    try {
+      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.authUrl))
+        ..fields['email'] = _emailController.text
+        ..fields['password'] = _passwordController.text;
 
-        final response = await requestBody.send();
+      final response = await requestBody.send();
 
-        final Map<String, dynamic> responseMap =
-            json.decode(await response.stream.bytesToString());
+      final Map<String, dynamic> responseMap =
+          json.decode(await response.stream.bytesToString());
 
-        if (responseMap['header']['error'].toLowerCase() == 'false') {
-          context.read<UserProvider>().setUserData(responseMap['data']);
-          print('Login successful');
-          String token = responseMap['data']['token'];
-          await UserPreferences.saveToken(responseMap['data']['token']);
+      if (responseMap['header']['error'].toLowerCase() == 'false') {
+        context.read<UserProvider>().setUserData(responseMap['data']);
+        print('Login successful');
+        String token = responseMap['data']['token'];
+        await UserPreferences.saveToken(responseMap['data']['token']);
 
-          User? user = await UserPreferences.getUser() as User?;
-          if (user != null) {
-          } else {}
-          context.read<UserProvider>().loginUser(
-                User.fromMap(responseMap['data']),
-                responseMap['data']['token'],
-              );
+        User? user = await UserPreferences.getUser() as User?;
+        if (user != null) {
+        } else {}
+        context.read<UserProvider>().loginUser(
+              User.fromMap(responseMap['data']),
+              responseMap['data']['token'],
+            );
 
-          // context.read<UserDataProvider>().setToken(token);
+        // context.read<UserDataProvider>().setToken(token);
 
-          Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
-        } else {
-          print('Login failed: ${responseMap['header']['message']}');
-        }
-      } catch (e) {
-        print('Error during login: $e');
-        // Optionally, display an error message to the user
-      } finally {
-        _isLoading = false;
+        Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
+      } else {
+        print('Login failed: ${responseMap['header']['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login failed: ${responseMap['header']['message']}'),
+          ),
+        );
       }
+    } catch (e) {
+      print('Error during login: $e');
+      // Optionally, display an error message to the user
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading indicator
+      });
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

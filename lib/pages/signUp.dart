@@ -110,17 +110,23 @@ class _SignUpPageState extends State<SignUpPage> {
         } else {
           // Registration failed, handle the error response
           print('Registration failed: ${responseMap['header']['message']}');
+          ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Registration failed: ${responseMap['header']['message']}'),
+          ),
+        );
           // Optionally, display an error message to the user
         }
       } catch (e) {
         // Handle network or other errors
         print('Error during registration: $e');
+
         // Optionally, display an error message to the user
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      setState(() {
+        _isLoading = false; // Stop loading indicator
+      });
+    }
     }
   }
 

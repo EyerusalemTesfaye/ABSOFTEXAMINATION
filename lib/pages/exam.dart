@@ -52,6 +52,11 @@ class _ExamState extends State<Exam> {
       print('First question: ${questionChoice[currentQuestionIndex].text}');
     } else {
       print('No questions available');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No question Available'),
+          ),
+        );
     }
   }
 

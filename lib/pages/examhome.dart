@@ -68,6 +68,11 @@ class _ExamHomeState extends State<ExamHome> {
       } else {
         print(
             'Failed to fetch exam details: ${responseMap['header']['message']}');
+             ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to fetch exam details: ${responseMap['header']['message']}'),
+          ),
+        );
       }
     } catch (e) {
       print('Error fetching exam details: $e');
