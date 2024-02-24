@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:absoftexamination/pages/home.dart';
+import 'package:absoftexamination/pages/login.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/services/api.dart';
+import 'package:absoftexamination/util/router.dart';
 import 'package:absoftexamination/util/validators.dart';
 import 'package:absoftexamination/util/widget.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmpasswordController =
       TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -70,6 +73,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _signUp() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       // Perform registration logic here
       print('Name: ${_nameController.text}');
       print('Email: ${_emailController.text}');
@@ -100,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
           context.read<UserDataProvider>().setUserData(responseMap['data']);
 
           print('Registration successful');
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context, LoginScreen);
         } else {
           // Registration failed, handle the error response
           print('Registration failed: ${responseMap['header']['message']}');
@@ -110,6 +116,10 @@ class _SignUpPageState extends State<SignUpPage> {
         // Handle network or other errors
         print('Error during registration: $e');
         // Optionally, display an error message to the user
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -316,9 +326,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             foregroundColor: MaterialStateProperty.all<Color>(
                                 Colors.white) // Change to your desired color
                             ),
-                        child: Text(
-                          'Sign Up',
-                        ),
+                        child: _isLoading
+                            ? CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : Text(
+                                'Sign Up',
+                              ),
                       ),
                     ),
                   ],

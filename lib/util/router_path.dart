@@ -61,7 +61,6 @@ class Routerr {
         return MaterialPageRoute(
             builder: (BuildContext context) => QuizFinishPage(
                   title: null,
-                  answer: {},
                 ));
       case ShowQuestion:
         return MaterialPageRoute(

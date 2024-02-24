@@ -4,6 +4,7 @@ import 'package:absoftexamination/model/exam.dart';
 import 'package:http/http.dart';
 
 class Api {
+  // static const baseUrl = 'https://exambackend.amanuel-girma.dev';
   static const authUrl = 'https://exambackend.amanuel-girma.dev/Auth/login';
   static const authKey = 'token';
   static const userUrl = 'https://exambackend.amanuel-girma.dev/Users/register';
@@ -16,6 +17,8 @@ class Api {
       'https://exambackend.amanuel-girma.dev/Question/view';
   static const answerPost =
       'https://exambackend.amanuel-girma.dev/ExamResult/add_result';
+  static const resultView =
+      'https://exambackend.amanuel-girma.dev/ExamResult/view';
 }
 
 Future<void> getExam() async {

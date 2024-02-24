@@ -4,15 +4,17 @@ import 'package:absoftexamination/util/constant.dart';
 import 'package:flutter/material.dart';
 
 class QuizFinishPage extends StatefulWidget {
-  final dynamic title;
-  final Map<int, dynamic> answer;
+  final dynamic title, score;
+  //final Map<int, dynamic> answer;
   final listQuestion;
 
-  const QuizFinishPage(
-      {super.key,
-      required this.title,
-      required this.answer,
-      this.listQuestion});
+  const QuizFinishPage({
+    super.key,
+    required this.title,
+    //required this.answer,
+    this.listQuestion,
+    this.score,
+  });
 
   @override
   _QuizFinishPageState createState() => _QuizFinishPageState();
@@ -21,7 +23,7 @@ class QuizFinishPage extends StatefulWidget {
 class _QuizFinishPageState extends State<QuizFinishPage> {
   int correct = 0;
   int incorrect = 0;
-  int score = 0;
+  // int score = 0;
   final nameController = TextEditingController();
 
   @override
@@ -33,17 +35,16 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    widget.answer.forEach((key, value) {
-      if (widget.listQuestion[key].correctAnswer == value) {
-        correct++;
-        score += 10;
-      } else {
-        incorrect++;
-      }
-    });
+    print('hhdjhytarararr:${widget.title}');
+    print('jkdjdjdjjdhhdhhhdhhdhd:${widget.score}');
+    // widget.answer.forEach((key, value) {
+    //   if (widget.listQuestion[key].correctAnswer == value) {
+    //     correct++;
+    //   } else {
+    //     incorrect++;
+    //   }
+    // });
   }
 
   @override
@@ -113,8 +114,9 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                   ),
                   Container(
                     width: double.infinity,
-                    child: score >= 80
-                        ? Image.asset('assets/congratulate.png')
+                    child
+                        // widget.score >= 80
+                        //     ? Image.asset('assets/congratulate.png')
                         : Image.asset(
                             'assets/fail.png'), // Display fail image otherwise
                   ),
@@ -127,7 +129,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                             fontSize: 24, color: Colors.white),
                       ),
                       Text(
-                        "$score",
+                        widget.score,
                         style: kHeadingTextStyleAppBar.copyWith(
                           fontSize: 24,
                           color: Colors.red,

@@ -52,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
   @override
   void dispose() {
     // Dispose of the controllers when the widget is disposed
@@ -63,6 +64,9 @@ class _LoginPageState extends State<LoginPage> {
   List<Question> questions = [];
   void _login() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       // Perform login logic here
       print('Email: ${_emailController.text}');
       print('Password: ${_passwordController.text}');
@@ -100,6 +104,8 @@ class _LoginPageState extends State<LoginPage> {
       } catch (e) {
         print('Error during login: $e');
         // Optionally, display an error message to the user
+      } finally {
+        _isLoading = false;
       }
     }
   }
@@ -220,7 +226,12 @@ class _LoginPageState extends State<LoginPage> {
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                           ),
-                          child: Text('Log In'),
+                          child: _isLoading
+                              ? CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
+                                )
+                              : Text('Log In'),
                         ),
                       ),
                     ],

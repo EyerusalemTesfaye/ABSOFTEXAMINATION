@@ -36,7 +36,7 @@ class _ExamState extends State<Exam> {
   String selectedId = '';
   int currentQuestionIndex = 0;
   List<QuestionChoice> questionChoice = [];
-
+  dynamic? score, title;
   @override
   void initState() {
     super.initState();
@@ -73,6 +73,27 @@ class _ExamState extends State<Exam> {
     }
   }
 
+  Future<void> _viewResult(String token, String resultId) async {
+    if (currentQuestionIndex == widget.questions.length - 1) {
+      try {
+        var requestBody =
+            http.MultipartRequest('POST', Uri.parse(Api.resultView))
+              ..fields['result_id'] = resultId!
+              ..fields['token'] = token!;
+        final response = await requestBody.send();
+        final Map<String, dynamic> responseMap =
+            json.decode(await response.stream.bytesToString());
+        if (responseMap['header']['error'].toLowerCase() == 'false') {
+          final res = responseMap['data'];
+          score = responseMap['data']['result']['score'];
+          title = responseMap['data']['exam']['title'];
+          print('result fetched successful');
+          print(title);
+        }
+      } catch (e) {}
+    }
+  }
+
   void _navigateToNextQuestion() {
     // Check if there are more questions
     if (currentQuestionIndex < widget.questions.length - 1) {
@@ -85,8 +106,10 @@ class _ExamState extends State<Exam> {
         selectedId = '';
       });
     } else {
+      // _viewResult();
       // buildDialog(context, "Success", 'You have finished the Quiz ',
       //     DialogType.success, () => Navigator.pop(context), () => QuizFinishPage(title: 'kkj', answer: {},));
+
       buildDialog(
         context,
         "Success",
@@ -99,7 +122,7 @@ class _ExamState extends State<Exam> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QuizFinishPage(title: 'kkj', answer: {}),
+              builder: (context) => QuizFinishPage(title: title, score: score),
             ),
           );
         },
@@ -128,6 +151,7 @@ class _ExamState extends State<Exam> {
         final res = responseMap['data'];
         print(res);
         print('Answer fetched successful');
+        _viewResult(token, resultId);
       }
     } catch (e) {
       print('Error fetching exam details: $e');
