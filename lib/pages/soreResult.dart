@@ -100,13 +100,20 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                             fontSize: 24, color: Colors.white),
                       ),
                       Text(
-                        '${widget.score} = ${scorePercentage}%',
+                        widget.score,
                         style: kHeadingTextStyleAppBar.copyWith(
                           fontSize: 24,
                           color: Colors.red,
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'you have get ${scorePercentage}%',
+                    style: TextStyle(color: Colors.red),
                   ),
                   const SizedBox(
                     height: 20,

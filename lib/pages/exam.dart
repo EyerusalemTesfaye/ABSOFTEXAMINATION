@@ -38,7 +38,7 @@ class _ExamState extends State<Exam> {
   int currentQuestionIndex = 0;
   List<QuestionChoice> questionChoice = [];
   dynamic? score, title, questionLen;
-
+  List<dynamic>? viewAnswerQuestion = [];
   @override
   void initState() {
     super.initState();
@@ -82,7 +82,7 @@ class _ExamState extends State<Exam> {
   }
 
   Future<void> _viewResult(String token, String resultId) async {
-    if (currentQuestionIndex == widget.questions.length - 1) {
+    if (currentQuestionIndex >= widget.questions.length - 1) {
       try {
         var requestBody =
             http.MultipartRequest('POST', Uri.parse(Api.resultView))
@@ -97,6 +97,8 @@ class _ExamState extends State<Exam> {
           final List<dynamic>? questions = responseMap['data']['questions'];
 
           if (questions != null) {
+            viewAnswerQuestion = questions;
+
             // Process the list of questions
             List<QuestionChoice> questionChoices = [];
             final questionProvider =
@@ -140,20 +142,20 @@ class _ExamState extends State<Exam> {
             }
 
             questionProvider.setQuestions(questionChoices);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => QuizFinishPage(
-                  title: title,
-                  score: score,
-                  questionLen: questionLen,
-                  questions: questions,
-                  questionsList: questionChoice,
-                ),
-                // ShowQuestionScreen(
-                //     questions: questions, questionsList: questionChoices),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (_) => QuizFinishPage(
+            //       title: title,
+            //       score: score,
+            //       questionLen: questionLen,
+            //       questions: questions,
+            //       questionsList: questionChoice,
+            //     ),
+            //     // ShowQuestionScreen(
+            //     //     questions: questions, questionsList: questionChoices),
+            //   ),
+            // );
           } else {
             print('Error: Questions are null');
           }
@@ -193,13 +195,15 @@ class _ExamState extends State<Exam> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QuizFinishPage(
+              builder: (_) => QuizFinishPage(
                 title: title,
                 score: score,
                 questionLen: questionLen,
-                questions: questionLen,
+                questions: viewAnswerQuestion ?? [],
                 questionsList: questionChoice,
               ),
+              // ShowQuestionScreen(
+              //     questions: questions, questionsList: questionChoices),
             ),
           );
         },
