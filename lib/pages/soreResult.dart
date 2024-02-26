@@ -79,7 +79,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                 children: <Widget>[
                   SizedBox(
                     height: MediaQuery.of(context).size.height *
-                        0.1, // Adjust the multiplier as needed
+                        0.021, // Adjust the multiplier as needed
                   ),
                   Container(
                     width: double.infinity,
@@ -116,14 +116,14 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                     style: TextStyle(color: Colors.red),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Text(
                     "You have successfully completed",
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Text(
                     widget.title,
@@ -131,7 +131,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                         fontSize: 25, color: Colors.white),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
