@@ -60,10 +60,16 @@ class Routerr {
           },
         );
       case QuestionFinishScreen:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => QuizFinishPage(
-                  title: null,
-                ));
+        return MaterialPageRoute(builder: (BuildContext context) {
+          final List<dynamic> questions =
+              ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+          final List<QuestionChoice> questionsList = [];
+          return QuizFinishPage(
+            title: null,
+            questions: questions,
+            questionsList: questionsList,
+          );
+        });
       case ShowQuestion:
         return MaterialPageRoute(builder: (BuildContext context) {
           final List<dynamic> questions =

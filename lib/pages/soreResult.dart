@@ -1,3 +1,4 @@
+import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/util/constant.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 
 class QuizFinishPage extends StatefulWidget {
   final dynamic title, score, questionLen;
+  final List questions;
+  final List<QuestionChoice> questionsList;
   //final Map<int, dynamic> answer;
   final listQuestion;
 
@@ -14,7 +17,9 @@ class QuizFinishPage extends StatefulWidget {
       //required this.answer,
       this.listQuestion,
       this.score,
-      this.questionLen});
+      this.questionLen,
+      required this.questions,
+      required this.questionsList});
 
   @override
   _QuizFinishPageState createState() => _QuizFinishPageState();
@@ -46,6 +51,8 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
     print('Score: ${widget.score ?? "Score not available"}');
     print(
         'Question length: ${widget.questionLen ?? "Question length not available"}');
+    print(widget.questions);
+    print(widget.questionsList);
     // scorenum = int.tryParse(widget.score);
     //questionLennum = int.tryParse(widget.questionLen);
   }
@@ -230,8 +237,8 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ShowQuestionScreen(
-                                        questions: [],
-                                        questionsList: [],
+                                        questions: widget.questions,
+                                        questionsList: widget.questionsList,
                                       )));
                         },
                         child: Text('Show Question'),

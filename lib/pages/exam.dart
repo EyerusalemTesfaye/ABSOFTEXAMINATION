@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:absoftexamination/model/questionModal.dart';
+import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/pages/soreResult.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -36,11 +37,12 @@ class _ExamState extends State<Exam> {
   String selectedId = '';
   int currentQuestionIndex = 0;
   List<QuestionChoice> questionChoice = [];
-  dynamic? score, title,questionLen;
+  dynamic? score, title, questionLen;
+
   @override
   void initState() {
     super.initState();
-    questionLen= widget.questions.length;
+    questionLen = widget.questions.length;
     print('=====:${widget.examTitle}');
     print('gdsgagdgdg question: ${questionLen}');
     print(widget.questions[currentQuestionIndex]['question']);
@@ -53,11 +55,11 @@ class _ExamState extends State<Exam> {
       print('First question: ${questionChoice[currentQuestionIndex].text}');
     } else {
       print('No questions available');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('No question Available'),
-          ),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No question Available'),
+        ),
+      );
     }
   }
 
@@ -90,12 +92,74 @@ class _ExamState extends State<Exam> {
         final Map<String, dynamic> responseMap =
             json.decode(await response.stream.bytesToString());
         if (responseMap['header']['error'].toLowerCase() == 'false') {
-          final res = responseMap['data'];
           score = responseMap['data']['result']['score'];
           title = responseMap['data']['exam']['title'];
+          final List<dynamic>? questions = responseMap['data']['questions'];
 
-          print('result fetched successful');
-          print(title);
+          if (questions != null) {
+            // Process the list of questions
+            List<QuestionChoice> questionChoices = [];
+            final questionProvider =
+                Provider.of<QuestionProvider>(context, listen: false);
+
+            for (var question in questions) {
+              var quest = question['question'];
+              requestBody =
+                  http.MultipartRequest('POST', Uri.parse(Api.questionView))
+                    ..fields['question_id'] = quest;
+
+              final respQuestionView = await requestBody.send();
+              final Map<String, dynamic> respQuestionViewMap =
+                  json.decode(await respQuestionView.stream.bytesToString());
+
+              if (!mounted) return;
+
+              if (respQuestionViewMap['header']['error'].toLowerCase() ==
+                  'false') {
+                final questionData = respQuestionViewMap['data']['question'];
+                final choicesData = respQuestionViewMap['data']['choices'];
+
+                List<Choice> choicesList = [];
+
+                choicesData.forEach((choice) {
+                  choicesList.add(
+                    Choice(
+                      id: choice['id'],
+                      text: choice['text'],
+                    ),
+                  );
+                });
+
+                final questionChoice = QuestionChoice(
+                  id: questionData['id'],
+                  text: questionData['text'],
+                  choices: choicesList,
+                );
+                questionChoices.add(questionChoice);
+              }
+            }
+
+            questionProvider.setQuestions(questionChoices);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => QuizFinishPage(
+                  title: title,
+                  score: score,
+                  questionLen: questionLen,
+                  questions: questions,
+                  questionsList: questionChoice,
+                ),
+                // ShowQuestionScreen(
+                //     questions: questions, questionsList: questionChoices),
+              ),
+            );
+          } else {
+            print('Error: Questions are null');
+          }
+        } else {
+          print(
+              'Failed to fetch result details: ${responseMap['header']['message']}');
         }
       } catch (e) {}
     }
@@ -129,7 +193,13 @@ class _ExamState extends State<Exam> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QuizFinishPage(title: title, score: score, questionLen:questionLen),
+              builder: (context) => QuizFinishPage(
+                title: title,
+                score: score,
+                questionLen: questionLen,
+                questions: questionLen,
+                questionsList: questionChoice,
+              ),
             ),
           );
         },
