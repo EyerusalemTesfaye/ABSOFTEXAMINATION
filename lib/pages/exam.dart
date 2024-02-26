@@ -120,7 +120,8 @@ class _ExamState extends State<Exam> {
                   'false') {
                 final questionData = respQuestionViewMap['data']['question'];
                 final choicesData = respQuestionViewMap['data']['choices'];
-
+                print('questionData:');
+                print(questionData['answer']);
                 List<Choice> choicesList = [];
 
                 choicesData.forEach((choice) {
@@ -135,6 +136,7 @@ class _ExamState extends State<Exam> {
                 final questionChoice = QuestionChoice(
                   id: questionData['id'],
                   text: questionData['text'],
+                  answer: questionData['answer'],
                   choices: choicesList,
                 );
                 questionChoices.add(questionChoice);

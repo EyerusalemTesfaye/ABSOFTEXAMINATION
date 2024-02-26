@@ -109,6 +109,26 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          ListTile(
+                            title: Text(question.text),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: question.choices.map((choice) {
+                                // Find the state of the current choice
+                                var choiceState = choice.id == question.answer;
+
+                                // Determine the text color based on the choice state
+                                Color textColor =
+                                    choiceState ? Colors.green : Colors.red;
+
+                                return Text(
+                                  choice.text,
+                                  style: TextStyle(color: textColor),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+
                           // ListTile(
                           //   title: Text(question.text),
                           //   subtitle: Column(
@@ -118,30 +138,30 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                           //         .toList(),
                           //   ),
                           // ),
-                          ListTile(
-                            title: Text(question.text),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: question.choices.map((choice) {
-                                // Find the state of the current choice
-                                var choiceState = widget.questions.firstWhere(
-                                  (q) => q['choice'] == choice.id,
-                                  orElse: () =>
-                                      null, // Return null if no element is found
-                                )?['state'];
+                          // ListTile(
+                          //   title: Text(question.text),
+                          //   subtitle: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: question.choices.map((choice) {
+                          //       // Find the state of the current choice
+                          //       var choiceState = widget.questions.firstWhere(
+                          //         (q) => q['choice'] == choice.id,
+                          //         orElse: () =>
+                          //             null, // Return null if no element is found
+                          //       )?['state'];
 
-                                // Determine the text color based on the choice state
-                                Color textColor = choiceState == 'true'
-                                    ? Colors.green
-                                    : Colors.red;
+                          //       // Determine the text color based on the choice state
+                          //       Color textColor = choiceState == 'true'
+                          //           ? Colors.green
+                          //           : Colors.red;
 
-                                return Text(
-                                  choice.text,
-                                  style: TextStyle(color: textColor),
-                                );
-                              }).toList(),
-                            ),
-                          ),
+                          //       return Text(
+                          //         choice.text,
+                          //         style: TextStyle(color: textColor),
+                          //       );
+                          //     }).toList(),
+                          //   ),
+                          // ),
 
                           const SizedBox(
                             height: 15,

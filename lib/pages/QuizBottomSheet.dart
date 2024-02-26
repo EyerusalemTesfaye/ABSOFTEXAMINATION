@@ -114,6 +114,7 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
               final questionChoice = QuestionChoice(
                 id: questionData['id'],
                 text: questionData['text'],
+                answer: questionData['answer'],
                 choices: choicesList,
               );
               questionsList.add(questionChoice);

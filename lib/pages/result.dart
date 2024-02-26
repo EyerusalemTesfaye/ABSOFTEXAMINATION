@@ -76,6 +76,7 @@ class _ResultScreenState extends State<ResultScreen> {
               final questionChoice = QuestionChoice(
                 id: questionData['id'],
                 text: questionData['text'],
+                answer: questionData['answer'],
                 choices: choicesList,
               );
               questionChoices.add(questionChoice);
