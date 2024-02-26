@@ -53,8 +53,17 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
         'Question length: ${widget.questionLen ?? "Question length not available"}');
     print(widget.questions);
     print(widget.questionsList);
-    // scorenum = int.tryParse(widget.score);
-    //questionLennum = int.tryParse(widget.questionLen);
+    int? scorenum = int.tryParse(widget.score);
+    int? questionLennum = widget.questionLen;
+
+    if (scorenum != null && questionLennum != null) {
+      scorePercentage = (scorenum * 100) / questionLennum;
+      print(scorenum);
+      print(questionLennum);
+      print(scorePercentage);
+      incorrect = questionLennum - scorenum;
+      print(incorrect);
+    }
   }
 
   @override
@@ -65,56 +74,6 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
       body: Container(
         child: Stack(
           children: <Widget>[
-            // Positioned(
-            //   left: -50,
-            //   child: Container(
-            //     width: 150,
-            //     height: 150,
-            //     decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage('assets/ballon2.png'),
-            //           fit: BoxFit.cover),
-            //     ),
-            //   ),
-            // ),
-            // Positioned(
-            //   right: 0,
-            //   child: Container(
-            //     width: 150,
-            //     height: 150,
-            //     decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage('assets/ballon4.png'),
-            //           fit: BoxFit.cover),
-            //     ),
-            //   ),
-            // ),
-            // Positioned(
-            //   bottom: -60,
-            //   left: -50,
-            //   child: Container(
-            //     width: 150,
-            //     height: 150,
-            //     decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage('assets/ballon2.png'),
-            //           fit: BoxFit.cover),
-            //     ),
-            //   ),
-            // ),
-            // Positioned(
-            //   bottom: -60,
-            //   right: -20,
-            //   child: Container(
-            //     width: 150,
-            //     height: 150,
-            //     decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage('assets/ballon4.png'),
-            //           fit: BoxFit.cover),
-            //     ),
-            //   ),
-            // ),
             Positioned(
               child: Column(
                 children: <Widget>[
@@ -124,9 +83,11 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                   ),
                   Container(
                     width: double.infinity,
-                    child
-                        // widget.score >= 80
-                        //     ? Image.asset('assets/congratulate.png')
+                    child: scorePercentage >= 80
+                        //  widget.score != null &&
+                        //         int.tryParse(widget.score)! >=80
+
+                        ? Image.asset('assets/congratulate.png')
                         : Image.asset(
                             'assets/fail.png'), // Display fail image otherwise
                   ),
@@ -139,7 +100,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                             fontSize: 24, color: Colors.white),
                       ),
                       Text(
-                        widget.score,
+                        '${widget.score} = ${scorePercentage}%',
                         style: kHeadingTextStyleAppBar.copyWith(
                           fontSize: 24,
                           color: Colors.red,
