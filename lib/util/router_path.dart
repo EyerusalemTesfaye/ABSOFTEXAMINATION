@@ -3,6 +3,7 @@ import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
+import 'package:absoftexamination/pages/result.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/pages/signUp.dart';
 import 'package:absoftexamination/pages/soreResult.dart';
@@ -68,6 +69,9 @@ class Routerr {
                   listQuestion: [],
                   answer: {},
                 ));
+      case ResultShowScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => ResultScreen());
       // Add more cases for other routes if needed
       default:
         throw Exception('Unknown route: ${settings.name}');

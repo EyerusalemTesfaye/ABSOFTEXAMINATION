@@ -8,21 +8,20 @@ class QuizFinishPage extends StatefulWidget {
   //final Map<int, dynamic> answer;
   final listQuestion;
 
-  const QuizFinishPage({
-    super.key,
-    required this.title,
-    //required this.answer,
-    this.listQuestion,
-    this.score,
-    this.questionLen
-  });
+  const QuizFinishPage(
+      {super.key,
+      required this.title,
+      //required this.answer,
+      this.listQuestion,
+      this.score,
+      this.questionLen});
 
   @override
   _QuizFinishPageState createState() => _QuizFinishPageState();
 }
 
 class _QuizFinishPageState extends State<QuizFinishPage> {
-    int resultOfPresent=0;
+  int resultOfPresent = 0;
 
   int correct = 0;
   int incorrect = 0;
@@ -39,13 +38,15 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
   @override
   void initState() {
     super.initState();
-    print('hhdjhytarararr:${widget.title}');
-    print('jkdjdjdjjdhhdhhhdhhdhd:${widget.score}');
-    print('questionLen:${widget.questionLen}');
-    //resultOfPresent= widget.score/widget.questionLen*100;
- // resultOfPresent = (widget.score * 100) ~/ widget.questionLen;
+    print('Title: ${widget.title ?? "No title available"}');
+    print('Score: ${widget.score ?? "Score not available"}');
+    print(
+        'Question length: ${widget.questionLen ?? "Question length not available"}');
 
-  //  print('resultOfPresent:${resultOfPresent}');
+    //resultOfPresent= widget.score/widget.questionLen*100;
+    // resultOfPresent = (widget.score * 100) ~/ widget.questionLen;
+
+    //  print('resultOfPresent:${resultOfPresent}');
     // widget.answer.forEach((key, value) {
     //   if (widget.listQuestion[key].correctAnswer == value) {
     //     correct++;
@@ -63,30 +64,30 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
       body: Container(
         child: Stack(
           children: <Widget>[
-            Positioned(
-              left: -50,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/ballon2.png'),
-                      fit: BoxFit.cover),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 0,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/ballon4.png'),
-                      fit: BoxFit.cover),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   left: -50,
+            //   child: Container(
+            //     width: 150,
+            //     height: 150,
+            //     decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //           image: AssetImage('assets/ballon2.png'),
+            //           fit: BoxFit.cover),
+            //     ),
+            //   ),
+            // ),
+            // Positioned(
+            //   right: 0,
+            //   child: Container(
+            //     width: 150,
+            //     height: 150,
+            //     decoration: BoxDecoration(
+            //       image: DecorationImage(
+            //           image: AssetImage('assets/ballon4.png'),
+            //           fit: BoxFit.cover),
+            //     ),
+            //   ),
+            // ),
             // Positioned(
             //   bottom: -60,
             //   left: -50,
@@ -179,7 +180,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              Text("$correct  correct"),
+                              Text("${widget.score} correct"),
                             ],
                           ),
                           shape: RoundedRectangleBorder(

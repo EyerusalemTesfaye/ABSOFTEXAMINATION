@@ -19,6 +19,8 @@ class Api {
       'https://exambackend.amanuel-girma.dev/ExamResult/add_result';
   static const resultView =
       'https://exambackend.amanuel-girma.dev/ExamResult/view';
+  static const resultShow =
+      'https://exambackend.amanuel-girma.dev/ExamResult/show';
 }
 
 Future<void> getExam() async {

@@ -5,3 +5,4 @@ const String ExamHomeScreen = 'ExamHomeScreen';
 const String ExamScreen = 'ExamScreen';
 const String QuestionFinishScreen = 'QuestionFinishScreen';
 const String ShowQuestion = 'ShowQuestion';
+const String ResultShowScreen = 'ResultShowScreen';

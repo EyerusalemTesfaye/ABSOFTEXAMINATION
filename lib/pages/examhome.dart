@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:absoftexamination/model/exam.dart';
+import 'package:absoftexamination/model/resultShowModel.dart';
 import 'package:absoftexamination/pages/QuizBottomSheet.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
 import 'package:absoftexamination/providers/question.dart';
+import 'package:absoftexamination/providers/resultShow.dart';
+import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/services/api.dart';
+import 'package:absoftexamination/util/router.dart';
 import 'package:absoftexamination/util/shared_preferences_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,14 +72,46 @@ class _ExamHomeState extends State<ExamHome> {
       } else {
         print(
             'Failed to fetch exam details: ${responseMap['header']['message']}');
-             ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to fetch exam details: ${responseMap['header']['message']}'),
+            content: Text(
+                'Failed to fetch exam details: ${responseMap['header']['message']}'),
           ),
         );
       }
     } catch (e) {
       print('Error fetching exam details: $e');
+    }
+  }
+
+  Future<void> _results(BuildContext context) async {
+    try {
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      String? token =
+          userProvider.userData?['token']; // Extract token from userData
+
+      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.resultShow))
+        ..fields['token'] = token!;
+      final response = await requestBody.send();
+      final Map<String, dynamic> responseMap =
+          json.decode(await response.stream.bytesToString());
+      if (responseMap['header']['error'].toLowerCase() == 'false') {
+        // Convert response data to List<ExamResult>
+        List<ExamResult> examResults = (responseMap['data'] as List<dynamic>)
+            .map((dynamic item) => ExamResult.fromJson(item))
+            .toList();
+
+        // Update provider with examResults
+        context.read<ResultShowProvider>().setExamResults(examResults);
+
+        print('result show fetched successful');
+        print(responseMap['data']);
+
+        // Navigate to ResultShowScreen
+        Navigator.pushNamed(context, ResultShowScreen);
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 
@@ -144,31 +180,31 @@ class _ExamHomeState extends State<ExamHome> {
                                 ),
                                 onPressed: () {
                                   showMenu(
-                                    shape: Border.all(),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          20.0), // Adjust the value as needed
+                                      side: BorderSide(
+                                          color: Colors
+                                              .grey), // Add border color if necessary
+                                    ),
                                     context: context,
                                     position:
                                         RelativeRect.fromLTRB(82, 82, 0, 0),
                                     items: [
                                       PopupMenuItem(
-                                        child: Center(
-                                          child: Text('Results'),
-                                        ),
-                                        onTap: () => print('fgfddfg'),
+                                        child: Text('Results'),
+                                        onTap: () => _results(context),
                                         value: 0,
                                       ),
+                                      // PopupMenuItem(
+                                      //   child: Text('Exams'),
+                                      //   onTap: () {
+                                      //     fetchData();
+                                      //   },
+                                      //   value: 1,
+                                      // ),
                                       PopupMenuItem(
-                                        child: Center(
-                                          child: Text('Exams'),
-                                        ),
-                                        onTap: () {
-                                          fetchData();
-                                        },
-                                        value: 1,
-                                      ),
-                                      PopupMenuItem(
-                                        child: Center(
-                                          child: Text('Logout'),
-                                        ),
+                                        child: Text('Logout'),
                                         onTap: () async {
                                           await UserPreferences.removeToken();
 
