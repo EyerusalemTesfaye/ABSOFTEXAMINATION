@@ -25,6 +25,9 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
 
   int correct = 0;
   int incorrect = 0;
+  double scorePercentage = 0.0;
+  int? scorenum;
+  int? questionLennum;
   // int score = 0;
   final nameController = TextEditingController();
 
@@ -39,21 +42,12 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
   void initState() {
     super.initState();
     print('Title: ${widget.title ?? "No title available"}');
+
     print('Score: ${widget.score ?? "Score not available"}');
     print(
         'Question length: ${widget.questionLen ?? "Question length not available"}');
-
-    //resultOfPresent= widget.score/widget.questionLen*100;
-    // resultOfPresent = (widget.score * 100) ~/ widget.questionLen;
-
-    //  print('resultOfPresent:${resultOfPresent}');
-    // widget.answer.forEach((key, value) {
-    //   if (widget.listQuestion[key].correctAnswer == value) {
-    //     correct++;
-    //   } else {
-    //     incorrect++;
-    //   }
-    // });
+    // scorenum = int.tryParse(widget.score);
+    //questionLennum = int.tryParse(widget.questionLen);
   }
 
   @override
@@ -236,8 +230,8 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ShowQuestionScreen(
-                                        listQuestion: [],
-                                        answer: {},
+                                        questions: [],
+                                        questionsList: [],
                                       )));
                         },
                         child: Text('Show Question'),

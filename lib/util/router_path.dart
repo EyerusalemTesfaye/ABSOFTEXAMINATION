@@ -1,4 +1,5 @@
 import 'package:absoftexamination/model/exam.dart';
+import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/home.dart';
@@ -64,11 +65,15 @@ class Routerr {
                   title: null,
                 ));
       case ShowQuestion:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => ShowQuestionScreen(
-                  listQuestion: [],
-                  answer: {},
-                ));
+        return MaterialPageRoute(builder: (BuildContext context) {
+          final List<dynamic> questions =
+              ModalRoute.of(context)!.settings.arguments as List<dynamic>;
+          final List<QuestionChoice> questionsList = [];
+          return ShowQuestionScreen(
+            questions: questions,
+            questionsList: questionsList,
+          );
+        });
       case ResultShowScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => ResultScreen());
