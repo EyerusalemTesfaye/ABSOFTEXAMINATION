@@ -28,6 +28,8 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
   void initState() {
     super.initState();
     print('widget.questions:${widget.questions}');
+    print('questions.length:${widget.questions.length}');
+    print('widget.questionsList:${widget.questionsList}');
     var questionProvider =
         Provider.of<QuestionProvider>(context, listen: false);
     if (questionProvider.questions.isNotEmpty) {
@@ -107,13 +109,37 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          // ListTile(
+                          //   title: Text(question.text),
+                          //   subtitle: Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //     children: question.choices
+                          //         .map((choice) => Text(choice.text))
+                          //         .toList(),
+                          //   ),
+                          // ),
                           ListTile(
                             title: Text(question.text),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: question.choices
-                                  .map((choice) => Text(choice.text))
-                                  .toList(),
+                              children: question.choices.map((choice) {
+                                // Find the state of the current choice
+                                var choiceState = widget.questions.firstWhere(
+                                  (q) => q['choice'] == choice.id,
+                                  orElse: () =>
+                                      null, // Return null if no element is found
+                                )?['state'];
+
+                                // Determine the text color based on the choice state
+                                Color textColor = choiceState == 'true'
+                                    ? Colors.green
+                                    : Colors.red;
+
+                                return Text(
+                                  choice.text,
+                                  style: TextStyle(color: textColor),
+                                );
+                              }).toList(),
                             ),
                           ),
 
