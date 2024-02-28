@@ -81,18 +81,48 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                     height: MediaQuery.of(context).size.height *
                         0.021, // Adjust the multiplier as needed
                   ),
-                  Container(
-                    width: double.infinity,
-                    child: scorePercentage >= 80
-                        //  widget.score != null &&
-                        //         int.tryParse(widget.score)! >=80
+                  if (scorePercentage < 80)
+                    Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height *
+                          0.45, // Adjust the percentage as needed
 
-                        ? Image.asset('assets/congratulate.png')
-                        : Image.asset(
-                            'assets/fail.png'), // Display fail image otherwise
+                      child
+                          // : scorePercentage >= 80
+
+                          //     ? Image.asset('assets/congratulate.png')
+                          : Image.asset(
+                              'assets/fail.png'), // Display fail image otherwise
+                    ),
+                  if (scorePercentage >= 80)
+                    Stack(
+                      children: [
+                        // Bottom image (congratulate.png)
+                        Container(
+                            width: double.infinity,
+                            child: Image.asset('assets/congratulate.png')
+                            // : Image.asset(
+                            //     'assets/fail.png'), // Display fail image otherwise
+                            ),
+
+                        // Top image (congrate.gif) when congratulate.png is displayed
+                        // if (scorePercentage >=
+                        //     80) // Display congrate.gif only if congratulation.png is displayed
+                        Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height *
+                              0.47, // Adjust the percentage as needed,
+                          child: Image.asset(
+                            'assets/congrate.gif',
+                            gaplessPlayback: true, // Ensure seamless playback
+                          ),
+                        ),
+                      ],
+                    ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         "Your Score : ",
@@ -100,7 +130,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                             fontSize: 24, color: Colors.white),
                       ),
                       Text(
-                        widget.score,
+                        '${widget.score} (${scorePercentage}%)',
                         style: kHeadingTextStyleAppBar.copyWith(
                           fontSize: 24,
                           color: Colors.red,
@@ -108,13 +138,14 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'you have get ${scorePercentage}%',
-                    style: TextStyle(color: Colors.red),
-                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+
+                  // Text(
+                  //   'you have get ${scorePercentage}%',
+                  //   style: TextStyle(color: Colors.red),
+                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -147,7 +178,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                                 color: Colors.green,
                               ),
                               const SizedBox(
-                                width: 10,
+                                width: 15,
                               ),
                               Text("${widget.score} correct"),
                             ],

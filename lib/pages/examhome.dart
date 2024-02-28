@@ -143,23 +143,23 @@ class _ExamHomeState extends State<ExamHome> {
                           SizedBox(
                             width: 10,
                           ),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              // {
-                              //   Navigator.pushReplacement(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (_) => LoginPage(),
-                              //       ));
-                              // },
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              )),
+                          Image(
+                            width: 50,
+                            height: 50,
+                            image: AssetImage('assets/quizer_logo.png'),
+                          ),
+                          // ColorFiltered(
+                          //   colorFilter:
+                          //       ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                          //   child: Image(
+                          //     width: 50,
+                          //     height: 50,
+                          //     image: AssetImage('assets/quizer_logo.png'),
+                          //   ),
+                          // ),
+
                           SizedBox(
-                            width: screenWidth * 0.18,
+                            width: screenWidth * 0.2,
                           ),
                           Text(
                             "Select Subject",
@@ -169,7 +169,7 @@ class _ExamHomeState extends State<ExamHome> {
                                 fontSize: 18),
                           ),
                           SizedBox(
-                            width: screenWidth * 0.15,
+                            width: screenWidth * 0.1,
                           ),
                           Expanded(
                             child: PopupMenuItem(
