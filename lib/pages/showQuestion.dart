@@ -119,7 +119,7 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
 
                                 // Determine the text color based on the choice state
                                 Color textColor =
-                                    choiceState ? Colors.green : Colors.white;
+                                    choiceState ? Colors.green : Colors.black;
 
                                 return Text(
                                   choice.text,
