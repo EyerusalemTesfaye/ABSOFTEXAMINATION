@@ -376,8 +376,20 @@ class _ExamState extends State<Exam> {
                             SizedBox(height: 20),
                             OutlinedButton(
                               onPressed: () {
-                                _answerCurrentQuestion();
-                                _navigateToNextQuestion();
+                                // Check if a choice has been selected
+                                if (selectedChoice == null) {
+                                  // Show a snackbar message
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'First, you have to select a choice.'),
+                                    ),
+                                  );
+                                } else {
+                                  // Proceed to answer the question and navigate to the next question
+                                  _answerCurrentQuestion();
+                                  _navigateToNextQuestion();
+                                }
                               },
                               style: OutlinedButton.styleFrom(
                                 backgroundColor: Color(0xFF3559E0),
@@ -391,6 +403,24 @@ class _ExamState extends State<Exam> {
                                 style: TextStyle(color: Colors.white),
                               ),
                             )
+
+                            // OutlinedButton(
+                            //   onPressed: () {
+                            //     _answerCurrentQuestion();
+                            //     _navigateToNextQuestion();
+                            //   },
+                            //   style: OutlinedButton.styleFrom(
+                            //     backgroundColor: Color(0xFF3559E0),
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(8.0),
+                            //     ),
+                            //     side: BorderSide(color: Colors.black),
+                            //   ),
+                            //   child: Text(
+                            //     'Answer',
+                            //     style: TextStyle(color: Colors.white),
+                            //   ),
+                            // )
                           ],
                         ),
                       ),
