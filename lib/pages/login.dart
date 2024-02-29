@@ -12,11 +12,13 @@ import 'package:absoftexamination/util/shared_preferences_util.dart';
 import 'package:absoftexamination/util/validators.dart';
 import 'package:absoftexamination/util/widget.dart';
 import 'package:flutter/material.dart';
-
+//import 'package:quickalert/quickalert.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../util/dialog.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,194 +64,234 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   List<Question> questions = [];
- void _login() async {
-  if (_formKey.currentState!.validate()) {
-    setState(() {
-      _isLoading = true;
-    });
-    // Perform login logic here
-    print('Email: ${_emailController.text}');
-    print('Password: ${_passwordController.text}');
-
-    try {
-      var requestBody = http.MultipartRequest('POST', Uri.parse(Api.authUrl))
-        ..fields['email'] = _emailController.text
-        ..fields['password'] = _passwordController.text;
-
-      final response = await requestBody.send();
-
-      final Map<String, dynamic> responseMap =
-          json.decode(await response.stream.bytesToString());
-
-      if (responseMap['header']['error'].toLowerCase() == 'false') {
-        context.read<UserProvider>().setUserData(responseMap['data']);
-        print('Login successful');
-        String token = responseMap['data']['token'];
-        await UserPreferences.saveToken(responseMap['data']['token']);
-
-        User? user = await UserPreferences.getUser() as User?;
-        if (user != null) {
-        } else {}
-        context.read<UserProvider>().loginUser(
-              User.fromMap(responseMap['data']),
-              responseMap['data']['token'],
-            );
-
-        // context.read<UserDataProvider>().setToken(token);
-
-        Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
-      } else {
-        print('Login failed: ${responseMap['header']['message']}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Login failed: ${responseMap['header']['message']}'),
-          ),
-        );
-      }
-    } catch (e) {
-      print('Error during login: $e');
-      // Optionally, display an error message to the user
-    } finally {
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
       setState(() {
-        _isLoading = false; // Stop loading indicator
+        _isLoading = true;
       });
+      // Perform login logic here
+      print('Email: ${_emailController.text}');
+      print('Password: ${_passwordController.text}');
+
+      try {
+        var requestBody = http.MultipartRequest('POST', Uri.parse(Api.authUrl))
+          ..fields['email'] = _emailController.text
+          ..fields['password'] = _passwordController.text;
+
+        final response = await requestBody.send();
+
+        final Map<String, dynamic> responseMap =
+            json.decode(await response.stream.bytesToString());
+
+        if (responseMap['header']['error'].toLowerCase() == 'false') {
+          context.read<UserProvider>().setUserData(responseMap['data']);
+          print('Login successful');
+          String token = responseMap['data']['token'];
+          await UserPreferences.saveToken(responseMap['data']['token']);
+
+          User? user = await UserPreferences.getUser() as User?;
+          if (user != null) {
+          } else {}
+          context.read<UserProvider>().loginUser(
+                User.fromMap(responseMap['data']),
+                responseMap['data']['token'],
+              );
+          setState(() {
+            _isLoading = true;
+          });
+          //await Future.delayed(const Duration(seconds: 3));
+          // context.read<UserDataProvider>().setToken(token);
+
+          Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
+        } else {
+          print('Login failed: ${responseMap['header']['message']}');
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content:
+          //         Text('Login failed: ${responseMap['header']['message']}'),
+          //   ),
+          // );
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Login Failed"),
+                content: QuickAlert(
+                  text: 'Login failed: ${responseMap['header']['message']}',
+                  type: QuickAlertType.error,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("OK"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } catch (e) {
+        print('Error during login: $e');
+        // Optionally, display an error message to the user
+      } finally {
+        setState(() {
+          _isLoading = false; // Stop loading indicator
+        });
+      }
     }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Stack(
-            children: [
-              Container(
-                width: screenWidth,
-                height: screenHeight,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/login_design.jpg'),
-                    fit: BoxFit.cover,
+    return Stack(
+      children: [
+        Scaffold(
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  Container(
+                    width: screenWidth,
+                    height: screenHeight,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/login_design.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Positioned(
-                top: 10,
-                left: 0,
-                right: 0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
+                  Positioned(
+                    top: 10,
+                    left: 0,
+                    right: 0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: TextButton.icon(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => HomePage(),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                  ),
+                                  label: Text(
+                                    'Back',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: TextButton.icon(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => HomePage(),
-                                  ),
-                                );
-                              },
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                              ),
-                              label: Text(
-                                'Back',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            padding: EdgeInsets.symmetric(horizontal: 35),
+                            child: Text(
+                              'Log In',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 35),
-                        child: Text(
-                          'Log In',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 50,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: TextFormField(
+                              controller: _emailController,
+                              cursorColor: Colors.grey,
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 92, 91, 91)),
+                              decoration: buildInputDecoration('Email'),
+                              validator: validateEmail,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: TextFormField(
+                              obscureText: true,
+                              controller: _passwordController,
+
+                              cursorColor: Colors.grey, // Change cursor color
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 92, 91, 91)),
+                              decoration: buildInputDecoration('Password'),
+                              validator: validatePassword,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 100),
+                            child: ElevatedButton(
+                              onPressed: _login,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xFF3559E0)),
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                              ),
+                              child
+                                  // : _isLoading
+                                  //     ? CircularProgressIndicator(
+                                  //         valueColor: AlwaysStoppedAnimation<Color>(
+                                  //             Colors.white),
+                                  //       )
+                                  : Text('Log In'),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 50,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: TextFormField(
-                          controller: _emailController,
-                          cursorColor: Colors.grey,
-                          style:
-                              TextStyle(color: Color.fromARGB(255, 92, 91, 91)),
-                          decoration: buildInputDecoration('Email'),
-                          validator: validateEmail,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: TextFormField(
-                          obscureText: true,
-                          controller: _passwordController,
-
-                          cursorColor: Colors.grey, // Change cursor color
-                          style:
-                              TextStyle(color: Color.fromARGB(255, 92, 91, 91)),
-                          decoration: buildInputDecoration('Password'),
-                          validator: validatePassword,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100),
-                        child: ElevatedButton(
-                          onPressed: _login,
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xFF3559E0)),
-                            foregroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                          ),
-                          child: _isLoading
-                              ? CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
-                                )
-                              : Text('Log In'),
-                        ),
-                      ),
-                    ],
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        if (_isLoading)
+          const Opacity(
+            opacity: 0.8,
+            child: ModalBarrier(dismissible: false, color: Colors.black),
+          ),
+        if (_isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
     );
   }
 }

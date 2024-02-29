@@ -33,6 +33,7 @@ class Exam extends StatefulWidget {
 
 class _ExamState extends State<Exam> {
   String? selectedChoice;
+  bool _isLoading = false;
   var choice;
   String selectedId = '';
   int currentQuestionIndex = 0;
@@ -184,13 +185,18 @@ class _ExamState extends State<Exam> {
       // _viewResult();
       // buildDialog(context, "Success", 'You have finished the Quiz ',
       //     DialogType.success, () => Navigator.pop(context), () => QuizFinishPage(title: 'kkj', answer: {},));
-
+      setState(() {
+        _isLoading = true;
+      });
       buildDialog(
         context,
         "Success",
         'You have finished the Quiz',
         DialogType.success,
         () {
+          setState(() {
+            _isLoading = true;
+          });
           // Pop the dialog
           Navigator.pop(context);
           // Push to the QuizFinishPage with the desired parameters
@@ -238,6 +244,10 @@ class _ExamState extends State<Exam> {
       }
     } catch (e) {
       print('Error fetching exam details: $e');
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading indicator
+      });
     }
   }
 
@@ -254,184 +264,201 @@ class _ExamState extends State<Exam> {
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return WillPopScope(
-      onWillPop: onBackPress,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: kItemSelectBottomNav,
-          elevation: 0.0,
-          leading: IconButton(
-            onPressed: () {
-              buildDialog(
-                  context,
-                  "Warning!",
-                  'Do you want to cancel this quiz? ',
-                  DialogType.warning,
-                  () => Navigator.pop(context),
-                  () => null);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
-          title: Column(
-            children: <Widget>[
-              SizedBox(height: 10),
-              Text(
-                widget.examTitle,
-                style: kHeadingTextStyleAppBar.copyWith(
+    return Stack(
+      children: [
+        WillPopScope(
+          onWillPop: onBackPress,
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: kItemSelectBottomNav,
+              elevation: 0.0,
+              leading: IconButton(
+                onPressed: () {
+                  buildDialog(
+                      context,
+                      "Warning!",
+                      'Do you want to cancel this quiz? ',
+                      DialogType.warning,
+                      () => Navigator.pop(context),
+                      () => null);
+                },
+                icon: Icon(
+                  Icons.arrow_back,
                   color: Colors.white,
-                  fontSize: 18,
-                  letterSpacing: 1.0,
                 ),
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
-        body: Container(
-          width: double.infinity,
-          child: Stack(
-            children: <Widget>[
-              Text(
-                '${widget.examSubject} Subject',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal),
-              ),
-              ClipPath(
-                clipper: MyClipper(),
-                child: Container(
-                  height: 280,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(color: kItemSelectBottomNav),
-                ),
-              ),
-              Column(
+              centerTitle: true,
+              title: Column(
                 children: <Widget>[
-                  SizedBox(height: 30),
+                  SizedBox(height: 10),
+                  Text(
+                    widget.examTitle,
+                    style: kHeadingTextStyleAppBar.copyWith(
+                      color: Colors.white,
+                      fontSize: 18,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+            body: Container(
+              width: double.infinity,
+              child: Stack(
+                children: <Widget>[
+                  Text(
+                    '${widget.examSubject} Subject',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  ClipPath(
+                    clipper: MyClipper(),
+                    child: Container(
+                      height: 280,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 50),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(color: kItemSelectBottomNav),
+                    ),
+                  ),
                   Column(
                     children: <Widget>[
-                      SingleChildScrollView(
-                        child: Row(
-                          children: <Widget>[
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              physics: BouncingScrollPhysics(),
-                            ),
-                          ],
-                        ),
-                        scrollDirection: Axis.horizontal,
-                      ),
-                      const SizedBox(height: 30),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Text(
-                          currentQuestion.text,
-                          style: kHeadingTextStyleAppBar.copyWith(
-                              color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(color: Colors.white),
-                                  BoxShadow(
-                                      offset: Offset(1, 1), color: Colors.grey),
-                                  BoxShadow(color: Colors.white),
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                  currentQuestion.choices.length,
-                                  (index) {
-                                    var choice = currentQuestion.choices[index];
-                                    return RadioListTile<String>(
-                                      title: Text(choice.text),
-                                      value: choice.id.toString(),
-                                      groupValue: selectedChoice,
-                                      onChanged: _selectChoice,
-                                    );
-                                  },
+                      SizedBox(height: 30),
+                      Column(
+                        children: <Widget>[
+                          SingleChildScrollView(
+                            child: Row(
+                              children: <Widget>[
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: BouncingScrollPhysics(),
                                 ),
-                              ),
+                              ],
                             ),
-                            SizedBox(height: 20),
-                            OutlinedButton(
-                              onPressed: () {
-                                // Check if a choice has been selected
-                                if (selectedChoice == null) {
-                                  // Show a snackbar message
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'First, you have to select a choice.'),
+                            scrollDirection: Axis.horizontal,
+                          ),
+                          const SizedBox(height: 30),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              currentQuestion.text,
+                              style: kHeadingTextStyleAppBar.copyWith(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(color: Colors.white),
+                                      BoxShadow(
+                                          offset: Offset(1, 1),
+                                          color: Colors.grey),
+                                      BoxShadow(color: Colors.white),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: List.generate(
+                                      currentQuestion.choices.length,
+                                      (index) {
+                                        var choice =
+                                            currentQuestion.choices[index];
+                                        return RadioListTile<String>(
+                                          title: Text(choice.text),
+                                          value: choice.id.toString(),
+                                          groupValue: selectedChoice,
+                                          onChanged: _selectChoice,
+                                        );
+                                      },
                                     ),
-                                  );
-                                } else {
-                                  // Proceed to answer the question and navigate to the next question
-                                  _answerCurrentQuestion();
-                                  _navigateToNextQuestion();
-                                }
-                              },
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: Color(0xFF3559E0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                 ),
-                                side: BorderSide(color: Colors.black),
-                              ),
-                              child: Text(
-                                'Answer',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
+                                SizedBox(height: 20),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    // Check if a choice has been selected
+                                    if (selectedChoice == null) {
+                                      // Show a snackbar message
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'First, you have to select a choice.'),
+                                        ),
+                                      );
+                                    } else {
+                                      // Proceed to answer the question and navigate to the next question
+                                      _answerCurrentQuestion();
+                                      _navigateToNextQuestion();
+                                    }
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Color(0xFF3559E0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    side: BorderSide(color: Colors.black),
+                                  ),
+                                  child: Text(
+                                    'Answer',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )
 
-                            // OutlinedButton(
-                            //   onPressed: () {
-                            //     _answerCurrentQuestion();
-                            //     _navigateToNextQuestion();
-                            //   },
-                            //   style: OutlinedButton.styleFrom(
-                            //     backgroundColor: Color(0xFF3559E0),
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(8.0),
-                            //     ),
-                            //     side: BorderSide(color: Colors.black),
-                            //   ),
-                            //   child: Text(
-                            //     'Answer',
-                            //     style: TextStyle(color: Colors.white),
-                            //   ),
-                            // )
-                          ],
-                        ),
+                                // OutlinedButton(
+                                //   onPressed: () {
+                                //     _answerCurrentQuestion();
+                                //     _navigateToNextQuestion();
+                                //   },
+                                //   style: OutlinedButton.styleFrom(
+                                //     backgroundColor: Color(0xFF3559E0),
+                                //     shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(8.0),
+                                //     ),
+                                //     side: BorderSide(color: Colors.black),
+                                //   ),
+                                //   child: Text(
+                                //     'Answer',
+                                //     style: TextStyle(color: Colors.white),
+                                //   ),
+                                // )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        if (_isLoading)
+          const Opacity(
+            opacity: 0.8,
+            child: ModalBarrier(dismissible: false, color: Colors.black),
+          ),
+        if (_isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
     );
   }
 

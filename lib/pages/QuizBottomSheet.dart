@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../util/dialog.dart';
+
 class QuizBottomSheet extends StatefulWidget {
   final String title;
   final String subTitle;
@@ -30,11 +32,14 @@ class QuizBottomSheet extends StatefulWidget {
 
 class _QuizBottomSheetState extends State<QuizBottomSheet> {
   final globalKey = GlobalKey<ScaffoldState>();
+  bool _isLoading = false;
 
   void _examDetail(String examId) async {
     //  List<dynamic> choice;
     List<QuestionChoice> questionsList = [];
-
+    setState(() {
+      _isLoading = true;
+    });
     print('Exam ID: $examId'); // Print examId before sending request
     try {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -143,73 +148,110 @@ class _QuizBottomSheetState extends State<QuizBottomSheet> {
       } else {
         print(
             'Failed to fetch exam details: ${responseMap['header']['message']}');
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(" Failed to Fetch Exam"),
+              content: QuickAlert(
+                text: ' ${responseMap['header']['message']}',
+                type: QuickAlertType.error,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       print('Error fetching exam details: $e');
+    } finally {
+      setState(() {
+        _isLoading = false; // Stop loading indicator
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: globalKey,
-      backgroundColor: Colors.transparent,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              widget.title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+    return Stack(
+      children: [
+        Scaffold(
+          key: globalKey,
+          backgroundColor: Colors.transparent,
+          body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text('${widget.subjects} Subject'),
-            const SizedBox(
-              height: 20,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(widget.subTitle),
-            const SizedBox(
-              height: 30,
-            ),
-            Center(
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xFF3559E0)),
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        Colors.white) // Change to your desired color
-                    ),
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(15)),
-                onPressed: () {
-                  _examDetail(widget.examId);
-                },
-                child: Text(
-                  "Start Exam",
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget.title,
                   style: TextStyle(
-                    fontSize: 16,
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text('${widget.subjects} Subject'),
+                const SizedBox(
+                  height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(widget.subTitle),
+                const SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Color(0xFF3559E0)),
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            Colors.white) // Change to your desired color
+                        ),
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(15)),
+                    onPressed: () {
+                      _examDetail(widget.examId);
+                    },
+                    child: Text(
+                      "Start Exam",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        if (_isLoading)
+          const Opacity(
+            opacity: 0.8,
+            child: ModalBarrier(dismissible: false, color: Colors.black),
+          ),
+        if (_isLoading)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
     );
   }
 }
