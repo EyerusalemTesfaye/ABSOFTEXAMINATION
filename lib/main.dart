@@ -80,96 +80,113 @@
 //   }
 // }
 
-import 'package:absoftexamination/pages/exam.dart';
-import 'package:absoftexamination/pages/examhome.dart';
-import 'package:absoftexamination/pages/home.dart';
-import 'package:absoftexamination/pages/login.dart';
-import 'package:absoftexamination/pages/signUp.dart';
-import 'package:absoftexamination/pages/takeExam.dart';
-import 'package:absoftexamination/providers/auth.dart';
-import 'package:absoftexamination/providers/examData.dart';
-import 'package:absoftexamination/providers/question.dart';
-import 'package:absoftexamination/providers/questionProvider.dart';
-import 'package:absoftexamination/providers/resultShow.dart';
-import 'package:absoftexamination/providers/userProvider.dart';
-import 'package:absoftexamination/util/connection.dart';
-import 'package:absoftexamination/util/router.dart';
-import 'package:absoftexamination/util/router_path.dart';
-import 'package:absoftexamination/util/shared_preferences_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:connectivity/connectivity.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+import 'pages/exam.dart';
+import 'pages/examhome.dart';
+import 'pages/home.dart';
+import 'pages/login.dart';
+import 'pages/signUp.dart';
+import 'pages/takeExam.dart';
+import 'providers/auth.dart';
+import 'providers/examData.dart';
+import 'providers/question.dart';
+import 'providers/questionProvider.dart';
+import 'providers/resultShow.dart';
+import 'providers/userProvider.dart';
+import 'util/router.dart';
+import 'util/router_path.dart';
+import 'util/shared_preferences_util.dart';
 
-  // Check internet connectivity
-  bool isInternetAvailable = await checkInternetConnectivity();
-  String initialRoute;
-
-  if (isInternetAvailable) {
-    // Check if a user is logged in
-    final bool isUserLoggedIn = await UserPreferences.isUserLoggedIn();
-    initialRoute = isUserLoggedIn ? ExamHomeScreen : HomeScreen;
-  } else {
-    // No internet connection, show home screen
-    initialRoute = HomeScreen;
-  }
-
-  runApp(MyApp(
-      initialRoute: initialRoute, isInternetAvailable: isInternetAvailable));
+void main() {
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  final String initialRoute;
-  final bool isInternetAvailable;
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-  MyApp({required this.initialRoute, required this.isInternetAvailable});
+class _MyAppState extends State<MyApp> {
+  late bool isInternetAvailable;
+  late Future<String> initialRoute;
+
+  @override
+  void initState() {
+    super.initState();
+    initConnectivity();
+    initialRoute = _getInitialRoute();
+  }
+
+  Future<void> initConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      isInternetAvailable = connectivityResult != ConnectivityResult.none;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (!isInternetAvailable) {
-      return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: Text('You are not connect to internet!'),
-          ),
-        ),
-      );
-    }
-
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (BuildContext context) => UserDataProvider(),
-        ),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => QuestionProvider()),
-        ChangeNotifierProvider(
-          create: (_) => ExamProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ExamDataProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ResultShowProvider(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: Routerr.generateRouter,
-        initialRoute: initialRoute,
-      ),
+    return FutureBuilder<String>(
+      future: initialRoute,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
+        } else {
+          if (isInternetAvailable == null || !isInternetAvailable) {
+            return MaterialApp(
+              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                body: Center(
+                  child: Text('You are not connected to the internet!'),
+                ),
+              ),
+            );
+          } else {
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                  create: (BuildContext context) => UserDataProvider(),
+                ),
+                ChangeNotifierProvider(
+                    create: (BuildContext context) => UserProvider()),
+                ChangeNotifierProvider(create: (_) => QuestionProvider()),
+                ChangeNotifierProvider(
+                  create: (_) => ExamProvider(),
+                ),
+                ChangeNotifierProvider(
+                  create: (_) => ExamDataProvider(),
+                ),
+                ChangeNotifierProvider(
+                  create: (_) => ResultShowProvider(),
+                ),
+              ],
+              child: MaterialApp(
+                title: 'Flutter Demo',
+                debugShowCheckedModeBanner: false,
+                onGenerateRoute: Routerr.generateRouter,
+                initialRoute: snapshot.data ?? HomeScreen,
+              ),
+            );
+          }
+        }
+      },
     );
   }
 
-  Future<bool> checkInternetConnectivity() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    return connectivityResult != ConnectivityResult.none;
+  Future<String> _getInitialRoute() async {
+    bool isUserLoggedIn = await UserPreferences.isUserLoggedIn();
+    return isUserLoggedIn ? ExamHomeScreen : HomeScreen;
   }
 }
