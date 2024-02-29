@@ -183,29 +183,86 @@ class _ExamHomeState extends State<ExamHome> {
                                   showMenu(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
-                                          20.0), // Adjust the value as needed
+                                          10.0), // Adjust the value as needed
                                       side: BorderSide(
-                                          color: Colors
-                                              .grey), // Add border color if necessary
+                                          color: const Color.fromARGB(
+                                              255,
+                                              245,
+                                              245,
+                                              245)), // Add border color if necessary
                                     ),
                                     context: context,
                                     position:
                                         RelativeRect.fromLTRB(82, 82, 0, 0),
                                     items: [
                                       PopupMenuItem(
-                                        child: Text('Results'),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.list_alt,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'Results',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                         onTap: () => _results(context),
                                         value: 0,
                                       ),
-                                      // PopupMenuItem(
-                                      //   child: Text('Exams'),
-                                      //   onTap: () {
-                                      //     fetchData();
-                                      //   },
-                                      //   value: 1,
-                                      // ),
                                       PopupMenuItem(
-                                        child: Text('Logout'),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.perm_device_information,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'About Us',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          fetchData();
+                                        },
+                                        value: 1,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Column(
+                                          children: [
+                                            Divider(
+                                              color: const Color.fromARGB(
+                                                  255, 62, 59, 59),
+                                              thickness: 3.0,
+                                              height: 10.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.logout,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  'Logout',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                         onTap: () async {
                                           await UserPreferences.removeToken();
 
