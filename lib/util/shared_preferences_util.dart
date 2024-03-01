@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserPreferences {
   static const String _userKey = 'user';
   static final String tokenKey = 'token';
+  static const String _isFirstTimeKey = 'is_first_time';
 
   static Future<void> saveUser(User user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -64,5 +65,15 @@ class UserPreferences {
   Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userKey);
+  }
+
+  static Future<void> setFirstTime(bool isFirstTime) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(_isFirstTimeKey, isFirstTime);
+  }
+
+  static Future<bool> isFirstTime() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isFirstTimeKey) ?? true;
   }
 }

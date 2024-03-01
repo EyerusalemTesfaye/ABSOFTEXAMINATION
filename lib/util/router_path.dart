@@ -2,9 +2,12 @@ import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/exam.dart';
 import 'package:absoftexamination/pages/examhome.dart';
+import 'package:absoftexamination/pages/firstPreview.dart';
+import 'package:absoftexamination/pages/getStarted.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
 import 'package:absoftexamination/pages/result.dart';
+import 'package:absoftexamination/pages/secondPreview.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/pages/signUp.dart';
 import 'package:absoftexamination/pages/soreResult.dart';
@@ -83,6 +86,15 @@ class Routerr {
       case ResultShowScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => ResultScreen());
+      case GetStartedScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => GetStartedPage());
+      case FirstPreviewScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => FirstPreview());
+      case SecondPreviewScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => SecondPreview());
       // Add more cases for other routes if needed
       default:
         throw Exception('Unknown route: ${settings.name}');
