@@ -124,9 +124,18 @@ class _ExamHomeState extends State<ExamHome> {
 
     return Scaffold(
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
+          ? Container(
+              height: screenHeight,
+              width: screenWidth,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage('assets/splash.png'),
+                fit: BoxFit.cover,
+              )),
             )
+          // Center(
+          //     child: CircularProgressIndicator(),
+          //   )
           : examProvider.error.isNotEmpty
               ? Center(
                   child: Text('Error: ${examProvider.error}'),

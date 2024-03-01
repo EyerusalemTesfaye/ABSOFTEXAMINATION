@@ -85,7 +85,7 @@ import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
 import 'package:absoftexamination/pages/signUp.dart';
-import 'package:absoftexamination/pages/takeExam.dart';
+//import 'package:absoftexamination/pages/takeExam.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/providers/examData.dart';
 import 'package:absoftexamination/providers/question.dart';
