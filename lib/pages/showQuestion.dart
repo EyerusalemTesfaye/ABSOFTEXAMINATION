@@ -110,7 +110,11 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           ListTile(
-                            title: Text(question.text),
+                            title: Text(
+                              question.text,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: question.choices.map((choice) {
