@@ -185,7 +185,7 @@ class _ExamHomeState extends State<ExamHome> {
                             child: PopupMenuItem(
                               child: IconButton(
                                 icon: Icon(
-                                  Icons.more_horiz,
+                                  Icons.menu,
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
@@ -223,6 +223,29 @@ class _ExamHomeState extends State<ExamHome> {
                                         ),
                                         onTap: () => _results(context),
                                         value: 0,
+                                      ),
+                                      PopupMenuItem(
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.person_outline,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'Profile',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, UserProfileScreen);
+                                          //fetchData();
+                                        },
+                                        value: 1,
                                       ),
                                       PopupMenuItem(
                                         child: Row(

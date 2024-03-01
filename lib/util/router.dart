@@ -9,3 +9,4 @@ const String ResultShowScreen = 'ResultShowScreen';
 const String GetStartedScreen = 'GetStartedScreen';
 const String FirstPreviewScreen = 'FirstPreviewScreen';
 const String SecondPreviewScreen = 'SecondPreviewScreen';
+const String UserProfileScreen = 'UserProfileScreen';

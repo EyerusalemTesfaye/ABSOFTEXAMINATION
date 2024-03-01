@@ -6,6 +6,7 @@ import 'package:absoftexamination/pages/firstPreview.dart';
 import 'package:absoftexamination/pages/getStarted.dart';
 import 'package:absoftexamination/pages/home.dart';
 import 'package:absoftexamination/pages/login.dart';
+import 'package:absoftexamination/pages/profile.dart';
 import 'package:absoftexamination/pages/result.dart';
 import 'package:absoftexamination/pages/secondPreview.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
@@ -95,6 +96,9 @@ class Routerr {
       case SecondPreviewScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => SecondPreview());
+      case UserProfileScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => UserProfile());
       // Add more cases for other routes if needed
       default:
         throw Exception('Unknown route: ${settings.name}');
