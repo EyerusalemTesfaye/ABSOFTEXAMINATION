@@ -130,7 +130,7 @@ class _ExamHomeState extends State<ExamHome> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                 image: AssetImage('assets/splash.png'),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               )),
             )
           // Center(
@@ -140,53 +140,52 @@ class _ExamHomeState extends State<ExamHome> {
               ? Center(
                   child: Text('Error: ${examProvider.error}'),
                 )
-              : Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(color: Color(0xFF4042C9)),
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Row(
+              : Stack(
+                  children: [
+                    Container(
+                      height: screenHeight,
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage('assets/homeFrame.png'),
+                        fit: BoxFit.cover,
+                      )),
+                    ),
+                    Positioned(
+                      top: screenHeight * 0.039,
+                      left: 0,
+                      right: 0,
+                      child: Row(
                         children: [
                           SizedBox(
                             width: 10,
                           ),
-                          Image(
-                            width: 50,
-                            height: 50,
-                            image: AssetImage('assets/quizer_logo.png'),
+                          IconButton(
+                            onPressed: () {
+                              //Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              size: 30,
+                            ),
                           ),
-                          // ColorFiltered(
-                          //   colorFilter:
-                          //       ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                          //   child: Image(
-                          //     width: 50,
-                          //     height: 50,
-                          //     image: AssetImage('assets/quizer_logo.png'),
-                          //   ),
-                          // ),
-
                           SizedBox(
-                            width: screenWidth * 0.2,
+                            width: screenWidth * 0.25,
                           ),
                           Text(
-                            "Select Subject",
+                            "Home",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
+                                fontWeight: FontWeight.bold, fontSize: 24),
                           ),
                           SizedBox(
-                            width: screenWidth * 0.1,
+                            width: screenWidth * 0.2,
                           ),
                           Expanded(
                             child: PopupMenuItem(
                               child: IconButton(
                                 icon: Icon(
                                   Icons.menu,
-                                  color: Colors.white,
+                                  size: 30,
                                 ),
                                 onPressed: () {
                                   showMenu(
@@ -221,7 +220,7 @@ class _ExamHomeState extends State<ExamHome> {
                                             ),
                                           ],
                                         ),
-                                        onTap: () => _results(context),
+                                        //onTap: () => _results(context),
                                         value: 0,
                                       ),
                                       PopupMenuItem(
@@ -264,7 +263,7 @@ class _ExamHomeState extends State<ExamHome> {
                                           ],
                                         ),
                                         onTap: () {
-                                          fetchData();
+                                          // fetchData();
                                         },
                                         value: 1,
                                       ),
@@ -315,109 +314,454 @@ class _ExamHomeState extends State<ExamHome> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(40),
-                              topRight: Radius.circular(40),
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                ListView.builder(
-                                  itemCount: examProvider.questions.length,
-                                  physics: ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    Question question =
-                                        examProvider.questions[index];
-                                    print(
-                                        'Number of questions: ${examProvider.questions.length}'); // Add this line
+                    ),
 
-                                    return InkWell(
-                                      onTap: () => {},
-                                      child: Card(
-                                        child: Container(
-                                          height: screenHeight * 0.2,
-                                          width: screenWidth * 0.94,
+                    Column(
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).padding.top +
+                                kToolbarHeight),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: examProvider.questions.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Question question =
+                                      examProvider.questions[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          height: 180,
                                           decoration: BoxDecoration(
-                                              border: Border(
-                                                  left: BorderSide(
-                                                      color: Colors.green,
-                                                      width: 5))),
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                question.title,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Text(
-                                                '[${question.count}] ${question.subject} Subject Questions',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              SizedBox(
-                                                  height: screenHeight * 0.013),
-                                              Expanded(
-                                                child: OutlinedButton(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/examlistBg.png'),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 20,
+                                          left: 0,
+                                          right: 0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 45),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  question.title,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 15),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: 3,
+                                                        horizontal: 8,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      child: Text(
+                                                        question.count,
+                                                        style: TextStyle(
+                                                            fontSize: 18),
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                      'Questions',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 10),
+                                                TextButton(
                                                   onPressed: () {
                                                     _examStart(question.id);
                                                   },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
+                                                  style: ButtonStyle(
                                                     backgroundColor:
-                                                        Color(0xFF3559E0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                      Color(0xFF2D54EF),
                                                     ),
-                                                    side: BorderSide(
-                                                      color: Colors.black,
+                                                    shape: MaterialStateProperty
+                                                        .all<OutlinedBorder>(
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
                                                     ),
                                                   ),
-                                                  child: Text(
-                                                    'Take Exam',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        'Take',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 35),
+                                                      Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        size: 20,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              )
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              ],
-                            ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+
+                    // Positioned(
+                    //     top: 175,
+                    //     left: screenWidth / 2 - 110,
+                    //     right: 50,
+                    //     child: Row(
+                    //       children: [
+                    //         TextButton(onPressed: () {}, child: Text('8')),
+                    //         Text(
+                    //           'jhhhjh',
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.bold, fontSize: 18),
+                    //         ),
+                    //       ],
+                    //     )),
+                    // Positioned(
+                    //     top: 210,
+                    //     left: screenWidth / 2 - 110,
+                    //     right: 50,
+                    //     child: Text(
+                    //       'jhhhjh',
+                    //       style: TextStyle(
+                    //           fontWeight: FontWeight.bold, fontSize: 18),
+                    //     ))
+
+                    // Container(
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(color: Color(0xFF4042C9)),
+                    //   child: Column(
+                    //     children: <Widget>[
+                    //       const SizedBox(
+                    //         height: 50,
+                    //       ),
+                    //       Row(
+                    //         children: [
+                    //           SizedBox(
+                    //             width: 10,
+                    //           ),
+                    //           Image(
+                    //             width: 50,
+                    //             height: 50,
+                    //             image: AssetImage('assets/quizer_logo.png'),
+                    //           ),
+                    //           // ColorFiltered(
+                    //           //   colorFilter:
+                    //           //       ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    //           //   child: Image(
+                    //           //     width: 50,
+                    //           //     height: 50,
+                    //           //     image: AssetImage('assets/quizer_logo.png'),
+                    //           //   ),
+                    //           // ),
+
+                    //           SizedBox(
+                    //             width: screenWidth * 0.2,
+                    //           ),
+                    //           Text(
+                    //             "Select Subject",
+                    //             style: TextStyle(
+                    //                 color: Colors.white,
+                    //                 fontWeight: FontWeight.bold,
+                    //                 fontSize: 18),
+                    //           ),
+                    //           SizedBox(
+                    //             width: screenWidth * 0.1,
+                    //           ),
+                    //           Expanded(
+                    //             child: PopupMenuItem(
+                    //               child: IconButton(
+                    //                 icon: Icon(
+                    //                   Icons.menu,
+                    //                   color: Colors.white,
+                    //                 ),
+                    //                 onPressed: () {
+                    //                   showMenu(
+                    //                     shape: RoundedRectangleBorder(
+                    //                       borderRadius: BorderRadius.circular(
+                    //                           10.0), // Adjust the value as needed
+                    //                       side: BorderSide(
+                    //                           color: const Color.fromARGB(
+                    //                               255,
+                    //                               245,
+                    //                               245,
+                    //                               245)), // Add border color if necessary
+                    //                     ),
+                    //                     context: context,
+                    //                     position:
+                    //                         RelativeRect.fromLTRB(82, 82, 0, 0),
+                    //                     items: [
+                    //                       PopupMenuItem(
+                    //                         child: Row(
+                    //                           children: [
+                    //                             Icon(
+                    //                               Icons.list_alt,
+                    //                             ),
+                    //                             SizedBox(
+                    //                               width: 10,
+                    //                             ),
+                    //                             Text(
+                    //                               'Results',
+                    //                               style: TextStyle(
+                    //                                 fontWeight: FontWeight.bold,
+                    //                               ),
+                    //                             ),
+                    //                           ],
+                    //                         ),
+                    //                         onTap: () => _results(context),
+                    //                         value: 0,
+                    //                       ),
+                    //                       PopupMenuItem(
+                    //                         child: Row(
+                    //                           children: [
+                    //                             Icon(
+                    //                               Icons.person_outline,
+                    //                             ),
+                    //                             SizedBox(
+                    //                               width: 10,
+                    //                             ),
+                    //                             Text(
+                    //                               'Profile',
+                    //                               style: TextStyle(
+                    //                                   fontWeight:
+                    //                                       FontWeight.bold),
+                    //                             ),
+                    //                           ],
+                    //                         ),
+                    //                         onTap: () {
+                    //                           Navigator.pushNamed(
+                    //                               context, UserProfileScreen);
+                    //                           //fetchData();
+                    //                         },
+                    //                         value: 1,
+                    //                       ),
+                    //                       PopupMenuItem(
+                    //                         child: Row(
+                    //                           children: [
+                    //                             Icon(
+                    //                               Icons.perm_device_information,
+                    //                             ),
+                    //                             SizedBox(
+                    //                               width: 10,
+                    //                             ),
+                    //                             Text(
+                    //                               'About Us',
+                    //                               style: TextStyle(
+                    //                                   fontWeight:
+                    //                                       FontWeight.bold),
+                    //                             ),
+                    //                           ],
+                    //                         ),
+                    //                         onTap: () {
+                    //                           fetchData();
+                    //                         },
+                    //                         value: 1,
+                    //                       ),
+                    //                       PopupMenuItem(
+                    //                         child: Column(
+                    //                           children: [
+                    //                             Divider(
+                    //                               color: const Color.fromARGB(
+                    //                                   255, 62, 59, 59),
+                    //                               thickness: 3.0,
+                    //                               height: 10.0,
+                    //                             ),
+                    //                             Row(
+                    //                               children: [
+                    //                                 Icon(
+                    //                                   Icons.logout,
+                    //                                 ),
+                    //                                 SizedBox(
+                    //                                   width: 10,
+                    //                                 ),
+                    //                                 Text(
+                    //                                   'Logout',
+                    //                                   style: TextStyle(
+                    //                                       fontWeight:
+                    //                                           FontWeight.bold),
+                    //                                 ),
+                    //                               ],
+                    //                             ),
+                    //                           ],
+                    //                         ),
+                    //                         onTap: () async {
+                    //                           await UserPreferences
+                    //                               .removeToken();
+
+                    //                           Navigator.pushReplacement(
+                    //                             context,
+                    //                             MaterialPageRoute(
+                    //                               builder: (_) => HomePage(),
+                    //                             ),
+                    //                           );
+                    //                         },
+                    //                         value: 2,
+                    //                       ),
+                    //                     ],
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 20,
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           padding: const EdgeInsets.symmetric(
+                    //               horizontal: 10, vertical: 10),
+                    //           decoration: BoxDecoration(
+                    //             color: Colors.white,
+                    //             borderRadius: BorderRadius.only(
+                    //               topLeft: Radius.circular(40),
+                    //               topRight: Radius.circular(40),
+                    //             ),
+                    //           ),
+                    //           child: SingleChildScrollView(
+                    //             child: Column(
+                    //               mainAxisAlignment: MainAxisAlignment.start,
+                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                    //               children: <Widget>[
+                    //                 ListView.builder(
+                    //                   itemCount: examProvider.questions.length,
+                    //                   physics: ClampingScrollPhysics(),
+                    //                   shrinkWrap: true,
+                    //                   itemBuilder:
+                    //                       (BuildContext context, int index) {
+                    //                     Question question =
+                    //                         examProvider.questions[index];
+                    //                     print(
+                    //                         'Number of questions: ${examProvider.questions.length}'); // Add this line
+
+                    //                     return InkWell(
+                    //                       onTap: () => {},
+                    //                       child: Card(
+                    //                         child: Container(
+                    //                           height: screenHeight * 0.2,
+                    //                           width: screenWidth * 0.94,
+                    //                           decoration: BoxDecoration(
+                    //                               border: Border(
+                    //                                   left: BorderSide(
+                    //                                       color: Colors.green,
+                    //                                       width: 5))),
+                    //                           child: Column(
+                    //                             children: [
+                    //                               SizedBox(
+                    //                                 height: 10,
+                    //                               ),
+                    //                               Text(
+                    //                                 question.title,
+                    //                                 style: TextStyle(
+                    //                                     fontSize: 18,
+                    //                                     fontWeight:
+                    //                                         FontWeight.bold),
+                    //                               ),
+                    //                               SizedBox(height: 10),
+                    //                               Text(
+                    //                                 '[${question.count}] ${question.subject} Subject Questions',
+                    //                                 style:
+                    //                                     TextStyle(fontSize: 16),
+                    //                               ),
+                    //                               SizedBox(
+                    //                                   height:
+                    //                                       screenHeight * 0.013),
+                    //                               Expanded(
+                    //                                 child: OutlinedButton(
+                    //                                   onPressed: () {
+                    //                                     _examStart(question.id);
+                    //                                   },
+                    //                                   style: OutlinedButton
+                    //                                       .styleFrom(
+                    //                                     backgroundColor:
+                    //                                         Color(0xFF3559E0),
+                    //                                     shape:
+                    //                                         RoundedRectangleBorder(
+                    //                                       borderRadius:
+                    //                                           BorderRadius
+                    //                                               .circular(
+                    //                                                   8.0),
+                    //                                     ),
+                    //                                     side: BorderSide(
+                    //                                       color: Colors.black,
+                    //                                     ),
+                    //                                   ),
+                    //                                   child: Text(
+                    //                                     'Take Exam',
+                    //                                     style: TextStyle(
+                    //                                         color:
+                    //                                             Colors.white),
+                    //                                   ),
+                    //                                 ),
+                    //                               ),
+                    //                               SizedBox(
+                    //                                 height: 10,
+                    //                               )
+                    //                             ],
+                    //                           ),
+                    //                         ),
+                    //                       ),
+                    //                     );
+                    //                   },
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
                 ),
     );
   }
