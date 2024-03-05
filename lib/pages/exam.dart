@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/pages/soreResult.dart';
@@ -301,24 +302,24 @@ class _ExamState extends State<Exam> {
                   ),
                 ),
                 SizedBox(
-                  width: screenWidth * 0.18,
+                  width: screenWidth * 0.08,
                 ),
                 Text(
-                  "Exam Title",
+                  widget.examTitle,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 24,
+                      fontSize: 22,
                       color: Color(0xFF07193F)),
                 ),
               ],
             ),
           ),
           Positioned(
-              top: 180,
+              top: 150,
               right: 10,
               left: 20,
               child: Container(
-                height: 110,
+                height: 130,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -334,24 +335,139 @@ class _ExamState extends State<Exam> {
                 ),
               )),
           Positioned(
-            top: 120,
-            left: MediaQuery.of(context).size.width / 2 - 50,
+            top: 110,
+            left: MediaQuery.of(context).size.width / 2 - 30,
             child: ClipPath(
               clipper: CircleClipper(),
               child: Container(
-                width: 100,
-                height: 100,
+                width: 70,
+                height: 70,
                 color: Color(0xFF07193F),
                 child: Center(
                   child: Text(
-                    '3/4',
+                    '${currentQuestionIndex + 1} /${questionLen}',
                     style: TextStyle(color: Colors.white, fontSize: 28),
                   ),
                 ),
               ),
             ),
           ),
-          Positioned(top: 150, left: 60, right: 40, child: Text('ftetee')),
+          Positioned(
+              top: 185,
+              left: 60,
+              right: 0,
+              child: Text(
+                currentQuestion.text,
+                style: TextStyle(fontSize: 18),
+              )),
+          // Positioned(
+          //     top: 300,
+          //     left: 20,
+          //     right: 10,
+          //     child: Container(
+          //       height: 70,
+          //       decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(10),
+          //         boxShadow: [
+          //           BoxShadow(
+          //             color: Colors.grey.withOpacity(0.5), // Shadow color
+          //             spreadRadius: 5, // Spread radius
+          //             blurRadius: 7, // Blur radius
+          //             offset: Offset(
+          //                 0, 3), // Offset in x and y axes from the shadow
+          //           ),
+          //         ],
+          //       ),
+          //     )),
+
+          Positioned(
+            top: 290,
+            left: 20,
+            right: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(
+                currentQuestion.choices.length,
+                (index) {
+                  var choice = currentQuestion.choices[index];
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 10), // Adjust vertical spacing as needed
+                    child: Container(
+                      height: 65,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5), // Shadow color
+                            spreadRadius: 5, // Spread radius
+                            blurRadius: 7, // Blur radius
+                            offset: Offset(
+                                0, 3), // Offset in x and y axes from the shadow
+                          ),
+                        ],
+                      ),
+                      child: CheckboxListTile(
+                        title: Text(choice.text),
+                        value: selectedChoice == choice.id.toString(),
+                        onChanged: (bool? value) {
+                          setState(() {
+                            if (value != null && value) {
+                              _selectChoice(choice.id.toString());
+                            } else {
+                              selectedChoice = null;
+                            }
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+
+          Positioned(
+            bottom: 30,
+            right: 10,
+            left: 20,
+            child: SizedBox(
+              width: double.infinity,
+              height: 60, // Adjust the width as needed
+              child: OutlinedButton(
+                onPressed: () {
+                  // Check if a choice has been selected
+                  if (selectedChoice == null) {
+                    // Show a snackbar message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('First, you have to select a choice.'),
+                      ),
+                    );
+                  } else {
+                    // Proceed to answer the question and navigate to the next question
+                    _answerCurrentQuestion();
+                    _navigateToNextQuestion();
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Color(0xFF07193F),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  side: BorderSide(color: Colors.black),
+                ),
+                child: Text(
+                  'Answer',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ),
+            ),
+          ),
+
           // WillPopScope(
           //   onWillPop: onBackPress,
           //   child: Scaffold(
@@ -475,36 +591,36 @@ class _ExamState extends State<Exam> {
           //                           ),
           //                         ),
           //                         SizedBox(height: 20),
-          //                         OutlinedButton(
-          //                           onPressed: () {
-          //                             // Check if a choice has been selected
-          //                             if (selectedChoice == null) {
-          //                               // Show a snackbar message
-          //                               ScaffoldMessenger.of(context)
-          //                                   .showSnackBar(
-          //                                 SnackBar(
-          //                                   content: Text(
-          //                                       'First, you have to select a choice.'),
-          //                                 ),
-          //                               );
-          //                             } else {
-          //                               // Proceed to answer the question and navigate to the next question
-          //                               _answerCurrentQuestion();
-          //                               _navigateToNextQuestion();
-          //                             }
-          //                           },
-          //                           style: OutlinedButton.styleFrom(
-          //                             backgroundColor: Color(0xFF3559E0),
-          //                             shape: RoundedRectangleBorder(
-          //                               borderRadius: BorderRadius.circular(8.0),
-          //                             ),
-          //                             side: BorderSide(color: Colors.black),
-          //                           ),
-          //                           child: Text(
-          //                             'Answer',
-          //                             style: TextStyle(color: Colors.white),
-          //                           ),
-          //                         )
+          // OutlinedButton(
+          //   onPressed: () {
+          //     // Check if a choice has been selected
+          //     if (selectedChoice == null) {
+          //       // Show a snackbar message
+          //       ScaffoldMessenger.of(context)
+          //           .showSnackBar(
+          //         SnackBar(
+          //           content: Text(
+          //               'First, you have to select a choice.'),
+          //         ),
+          //       );
+          //     } else {
+          //       // Proceed to answer the question and navigate to the next question
+          //       _answerCurrentQuestion();
+          //       _navigateToNextQuestion();
+          //     }
+          //   },
+          //   style: OutlinedButton.styleFrom(
+          //     backgroundColor: Color(0xFF3559E0),
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(8.0),
+          //     ),
+          //     side: BorderSide(color: Colors.black),
+          //   ),
+          //   child: Text(
+          //     'Answer',
+          //     style: TextStyle(color: Colors.white),
+          //   ),
+          // )
 
           //                         // OutlinedButton(
           //                         //   onPressed: () {

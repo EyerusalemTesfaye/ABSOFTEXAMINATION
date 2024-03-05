@@ -28,6 +28,8 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
   void initState() {
     super.initState();
     print('widget.questions:${widget.questions}');
+
+    // print('selectedChoiceId:${selectedChoiceId}');
     print('questions.length:${widget.questions.length}');
     print('widget.questionsList:${widget.questionsList}');
     var questionProvider =
@@ -54,7 +56,7 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
 //var currentQuestion = questionChoice[currentQuestionIndex];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF4042C9),
+        backgroundColor: Color.fromARGB(255, 46, 47, 83),
         title: Text(
           "Show Question",
           style: TextStyle(color: Colors.white),
@@ -81,9 +83,13 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   // var question = widget.questions[index];
                   final question = widget.questionsList[index];
-
+                  var selectedChoiceId =
+                      int.parse(widget.questions[index]['choice']);
                   // bool correct = question.correctAnswer == widget.answer[index];
-
+                  print('selectedChoiceId:${selectedChoiceId}');
+                  var isQuestionStateTrue =
+                      widget.questions[index]['state'] == true;
+                  print(isQuestionStateTrue);
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Container(
@@ -115,15 +121,48 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
+                            // subtitle: Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: question.choices.map((choice) {
+                            //     // Find the state of the current choice
+                            //     var choiceState = choice.id == question.answer;
+
+                            //     // Determine the text color based on the choice state
+                            //     Color textColor =
+                            //         choiceState ? Colors.green : Colors.black;
+
+                            //     return Text(
+                            //       choice.text,
+                            //       style: TextStyle(color: textColor),
+                            //     );
+                            //   }).toList(),
+                            // ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: question.choices.map((choice) {
-                                // Find the state of the current choice
-                                var choiceState = choice.id == question.answer;
+                                // Find if the current choice is the correct answer
+                                var isCorrectAnswer =
+                                    choice.id == question.answer;
 
-                                // Determine the text color based on the choice state
-                                Color textColor =
-                                    choiceState ? Colors.green : Colors.black;
+                                // Find if the current choice is the one selected by the user
+
+                                var isSelectedChoice =
+                                    choice.id == selectedChoiceId;
+
+                                // Find if the state of the question is true or false
+                                var isQuestionStateTrue =
+                                    widget.questions[index]['state'] == true;
+
+                                // Determine the text color based on the choice and question state
+                                Color textColor = isQuestionStateTrue
+                                    ? (isSelectedChoice
+                                        ? Colors.red
+                                        : (isCorrectAnswer
+                                            ? Colors.green
+                                            : Colors.black))
+                                    : (isCorrectAnswer
+                                        ? Colors.green
+                                        : Colors.black);
 
                                 return Text(
                                   choice.text,
@@ -131,6 +170,28 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                                 );
                               }).toList(),
                             ),
+
+                            // subtitle: Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: question.choices.map((choice) {
+                            //     // Check if the choice ID matches the selected choice ID
+                            //     var isSelectedChoice = choice.id ==
+                            //         widget.questions[index]['choice'];
+                            //     var choiceState = choice.id == question.answer;
+                            //     // Determine the text color based on the question state and choice ID
+                            //     // if(!choiceState)
+                            //     Color textColor =
+                            //         widget.questions[index]['state'] == false &&
+                            //                 isSelectedChoice
+                            //             ? Colors.red
+                            //             : Colors.black;
+
+                            //     return Text(
+                            //       choice.text,
+                            //       style: TextStyle(color: textColor),
+                            //     );
+                            //   }).toList(),
+                            // ),
                           ),
 
                           // ListTile(
