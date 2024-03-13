@@ -318,7 +318,7 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
             ),
-            Column(
+            const Column(
               children: <Widget>[
                 SizedBox(height: 30),
                 Column(

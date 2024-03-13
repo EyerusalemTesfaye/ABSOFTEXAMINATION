@@ -12,6 +12,7 @@ import 'package:absoftexamination/pages/secondPreview.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
 import 'package:absoftexamination/pages/signUp.dart';
 import 'package:absoftexamination/pages/soreResult.dart';
+import 'package:absoftexamination/pages/splash.dart';
 import 'package:absoftexamination/util/router.dart';
 import 'package:flutter/material.dart';
 
@@ -100,6 +101,9 @@ class Routerr {
         return MaterialPageRoute(
             builder: (BuildContext context) => UserProfile());
       // Add more cases for other routes if needed
+      case SplashScreenPage:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => SplashScreen());
       default:
         throw Exception('Unknown route: ${settings.name}');
     }

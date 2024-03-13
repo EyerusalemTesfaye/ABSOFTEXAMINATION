@@ -133,7 +133,7 @@ void main() async {
     final bool isUserLoggedIn = await UserPreferences.isUserLoggedIn();
     if (await UserPreferences.isFirstTime()) {
       // If it's the first time opening the app, show the GetStarted page
-      initialRoute = FirstPreviewScreen;
+      initialRoute = GetStartedScreen;
       await UserPreferences.setFirstTime(
           false); // Set isFirstTime flag to false
     } else {

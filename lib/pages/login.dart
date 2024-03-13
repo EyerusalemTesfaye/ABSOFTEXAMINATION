@@ -4,6 +4,8 @@ import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/model/user.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/home.dart';
+import 'package:absoftexamination/pages/splash.dart';
+import 'package:absoftexamination/pages/widget/awesomedialog.dart';
 import 'package:absoftexamination/providers/auth.dart';
 import 'package:absoftexamination/providers/userProvider.dart';
 import 'package:absoftexamination/services/api.dart';
@@ -11,6 +13,7 @@ import 'package:absoftexamination/util/router.dart';
 import 'package:absoftexamination/util/shared_preferences_util.dart';
 import 'package:absoftexamination/util/validators.dart';
 import 'package:absoftexamination/util/widget.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 //import 'package:quickalert/quickalert.dart';
 import 'package:http/http.dart' as http;
@@ -101,31 +104,47 @@ class _LoginPageState extends State<LoginPage> {
           });
           //await Future.delayed(const Duration(seconds: 3));
           // context.read<UserDataProvider>().setToken(token);
-
-          Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const SplashScreen()),
+          );
+          // Navigator.pushNamed(context, ExamHomeScreen, arguments: questions);
         } else {
           print('Login failed: ${responseMap['header']['message']}');
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(
-          //     content:
-          //         Text('Login failed: ${responseMap['header']['message']}'),
-          //   ),
-          // );
+
+          // buildDialog(context, "Login Failed",
+          //     '${responseMap['header']['message']}', DialogType.error, () {
+          //   // Pop the dialog
+          //   null;
+          // }, () => null);
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Login Failed"),
-                content: QuickAlert(
-                  text: 'Login failed: ${responseMap['header']['message']}',
-                  type: QuickAlertType.error,
-                ),
+                //title: Text('Login Failed'),
+                title: const Text("Login Failed"),
+                titleTextStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 20),
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                content: Container(
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    child: Text(
+                      ' ${responseMap['header']['message']}',
+                      style: TextStyle(color: Colors.white),
+                    )),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text("OK"),
+                    child: Text(
+                      'OK',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               );

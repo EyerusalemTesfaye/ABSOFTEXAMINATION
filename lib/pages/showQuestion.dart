@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/providers/questionProvider.dart';
 import 'package:flutter/material.dart';
@@ -79,34 +81,35 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
               ListView.builder(
                 itemCount: widget.questionsList.length,
                 shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   // var question = widget.questions[index];
                   final question = widget.questionsList[index];
                   var selectedChoiceId =
                       int.parse(widget.questions[index]['choice']);
                   // bool correct = question.correctAnswer == widget.answer[index];
-                  print('selectedChoiceId:${selectedChoiceId}');
+                  print('selectedChoiceId:$selectedChoiceId');
                   var isQuestionStateTrue =
-                      widget.questions[index]['state'] == true;
+                      widget.questions[index]['state'] == 'true';
                   print(isQuestionStateTrue);
+                  print(widget.questions[index]['state']);
                   return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Container(
                       width: double.infinity,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 20),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
-                              offset: Offset(4, 4),
+                              offset: const Offset(4, 4),
                               blurRadius: 10,
                               color: Colors.grey.withOpacity(.5),
                             ),
                             BoxShadow(
-                              offset: Offset(-3, 0),
+                              offset: const Offset(-3, 0),
                               blurRadius: 15,
                               color: Color(0xffb8bfce).withOpacity(.5),
                             ),
@@ -118,7 +121,7 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                           ListTile(
                             title: Text(
                               question.text,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             // subtitle: Column(
@@ -140,29 +143,31 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: question.choices.map((choice) {
-                                // Find if the current choice is the correct answer
                                 var isCorrectAnswer =
                                     choice.id == question.answer;
-
-                                // Find if the current choice is the one selected by the user
 
                                 var isSelectedChoice =
                                     choice.id == selectedChoiceId;
 
-                                // Find if the state of the question is true or false
-                                var isQuestionStateTrue =
-                                    widget.questions[index]['state'] == true;
+                                bool isQuestionStateTrue =
+                                    widget.questions[index]['state'] == 'false';
 
-                                // Determine the text color based on the choice and question state
-                                Color textColor = isQuestionStateTrue
-                                    ? (isSelectedChoice
+                                Color textColor = question.answer == choice.id
+                                    ? Colors.green
+                                    : (int.parse(choice.id) ==
+                                                selectedChoiceId &&
+                                            int.parse(question.answer) !=
+                                                selectedChoiceId
                                         ? Colors.red
-                                        : (isCorrectAnswer
-                                            ? Colors.green
-                                            : Colors.black))
-                                    : (isCorrectAnswer
-                                        ? Colors.green
                                         : Colors.black);
+                                //  (isSelectedChoice
+                                //
+                                //     : (isCorrectAnswer
+                                //          Colors.green
+                                //         : Colors.black))
+                                // : (isCorrectAnswer
+                                //      Colors.green
+                                //     : Colors.black);
 
                                 return Text(
                                   choice.text,

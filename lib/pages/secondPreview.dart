@@ -19,7 +19,7 @@ class _SecondPreviewState extends State<SecondPreview> {
           Container(
             height: screenHeight,
             width: screenWidth,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
               image: AssetImage('assets/second_preview1.png'),
               fit: BoxFit.fill,
@@ -31,32 +31,32 @@ class _SecondPreviewState extends State<SecondPreview> {
               bottom: 30,
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Numerous Free Quizes',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                         color: Color(0xFF2D54EF)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Feed your curiosity',
                     style: TextStyle(
                         color: Color.fromARGB(255, 199, 197, 197),
                         fontWeight: FontWeight.bold),
                   ),
-                  Text(
+                  const Text(
                     'Explore countless free quizzes',
                     style: TextStyle(
                         color: Color.fromARGB(255, 199, 197, 197),
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text(
+                  const Text(
                     'Satisfy your hunger for knowledge ',
                     style: TextStyle(
                         color: Color.fromARGB(255, 199, 197, 197),

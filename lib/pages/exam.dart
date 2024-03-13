@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:absoftexamination/model/exam.dart';
 import 'package:absoftexamination/model/questionModal.dart';
@@ -58,7 +60,7 @@ class _ExamState extends State<Exam> {
     } else {
       print('No questions available');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('No question Available'),
         ),
       );
@@ -255,7 +257,7 @@ class _ExamState extends State<Exam> {
   @override
   Widget build(BuildContext context) {
     if (questionChoice.isEmpty) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text('No questions available'),
         ),
@@ -271,7 +273,7 @@ class _ExamState extends State<Exam> {
           Container(
             height: screenHeight,
             width: screenWidth,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
               image: AssetImage('assets/homeFrame.png'),
               fit: BoxFit.cover,
@@ -283,7 +285,7 @@ class _ExamState extends State<Exam> {
             right: 0,
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 IconButton(
@@ -296,7 +298,7 @@ class _ExamState extends State<Exam> {
                         () => Navigator.pop(context),
                         () => null);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back_ios,
                     size: 30,
                   ),
@@ -306,7 +308,7 @@ class _ExamState extends State<Exam> {
                 ),
                 Text(
                   widget.examTitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                       color: Color(0xFF07193F)),
@@ -328,7 +330,7 @@ class _ExamState extends State<Exam> {
                       color: Colors.grey.withOpacity(0.5), // Shadow color
                       spreadRadius: 5, // Spread radius
                       blurRadius: 7, // Blur radius
-                      offset: Offset(
+                      offset: const Offset(
                           0, 3), // Offset in x and y axes from the shadow
                     ),
                   ],
@@ -358,7 +360,7 @@ class _ExamState extends State<Exam> {
               right: 0,
               child: Text(
                 currentQuestion.text,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               )),
           // Positioned(
           //     top: 300,
@@ -392,7 +394,7 @@ class _ExamState extends State<Exam> {
                 (index) {
                   var choice = currentQuestion.choices[index];
                   return Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                         vertical: 10), // Adjust vertical spacing as needed
                     child: Container(
                       height: 65,
@@ -404,7 +406,7 @@ class _ExamState extends State<Exam> {
                             color: Colors.grey.withOpacity(0.5), // Shadow color
                             spreadRadius: 5, // Spread radius
                             blurRadius: 7, // Blur radius
-                            offset: Offset(
+                            offset: const Offset(
                                 0, 3), // Offset in x and y axes from the shadow
                           ),
                         ],
@@ -443,7 +445,7 @@ class _ExamState extends State<Exam> {
                   if (selectedChoice == null) {
                     // Show a snackbar message
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('First, you have to select a choice.'),
                       ),
                     );
@@ -460,7 +462,7 @@ class _ExamState extends State<Exam> {
                   ),
                   side: BorderSide(color: Colors.black),
                 ),
-                child: Text(
+                child: const Text(
                   'Answer',
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),

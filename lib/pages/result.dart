@@ -17,6 +17,8 @@ import 'package:http/http.dart' as http;
 //import 'package:absoftexamination/provider/result_show_provider.dart'; // Import your provider file
 
 class ResultScreen extends StatefulWidget {
+  const ResultScreen({super.key});
+
   @override
   State<ResultScreen> createState() => _ResultScreenState();
 }
