@@ -20,8 +20,9 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:absoftexamination/pages/widget/awesomedialog.dart';
 import '../util/dialog.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -112,44 +113,86 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           print('Login failed: ${responseMap['header']['message']}');
 
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    //title: Text('Login Failed'),
+                    title: const Text("Login Failed"),
+                    titleTextStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20),
+                    backgroundColor: Colors.redAccent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    content: Container(
+                        padding: EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          ' ${responseMap['header']['message']}',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'OK',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ]);
+              });
+
           // buildDialog(context, "Login Failed",
           //     '${responseMap['header']['message']}', DialogType.error, () {
           //   // Pop the dialog
           //   null;
           // }, () => null);
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                //title: Text('Login Failed'),
-                title: const Text("Login Failed"),
-                titleTextStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 20),
-                backgroundColor: Colors.redAccent,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Container(
-                    padding: EdgeInsets.symmetric(vertical: 2),
-                    child: Text(
-                      ' ${responseMap['header']['message']}',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'OK',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
+
+          // showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return AlertDialog(
+          //       title: Text(
+          //         'Login Failed',
+          //         //style: TextStyle(color: Colors.red),
+          //       ),
+          //       content: Text(
+          //         responseMap['header']['message'],
+          //         // style: TextStyle(color: Colors.red),
+          //       ),
+          //       actions: <Widget>[
+          //         TextButton(
+          //           onPressed: () {
+          //             Navigator.of(context).pop();
+          //           },
+          //           child: Text('OK'),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // );
+          // showDialog(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return AlertDialog(
+          //       content: QuickAlert(
+          //         text: 'Login failed: ${responseMap['header']['message']}',
+          //         type: QuickAlertType.error,
+          //       ),
+          //       actions: <Widget>[
+          //         TextButton(
+          //           onPressed: () {
+          //             Navigator.of(context).pop();
+          //           },
+          //           child: Text("OK"),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // );
         }
       } catch (e) {
         print('Error during login: $e');
