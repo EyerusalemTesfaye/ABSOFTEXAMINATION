@@ -143,14 +143,14 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: question.choices.map((choice) {
-                                var isCorrectAnswer =
-                                    choice.id == question.answer;
+                                //var isCorrectAnswer =
+                                //  choice.id == question.answer;
 
-                                var isSelectedChoice =
-                                    choice.id == selectedChoiceId;
+                                // var isSelectedChoice =
+                                //choice.id == selectedChoiceId;
 
-                                bool isQuestionStateTrue =
-                                    widget.questions[index]['state'] == 'false';
+                                // bool isQuestionStateTrue =
+                                // widget.questions[index]['state'] == 'false';
 
                                 Color textColor = question.answer == choice.id
                                     ? Colors.green

@@ -161,21 +161,31 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  bool isInternetAvailable = true;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+  //     if (result == ConnectivityResult.mobile ||
+  //         result == ConnectivityResult.wifi) {
+  //       // Internet connection is available, trigger app reload
+  //       setState(() {});
+  //     }
+  //   });
+  // }
   @override
   void initState() {
     super.initState();
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-        // Internet connection is available, trigger app reload
-        setState(() {});
-      }
+      setState(() {
+        isInternetAvailable = result != ConnectivityResult.none;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.isInternetAvailable) {
+    if (!isInternetAvailable) {
       return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
