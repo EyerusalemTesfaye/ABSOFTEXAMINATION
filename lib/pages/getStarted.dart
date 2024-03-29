@@ -82,10 +82,23 @@ class _GetStartedPageState extends State<GetStartedPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(3, (indexDots) {
+                      return Container(
+                        //margin: EdgeInsets.only(left: 50),
+                        height: 8,
+                        width: currentIndex == indexDots ? 25 : 8,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color(0xFF07193F)),
+                      );
+                    }),
                   ),
                   SizedBox(
-                    height: 45,
+                    height: 20,
                   ),
                   SizedBox(
                     width: screenWidth * 0.5, // Adjust the width as needed

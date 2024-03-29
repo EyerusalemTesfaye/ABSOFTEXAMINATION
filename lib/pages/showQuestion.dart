@@ -111,7 +111,7 @@ class _ShowQuestionScreenState extends State<ShowQuestionScreen> {
                             BoxShadow(
                               offset: const Offset(-3, 0),
                               blurRadius: 15,
-                              color: Color(0xffb8bfce).withOpacity(.5),
+                              color: Color(0xffb8bfce).withOpacity(.4),
                             ),
                           ]),
                       child: Column(

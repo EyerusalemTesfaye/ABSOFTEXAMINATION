@@ -67,6 +67,7 @@ class _ExamHomeState extends State<ExamHome> {
         final res = responseMap['data'];
         print('res:***:${res}');
         print(res['title']);
+        // ignore: use_build_context_synchronously
         _buildBottomSheet(context, res['title'], res['description'],
             res['subject'], res['id']);
 
@@ -75,6 +76,7 @@ class _ExamHomeState extends State<ExamHome> {
       } else {
         print(
             'Failed to fetch exam details: ${responseMap['header']['message']}');
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -105,12 +107,14 @@ class _ExamHomeState extends State<ExamHome> {
             .toList();
 
         // Update provider with examResults
+        // ignore: use_build_context_synchronously
         context.read<ResultShowProvider>().setExamResults(examResults);
 
         print('result show fetched successful');
         print(responseMap['data']);
 
         // Navigate to ResultShowScreen
+        // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, ResultShowScreen);
       }
     } catch (e) {
@@ -189,11 +193,15 @@ class _ExamHomeState extends State<ExamHome> {
                                           color: Color.fromARGB(255, 245, 245,
                                               245)), // Add border color if necessary
                                     ),
+                                    color:
+                                        const Color.fromRGBO(255, 255, 255, 1),
                                     context: context,
                                     position: const RelativeRect.fromLTRB(
                                         82, 82, 0, 0),
                                     items: [
                                       PopupMenuItem(
+                                        onTap: () => _results(context),
+                                        value: 0,
                                         child: const Row(
                                           children: [
                                             Icon(
@@ -210,16 +218,20 @@ class _ExamHomeState extends State<ExamHome> {
                                             ),
                                           ],
                                         ),
-                                        onTap: () => _results(context),
-                                        value: 0,
                                       ),
                                       PopupMenuItem(
-                                        child: Row(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, UserProfileScreen);
+                                          //fetchData();
+                                        },
+                                        value: 1,
+                                        child: const Row(
                                           children: [
-                                            const Icon(
+                                            Icon(
                                               Icons.person_outline,
                                             ),
-                                            const SizedBox(
+                                            SizedBox(
                                               width: 10,
                                             ),
                                             Text(
@@ -229,15 +241,13 @@ class _ExamHomeState extends State<ExamHome> {
                                             ),
                                           ],
                                         ),
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, UserProfileScreen);
-                                          //fetchData();
-                                        },
-                                        value: 1,
                                       ),
                                       PopupMenuItem(
-                                        child: Row(
+                                        onTap: () {
+                                          // fetchData();
+                                        },
+                                        value: 1,
+                                        child: const Row(
                                           children: [
                                             Icon(
                                               Icons.perm_device_information,
@@ -252,16 +262,24 @@ class _ExamHomeState extends State<ExamHome> {
                                             ),
                                           ],
                                         ),
-                                        onTap: () {
-                                          // fetchData();
-                                        },
-                                        value: 1,
                                       ),
                                       PopupMenuItem(
-                                        child: Column(
+                                        onTap: () async {
+                                          await UserPreferences.removeToken();
+
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => HomePage(),
+                                            ),
+                                          );
+                                        },
+                                        value: 2,
+                                        child: const Column(
                                           children: [
                                             Divider(
-                                              color: const Color.fromARGB(
+                                              color: Color.fromARGB(
                                                   255, 62, 59, 59),
                                               thickness: 3.0,
                                               height: 10.0,
@@ -284,17 +302,6 @@ class _ExamHomeState extends State<ExamHome> {
                                             ),
                                           ],
                                         ),
-                                        onTap: () async {
-                                          await UserPreferences.removeToken();
-
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => HomePage(),
-                                            ),
-                                          );
-                                        },
-                                        value: 2,
                                       ),
                                     ],
                                   );
@@ -315,7 +322,7 @@ class _ExamHomeState extends State<ExamHome> {
                           children: [
                             ListView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: examProvider.questions.length,
                               itemBuilder: (BuildContext context, int index) {
                                 Question question =
@@ -327,7 +334,7 @@ class _ExamHomeState extends State<ExamHome> {
                                       Container(
                                         height: 180,
                                         decoration: BoxDecoration(
-                                          image: DecorationImage(
+                                          image: const DecorationImage(
                                             image: AssetImage(
                                                 'assets/examlistBg.png'),
                                             fit: BoxFit.cover,
@@ -349,17 +356,17 @@ class _ExamHomeState extends State<ExamHome> {
                                             children: [
                                               Text(
                                                 question.title,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 22,
                                                 ),
                                               ),
-                                              SizedBox(height: 15),
+                                              const SizedBox(height: 15),
                                               Row(
                                                 children: [
                                                   Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                       vertical: 3,
                                                       horizontal: 8,
                                                     ),
@@ -371,12 +378,12 @@ class _ExamHomeState extends State<ExamHome> {
                                                     ),
                                                     child: Text(
                                                       question.count,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 18),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 10),
-                                                  Text(
+                                                  const SizedBox(width: 10),
+                                                  const Text(
                                                     'Questions',
                                                     style: TextStyle(
                                                       color: Colors.white,
@@ -385,7 +392,7 @@ class _ExamHomeState extends State<ExamHome> {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 10),
+                                              const SizedBox(height: 10),
                                               TextButton(
                                                 onPressed: () {
                                                   _examStart(question.id);
@@ -405,7 +412,7 @@ class _ExamHomeState extends State<ExamHome> {
                                                     ),
                                                   ),
                                                 ),
-                                                child: Row(
+                                                child: const Row(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
@@ -460,7 +467,7 @@ _buildBottomSheet(BuildContext context, String cardTitle, String description,
 
   return showModalBottomSheet(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(25),
       ),
       context: context,
       builder: (_) {

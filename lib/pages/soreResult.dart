@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:absoftexamination/model/questionModal.dart';
 import 'package:absoftexamination/pages/examhome.dart';
 import 'package:absoftexamination/pages/showQuestion.dart';
@@ -58,6 +60,8 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
 
     if (scorenum != null && questionLennum != null) {
       scorePercentage = (scorenum * 100) / questionLennum;
+      //To round the scorePercentage value to two decimal places
+      scorePercentage = double.parse(scorePercentage.toStringAsFixed(2));
       print(scorenum);
       print(questionLennum);
       print(scorePercentage);
@@ -124,15 +128,18 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                   ),
                   Row(
                     children: <Widget>[
+                      SizedBox(
+                        width: 40,
+                      ),
                       Text(
                         "Your Score : ",
                         style: kHeadingTextStyleAppBar.copyWith(
-                            fontSize: 24, color: Colors.white),
+                            fontSize: 18, color: Colors.white),
                       ),
                       Text(
                         '${widget.score} (${scorePercentage}%)',
                         style: kHeadingTextStyleAppBar.copyWith(
-                          fontSize: 24,
+                          fontSize: 18,
                           color: Colors.red,
                         ),
                       ),
@@ -159,7 +166,7 @@ class _QuizFinishPageState extends State<QuizFinishPage> {
                   Text(
                     widget.title,
                     style: kHeadingTextStyleAppBar.copyWith(
-                        fontSize: 25, color: Colors.white),
+                        fontSize: 20, color: Colors.white),
                   ),
                   const SizedBox(
                     height: 10,

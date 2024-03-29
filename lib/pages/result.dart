@@ -228,7 +228,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     //       ));
                     // },
                     icon: Icon(
-                      Icons.arrow_back,
+                      Icons.arrow_back_ios,
                       color: Colors.white,
                     )),
                 SizedBox(
@@ -248,18 +248,19 @@ class _ResultScreenState extends State<ResultScreen> {
                   child: PopupMenuItem(
                     child: IconButton(
                       icon: Icon(
-                        Icons.more_horiz,
+                        Icons.menu,
                         color: Colors.white,
                       ),
                       onPressed: () {
                         showMenu(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
-                                20.0), // Adjust the value as needed
+                                5), // Adjust the value as needed
                             side: BorderSide(
                                 color: Colors
-                                    .grey), // Add border color if necessary
+                                    .white), // Add border color if necessary
                           ),
+                          color: Colors.white,
                           context: context,
                           position: RelativeRect.fromLTRB(82, 82, 0, 0),
                           items: [
@@ -302,8 +303,8 @@ class _ResultScreenState extends State<ResultScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
                 ),
                 child: SingleChildScrollView(
@@ -327,9 +328,28 @@ class _ResultScreenState extends State<ResultScreen> {
                                 height: screenHeight * 0.2,
                                 width: screenWidth * 0.94,
                                 decoration: BoxDecoration(
-                                    border: Border(
-                                        left: BorderSide(
-                                            color: Colors.green, width: 5))),
+                                  color: Colors
+                                      .white, // Set background color to white
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(
+                                        8), // Rounded corner for top right
+                                    bottomRight: Radius.circular(
+                                        8), // Rounded corner for bottom right
+                                  ),
+                                  border: Border(
+                                      left: BorderSide(
+                                          color: Colors.green, width: 5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey
+                                          .withOpacity(0.5), // Shadow color
+                                      spreadRadius: 3, // Spread radius
+                                      blurRadius: 7, // Blur radius
+                                      offset: Offset(0,
+                                          3), // Offset to control the shadow position
+                                    ),
+                                  ],
+                                ),
                                 child: Column(
                                   //crossAxisAlignment: CrossAxisAlignment
                                   // .start, // Align text to the left
@@ -378,7 +398,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 10,
+                                      height: 20,
                                     )
                                   ],
                                 ),
